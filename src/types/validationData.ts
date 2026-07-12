@@ -1,13 +1,3 @@
-export interface Concept {
-  id: string;
-  term: string;
-  lessonId: string;
-  definition: string;       // Low-Level / Standard Definition
-  definitionHighLevel: string; // High-Level Architecture Definition
-  context: string;          // Lab / Debug context
-  isCustom?: boolean;
-}
-
 export interface QuizQuestion {
   id: string;
   question: string;
@@ -18,8 +8,15 @@ export interface QuizQuestion {
 
 export interface SlideDiagram {
   title: string;
-  nodes: { id: string; label: string; type?: 'input' | 'process' | 'output' | 'decision' }[];
-  edges: { from: string; to: string; label?: string }[];
+  nodes: Array<{
+    id: string;
+    label: string;
+    type: 'input' | 'process' | 'decision' | 'output';
+  }>;
+  edges: Array<{
+    from: string;
+    to: string;
+  }>;
 }
 
 export interface Lesson {
@@ -36,12 +33,23 @@ export interface Lesson {
   isPlanned?: boolean;
 }
 
+export interface Concept {
+  id: string;
+  term: string;
+  lessonId: string;
+  definition: string;
+  definitionHighLevel: string;
+  context: string;
+  isCustom?: boolean;
+  category?: string; // Newly added to categorize all 100+ concepts
+}
+
 export interface LabError {
   name: string;
   code: string;
   description: string;
-  standardExplanation: string; // Low-Level
-  highLevelExplanation: string; // High-Level
+  standardExplanation: string;
+  highLevelExplanation: string;
   symptoms: string[];
   debugFlow: string[];
 }

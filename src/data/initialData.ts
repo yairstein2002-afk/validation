@@ -6,7 +6,7 @@ export const initialLessons: Lesson[] = [
     title: 'Introduction to Silicon Validation & PLC',
     titleHe: 'מבוא לוולידציה של סיליקון ומחזור חיי מוצר',
     description: 'הבנת היסודות של בדיקת מעבדים פיזיים לאחר שלב הייצור, ההבדל בין סימולציה לוולידציה, ומחזור החיים של השבב.',
-    whyItIsHere: 'שיעור זה נמצא בראש המבנה מכיוון שהוא מניח את היסודות המושגיים. לפני שצוללים לחומרה ולסיגנלים, חובה להבין מהי וולידציה (Post-Silicon), מתי היא מתבצעת ומהו המוצר הנבדק.',
+    whyItIsHere: 'שיעור זה מניח את היסודות המושגיים של וולידציית סיליקון וחלוקת העבודה בין Pre-Silicon ל-Post-Silicon.',
     prerequisites: [],
     videoUrl: 'https://www.youtube.com/embed/gS2D7JvG6m4',
     diagram: {
@@ -25,1353 +25,1244 @@ export const initialLessons: Lesson[] = [
         { from: 'n4', to: 'n5' }
       ]
     },
-    conceptIds: ['c_cpu', 'c_post_silicon', 'c_sut', 'c_bkc', 'c_plc', 'c_to', 'c_stepping', 'c_qual', 'c_es_qs', 'c_prq'],
+    conceptIds: ['c_pre_silicon', 'c_post_silicon', 'c_design_val', 'c_system_val', 'c_platform_val', 'c_silicon_val', 'c_product_val', 'c_manufacturing_val', 'c_plc', 'c_tapeout'],
     quizQuestions: [
       {
         id: 'q1_1',
         question: 'מהו ההבדל העקרוני בין Pre-Silicon ל-Post-Silicon Validation?',
         options: [
-          'אין הבדל, שני המושגים מתארים בדיקות תוכנה בלבד.',
-          'Pre-Silicon מתבצע על מודלים ממוחשבים וסימולציות לפני ייצור השבב, בעוד ש-Post-Silicon מתבצע על שבבים פיזיים אמיתיים במעבדה.',
-          'Pre-Silicon מתבצע במעבדה ו-Post-Silicon מתבצע בייצור המוני.',
-          'Pre-Silicon מיועד לבדיקות מתח בלבד ו-Post-Silicon לבדיקות מהירות.'
+          'אין הבדל, שניהם מבוצעים בתוכנה.',
+          'Pre-Silicon מבוצע על מודלים ממוחשבים וסימולציות לפני ייצור השבב, בעוד ש-Post-Silicon מבוצע על שבבי סיליקון פיזיים אמיתיים במעבדה.',
+          'Pre-Silicon מבוצע במעבדה ו-Post-Silicon מבוצע בייצור המוני.',
+          'Pre-Silicon מיועד לבדיקות מתח בלבד.'
         ],
         correctIndex: 1,
         explanation: 'בדיקות Pre-Silicon מבוצעות על גבי סימולטורים לפני שיש שבב פיזי, כדי למצוא שגיאות תכנון מוקדמות. בדיקות Post-Silicon מבוצעות על חומרה אמיתית (סיליקון) המגיעה מהמפעל.'
-      },
-      {
-        id: 'q1_2',
-        question: 'מהי המשמעות של BKC (Best Known Configuration) בתהליך הולידציה?',
-        options: [
-          'הגרסה המהירה ביותר של המעבד.',
-          'הגדרה מקסימלית של מהירות השעון.',
-          'שילוב של גרסאות חומרה, קושחה (BIOS/Microcode), מערכת הפעלה ודרייברים שנמצאו כיציבים ביותר ומשמשים כבסיס השוואה לבדיקות.',
-          'מפרט הבדיקה שנכתב על ידי הלקוח.'
-        ],
-        correctIndex: 2,
-        explanation: 'BKC היא תצורת הבסיס המוכרת ביותר כיציבה. כל מהנדסי הולידציה משתמשים בה כדי לבודד תקלות - אם בדיקה נכשלת ב-BKC, זו בעיית מוצר אמיתית ולא בעיה של תצורת סביבה לא יציבה.'
       }
     ]
   },
   {
     id: 'l2',
-    title: 'System Architecture & Interconnects',
-    titleHe: 'ארכיטקטורת מערכת וממשקי קישוריות',
-    description: 'לימוד המרכיבים הפיזיים של מערכת המחשב, בקרי המערכת, ערוצי התקשורת הפנימיים (Ring Bus) וממשקי הקישוריות המהירים.',
-    whyItIsHere: 'שיעור זה נמצא במקום השני מכיוון שלאחר שהבנו את המושגים הכלליים של הולידציה, עלינו להכיר את המערכת הפיזית שאנו בודקים (ה-SUT) ואת הארכיטקטורה הפנימית שלה, כגון איך רכיבי המעבד מתקשרים ביניהם (Ring Bus) ואיך הוא מתחבר לעולם החיצון (PCIe, M.2).',
+    title: 'Testing Types & Methodology',
+    titleHe: 'סוגי בדיקות ומתודולוגיית הולידציה',
+    description: 'הבנת ההבדלים בין סוגי בדיקות שונים כמו בדיקות רגרסיה, עומס, יציבות, אבטחה, צריכת חשמל ותרמיות.',
+    whyItIsHere: 'שיעור זה מציג את ארגז הכלים המתודולוגי של סוגי הבדיקות שכל מהנדס וולידציה נדרש להכיר ולהריץ במעבדה.',
     prerequisites: ['l1'],
     videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
-    diagram: {
-      title: 'ארכיטקטורת תקשורת פנימית וחיצונית במעבד',
-      nodes: [
-        { id: 'n1', label: 'CPU Cores / LLC (ליבות זיכרון מטמון)', type: 'input' },
-        { id: 'n2', label: 'Ring Bus (אפיק תקשורת טבעתי פנימי)', type: 'process' },
-        { id: 'n3', label: 'System Agent / Controller (בקר מערכת)', type: 'process' },
-        { id: 'n4', label: 'PCI Express Link / M.2', type: 'output' },
-        { id: 'n5', label: 'System Element / Chip (צ\'יפסט / רכיבי לוח)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n3', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_sys_controller', 'c_sys_element', 'c_ring_bus', 'c_subsystem', 'c_chip', 'c_pcie', 'c_m2', 'c_pca', 'c_upi', 'c_uncore_core', 'c_llc'],
+    conceptIds: ['c_func_test', 'c_regression_test', 'c_smoke_test', 'c_stress_test', 'c_stability_test', 'c_perf_test', 'c_compat_test', 'c_power_test', 'c_thermal_test', 'c_security_test', 'c_reliability_test', 'c_compliance_test', 'c_boot_test', 'c_interrupt_test', 'c_mem_test', 'c_cache_test', 'c_pipeline_test', 'c_io_test'],
     quizQuestions: [
       {
         id: 'q2_1',
-        question: 'מה תפקידו של ה-Ring Bus בארכיטקטורת מעבדי אינטל?',
+        question: 'מה מטרתן של בדיקות רגרסיה (Regression Testing) בוולידציה?',
         options: [
-          'לחבר את ספק הכוח ללוח האם.',
-          'לחבר בין ליבות המעבד, זיכרון המטמון המשותף (LLC), מנוע הגרפיקה וה-System Agent לצורך העברת נתונים מהירה בשהייה נמוכה.',
-          'לשלוט על מהירות מאווררי הקירור.',
-          'לנהל את כתובות ה-IP ברשת המעבדה.'
+          'לבדוק את ביצועי המעבד בממשקים חדשים בלבד.',
+          'לוודא שעדכון קוד או תיקון באג חדש לא שברו או קלקלו פונקציונליות קיימת שכבר עבדה ותפקדה בעבר.',
+          'להביא את המעבד לטמפרטורת קריסה.',
+          'לאמן את הזיכרון מחדש.'
         ],
         correctIndex: 1,
-        explanation: 'ה-Ring Bus הוא אפיק טבעתי מהיר במיוחד על גבי הפיסה המאפשר תקשורת ישירה, מהירה וברוחב פס גבוה בין הליבות השונות לבין יתר רכיבי ה-System Agent וה-Uncore.'
-      },
-      {
-        id: 'q2_2',
-        question: 'כיצד מוגדר System Element בהקשר של אינטגרציית לוח הבדיקה?',
-        options: [
-          'כל רכיב תוכנה המותקן על ה-SUT.',
-          'כל רכיב חומרה פונקציונלי בלוח (כגון בקר מתח, שעון, או שבב ה-PCH) המהווה חלק ממערך הבדיקה הכולל.',
-          'מעבד הבדיקה בלבד.',
-          'כרטיס רשת חיצוני.'
-        ],
-        correctIndex: 1,
-        explanation: 'מערכת הולידציה מורכבת מ-SUT הכולל מגוון System Elements - שבבים, גשרים ובקרי לוח משלימים העובדים יחד תחת תצורת בדיקה מוגדרת.'
+        explanation: 'בדיקות רגרסיה מריצות מחדש בדיקות קודמות שעברו כדי לוודא שתיקונים ועדכוני מיקרוקוד או BIOS חדשים לא גרמו לנסיגה (רגרסיה) ביציבות של מנגנונים אחרים.'
       }
     ]
   },
   {
     id: 'l3',
-    title: 'Boot Flow & Platform Initialization',
-    titleHe: 'תהליך האתחול ואינטגרציית הפלטפורמה',
-    description: 'לימוד סדר האתחול של המחשב מהרגע שהמתח עולה, דרך בדיקות ה-POST של ה-BIOS, אימון הזיכרון (MRC) ותפקיד רכיבי החומרה הפיזיים.',
-    whyItIsHere: 'שיעור זה ממוקם שלישי מכיוון שלאחר הכרת הארכיטקטורה הפנימית, עלינו להבין כיצד המערכת קמה לחיים. תהליכי אתחול, הגדרות BIOS, ואימון הזיכרון (MRC) קריטיים להבנת השלבים שבהם הולידציה יכולה להיכשל לפני שהגענו בכלל למערכת ההפעלה.',
-    prerequisites: ['l2'],
+    title: 'Design Verification & Simulation',
+    titleHe: 'אימות תכנון (Verification) וסימולציה',
+    description: 'לימוד השלבים המבוצעים לפני ייצור הסיליקון כדי לוודא תקינות לוגית בעזרת סימולטורים, אמיולטורים ו-FPGA Prototyping.',
+    whyItIsHere: 'הכרת שלב ה-Pre-Silicon מכינה אותך להבין את המקור הלוגי של ארכיטקטורת המעבד ומתודולוגיות מבוססות כיסוי ואקראיות.',
+    prerequisites: ['l1'],
     videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
-    diagram: {
-      title: 'שלבי תהליך אתחול הפלטפורמה (Boot Flow)',
-      nodes: [
-        { id: 'n1', label: 'Power-On / Reset (עליית מתח)', type: 'input' },
-        { id: 'n2', label: 'Straps & Fuses evaluation (קריאת הגדרות פיזיות)', type: 'process' },
-        { id: 'n3', label: 'POST / BIOS Execution (הרצת קוד אתחול)', type: 'process' },
-        { id: 'n4', label: 'MRC (Memory Reference Code - אימון הזיכרון)', type: 'decision' },
-        { id: 'n5', label: 'OS Load / Boot Completed (טעינת מערכת הפעלה)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n4', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_bios', 'c_boot', 'c_setup_flow', 'c_default_flow', 'c_post', 'c_mrc', 'c_straps', 'c_fuse', 'c_cmos', 'c_reset_vector', 'c_port80', 'c_bootloop'],
+    conceptIds: ['c_verification', 'c_validation', 'c_formal_ver', 'c_dynamic_ver', 'c_static_ver', 'c_simulation', 'c_emulation', 'c_fpga_proto', 'c_abv', 'c_crv', 'c_cdv'],
     quizQuestions: [
       {
         id: 'q3_1',
-        question: 'מהו תפקידו העיקרי של ה-MRC (Memory Reference Code) ב-BIOS?',
+        question: 'מהו ההבדל בין Simulation ל-Emulation בשלב ה-Pre-Silicon?',
         options: [
-          'למחוק את נתוני הדיסק הקשיח.',
-          'לאמן, לכייל ולאתחל את ערוצי זיכרון ה-DDR מול בקר הזיכרון במעבד כדי לאפשר תקשורת יציבה ואמינה.',
-          'לרשום את זמני פעילות המעבד.',
-          'לשנות את ערכי הרגיסטרים של כרטיס המסך.'
+          'אין הבדל, שניהם מריצים את השבב הפיזי.',
+          'Simulation מריצה קוד תוכנה המדמה את התנהגות הלוגיקה (איטי מאוד), בעוד ש-Emulation משתמשת בחומרת מחשוב ייעודית (כמו מאיצים או מקרני FPGAs) כדי להריץ את הלוגיקה במהירות גבוהה בהרבה.',
+          'Simulation בודקת רק מתחים חשמליים.',
+          'Emulation היא בדיקה שמבוצעת רק בייצור.'
         ],
         correctIndex: 1,
-        explanation: 'ה-MRC הוא קוד קריטי ב-BIOS שמבצע "אימון זיכרון". הוא סורק ומכייל מתחים וזמנים עבור קווי התקשורת של זיכרון ה-DDR כדי להבטיח קריאה וכתיבה תקינים.'
-      },
-      {
-        id: 'q3_2',
-        question: 'מה ההבדל בין Straps ל-Fuse במעבד?',
-        options: [
-          'אין הבדל, שניהם מוגדרים בתוכנה בלבד.',
-          'Straps הם פינים פיזיים או נגדים בלוח האם שקובעים תצורות חומרה בזמן עליית המתח, בעוד ש-Fuse הוא רכיב זיכרון פנימי חד-פעמי שנצרב פיזית במפעל לייעוד תכונות השבב.',
-          'Straps הם רכיבי תוכנה ו-Fuse הם רכיבי מתח.',
-          'Straps מיועדים למערכת ההפעלה בלבד.'
-        ],
-        correctIndex: 1,
-        explanation: 'Straps נקראים על ידי המעבד בזמן ה-Reset, בעוד פיוזים (Fuses) הם צריבות סיליקון פנימיות וקבועות המגדירות את זהות המעבד, מספר הליבות הפעילות, תדרי המקסימום ועוד.'
+        explanation: 'אמיולציה משתמשת במכונות חומרה מורכבות המחקות את פעולת השערים הלוגיים של המעבד, ומספקת קצבי ריצה מהירים פי אלפי מונים מסימולציית תוכנה רגילה.'
       }
     ]
   },
   {
     id: 'l4',
-    title: 'Microcode & Firmware Execution',
-    titleHe: 'מיקרוקוד והרצת קושחה פנימית',
-    description: 'הבנת הקוד הפנימי ביותר הרץ במעבד (Microcode), הדרך בה המעבד מתרגם פקודות מורכבות לקוד פנימי, וכיצד מבוצעים תיקוני באגים בשטח.',
-    whyItIsHere: 'ממוקם רביעי מכיוון שמיקרוקוד (U-code) וקושחת בקר המתחים (P-code) מופעלים ונטענים בשלבים מוקדמים מאוד של עליית המעבד. הבנת מנגנונים אלו חיונית לפני שנוכל לחקור מערכות לניהול אנרגיה ומתחים (Power Management) בשיעור הבא.',
+    title: 'Coverage Metrics',
+    titleHe: 'מדדי כיסוי (Coverage)',
+    description: 'הבנה ומדידה של רמת יסודיות הבדיקות באמצעות מדדי כיסוי קוד, כיסוי פונקציונלי ומעברי מצבים (FSM Coverage).',
+    whyItIsHere: 'מדדי כיסוי מציגים את התשובה לשאלה הקריטית בוולידציה: "מתי אפשר להפסיק לבדוק?". ללא הבנת כיסוי, לא ניתן לאשר שחרור מוצר.',
     prerequisites: ['l3'],
     videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
-    diagram: {
-      title: 'תרגום והרצת פקודות דרך Microcode',
-      nodes: [
-        { id: 'n1', label: 'x86 Instruction (X86 פקודת)', type: 'input' },
-        { id: 'n2', label: 'Decoder (מפענח חומרה)', type: 'process' },
-        { id: 'n3', label: 'Microcode Path (נתיב המיקרוקוד)', type: 'decision' },
-        { id: 'n4', label: 'Execution Units (יחידות ביצוע פיזיות)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' }
-      ]
-    },
-    conceptIds: ['c_ucode', 'c_pcode', 'c_ucode_path', 'c_ucode_acode', 'c_turnpart', 'c_ct', 'c_csme', 'c_fit'],
+    conceptIds: ['c_code_cov', 'c_func_cov', 'c_toggle_cov', 'c_branch_cov', 'c_stmt_cov', 'c_path_cov', 'c_cond_cov', 'c_fsm_cov', 'c_cross_cov'],
     quizQuestions: [
       {
         id: 'q4_1',
-        question: 'מהי המטרה של טעינת עדכוני מיקרוקוד (U-code updates) במעבד?',
+        question: 'מהו Functional Coverage (כיסוי פונקציונלי)?',
         options: [
-          'להאיץ את מהירות מאוורר המעבד.',
-          'לתקן באגים של לוגיקת החומרה, פרצות אבטחה או התנהגויות שגויות של סיליקון ללא צורך בהחלפה פיזית של השבב.',
-          'להוסיף זיכרון RAM למחשב באופן וירטואלי.',
-          'לשנות את גרסת מערכת ההפעלה.'
+          'מדידת אחוז שורות הקוד שנכתבו בתוכנת הבדיקה.',
+          'מדד המגדיר אילו מצבים, תרחישים עסקיים, שילובי רגיסטרים ומעברים לוגיים שנכתבו במפרט הבדיקות כוסו בפועל על ידי הריצות במעבדה.',
+          'מדד של מהירות מאוורר המעבד.',
+          'בדיקת טמפרטורת הסיליקון.'
         ],
         correctIndex: 1,
-        explanation: 'עדכוני מיקרוקוד מאפשרים לטעון תיקוני חומרה אל תוך זיכרון ה-SRAM הייעודי של המעבד בזמן הבוט. זה מונע את הצורך בייצור מחדש של שבב מתוקן (חדש).'
-      },
-      {
-        id: 'q4_2',
-        question: 'מהו ה-P-code בהקשר של מעבדי אינטל?',
-        options: [
-          'הקוד של מעבד הגרפיקה.',
-          'קוד קושחה ייעודי הרץ בתוך ה-PUNIT (בקר הכוח) ואחראי על ניהול האלגוריתמים של תדרים, מתחים וניהול תרמי (Power Management).',
-          'קוד האבטחה של ה-BIOS.',
-          'קוד התקשורת של ממשק ה-PCIe.'
-        ],
-        correctIndex: 1,
-        explanation: 'ה-P-code הוא הקושחה שמנהלת את ה-Power Control Unit (PCU) או ה-PUNIT. הוא מנתח נתוני טמפרטורה וצריכת זרם ומחליט על תדרי טורבו ורמות מתח.'
+        explanation: 'כיסוי פונקציונלי נכתב במיוחד על ידי המהנדס כדי להבטיח שכל המצבים המוגדרים בארכיטקטורה נבדקו לפחות פעם אחת תחת תנאים שונים.'
       }
     ]
   },
   {
     id: 'l5',
-    title: 'Power Management & Reset Flows',
-    titleHe: 'ניהול צריכת חשמל ומנגנוני אתחול (Reset)',
-    description: 'לימוד בקר ניהול האנרגיה (PUNIT), שלבי המעבר בין מצבי צריכת חשמל שונים, ואותות ה-Reset השונים במערכת.',
-    whyItIsHere: 'שיעור זה ממוקם חמישי מכיוון שניהול אנרגיה (Power Management) הוא אחד התחומים המורכבים ביותר בוולידציה. הוא משלב חומרה, קוד P-code, וקוד BIOS, ומסתמך על תהליך האתחול היציב שנלמד בשיעור 3.',
-    prerequisites: ['l3', 'l4'],
+    title: 'Debug Tools & Lab Telemetry',
+    titleHe: 'כלי דיבאג וטלמטריית מעבדה',
+    description: 'לימוד ממשקי הדיבאג החומרתיים כמו JTAG, Boundary Scan, שימוש באוסילוסקופ, PCIe Analyzer ומערכות Intel DCI.',
+    whyItIsHere: 'העבודה היומיומית במעבדה כוללת חיבור כלי דיבאג וניתוח אותות. שיעור זה מציג את הכלים הפיזיים והדיגיטליים הנדרשים לדיבאג מעבדים.',
+    prerequisites: ['l2'],
     videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
-    diagram: {
-      title: 'תהליך מעבר מצב כוח וניהול Reset',
-      nodes: [
-        { id: 'n1', label: 'PMC (בקר ניהול כוח בפלטפורמה)', type: 'input' },
-        { id: 'n2', label: 'PUNIT (בקר כוח במעבד)', type: 'process' },
-        { id: 'n3', label: 'PMRESET (אות איפוס כוח)', type: 'decision' },
-        { id: 'n4', label: 'Warm Reset (אתחול חם)', type: 'output' },
-        { id: 'n5', label: 'SST / SITS / Battery Charge', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n3', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_power_mgmt', 'c_punit', 'c_pmc', 'c_pmreset', 'c_warm_reset', 'c_pim', 'c_bat_charge', 'c_l', 'c_pr', 'c_sst', 'c_sits', 'c_cstates', 'c_pstates', 'c_sstates'],
+    conceptIds: ['c_jtag', 'c_boundary_scan', 'c_trace', 'c_logic_analyzer', 'c_oscilloscope', 'c_debug_port', 'c_intel_dci', 'c_uart_debug', 'c_pcie_analyzer', 'c_etm'],
     quizQuestions: [
       {
         id: 'q5_1',
-        question: 'מה תפקידו של ה-PMC (Power Management Controller)?',
+        question: 'מה תפקידו של חיבור Intel DCI (Direct Connect Interface)?',
         options: [
-          'לשלוט על מהירות התקשורת ב-PCIe.',
-          'בקר חיצוני למעבד (בדרך כלל בצ\'יפסט) שמנהל את מצבי הכוח של כלל הפלטפורמה (S-states כמו שינה, כיבוי והפעלה) ומתאם אותם מול המעבד.',
-          'לספק כוח ישירות לליבות המעבד.',
-          'לטעון את ה-BIOS מזיכרון ה-Flash.'
+          'חיבור לחשמל ישירות מהקיר.',
+          'ממשק המאפשר להעביר חבילות דיבאג של JTAG/ITP על גבי כבל USB 3.0 רגיל ישירות למעבד הנבדק ללא צורך במחברים ייעודיים יקרים על לוח האם.',
+          'להאיץ את מהירות הרשת במעבדה.',
+          'לכייל את זכרונות ה-DDR.'
         ],
         correctIndex: 1,
-        explanation: 'ה-PMC אחראי על ניהול רמות האנרגיה ברמת הפלטפורמה כולה (מצבי ACPI S-states), והוא מתקשר עם ה-PUNIT של המעבד.'
-      },
-      {
-        id: 'q5_2',
-        question: 'מהו Warm Reset (אתחול חם) ובמה הוא שונה מ-Cold Reset?',
-        options: [
-          'Warm Reset מתבצע רק כאשר המעבד מתחמם יותר מדי.',
-          'Warm Reset מאפס את הלוגיקה הפנימית של המעבד ללא ניתוק פיזי של קווי המתח של הלוח, ובכך חוסך זמן אתחול מחדש בהשוואה ל-Cold Reset.',
-          'אין הבדל, שניהם מנתקים לחלוטין את החשמל מהספק.',
-          'Warm Reset מתבצע רק על ידי מערכת ההפעלה ואינו משפיע על החומרה.'
-        ],
-        correctIndex: 1,
-        explanation: 'במהלך Warm Reset המתחים ללוח ולזיכרון נשארים יציבים ופעילים, ורק קווי ה-Reset הפנימיים מופעלים. ב-Cold Reset כלל ספקי הכוח מנותקים ומופעלים מחדש.'
+        explanation: 'טכנולוגיית DCI מאפשרת למהנדס להתחבר ל-SUT ולבצע דיבאג חומרה מלא (לעצור את המעבד, לקרוא רגיסטרים פנימיים) דרך יציאת USB 3.0 רגילה הנתמכת בחומרה.'
       }
     ]
   },
   {
     id: 'l6',
-    title: 'Silicon Validation Environments & OS',
-    titleHe: 'סביבות ולידציה ומערכות הפעלה ייעודיות',
-    description: 'הכרת סביבות הבדיקה במעבדה, שימוש במערכת ההפעלה הייעודית SVOS, חיבור מסופים (Terminal) ושימוש בכלי דיבאג מתקדמים.',
-    whyItIsHere: 'לאחר הבנת כלל מנגנוני הסיליקון והחומרה, שיעור זה מציג את כלי העבודה המעשיים שבהם משתמשים מהנדסי הולידציה במעבדה כדי להריץ בדיקות, לגשת לרגיסטרים ולתפעל את המערכות.',
-    prerequisites: ['l1', 'l2', 'l3'],
+    title: 'Hardware Bugs & Crash Analysis',
+    titleHe: 'ניתוח תקלות חומרה וקריסות מעבד',
+    description: 'הבנת כשלי סיליקון מורכבים כגון Deadlocks, Race Conditions, Silent Data Corruption ושגיאות Machine Check Exception (MCE).',
+    whyItIsHere: 'התפקיד העיקרי של מהנדס וולידציה הוא למצוא באגים לוגיים בסיליקון. שיעור זה מנתח את סוגי הבאגים החמורים ביותר ואת דרכי הזיהוי שלהם.',
+    prerequisites: ['l5'],
     videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
-    diagram: {
-      title: 'מבנה סביבת הבדיקות והאינטגרציה במעבדת הולידציה',
-      nodes: [
-        { id: 'n1', label: 'Host System / GUI Controller (מחשב מארח)', type: 'input' },
-        { id: 'n2', label: 'StarGate Board (לוח מארח / עמדת בדיקה)', type: 'process' },
-        { id: 'n3', label: 'SUT (System Under Test / מעבד נבדק)', type: 'decision' },
-        { id: 'n4', label: 'SVOS / Terminal (מערכת הפעלה ייעודית לבדיקות)', type: 'process' },
-        { id: 'n5', label: 'TKA / PVA / Pass Splitter (כלי דיבאג ומדידה)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n3', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_stargate', 'c_svos', 'c_pud', 'c_terminal', 'c_to_env', 'c_mode_work', 'c_gui', 'c_config_mgmt', 'c_mtbf', 'c_pass_splitter', 'c_pva', 'c_dci_jtag', 'c_itp'],
+    conceptIds: ['c_func_bug', 'c_timing_bug', 'c_race_condition', 'c_deadlock', 'c_livelock', 'c_data_corruption', 'c_sdc', 'c_cache_coherency_bug', 'c_mem_leak', 'c_hang', 'c_crash', 'c_exception', 'c_mce'],
     quizQuestions: [
       {
         id: 'q6_1',
-        question: 'מהי מערכת ההפעלה SVOS (Silicon Validation Operating System) ומה יתרונה?',
+        question: 'מהי שגיאת Silent Data Corruption (SDC) ומדוע היא מסוכנת?',
         options: [
-          'זוהי מערכת הפעלה גרפית של מיקרוסופט המיועדת למשחקים.',
-          'זוהי הפצה מבוססת לינוקס קלת-משקל וקניינית של אינטל, המכילה דרייברים מיוחדים לגישה ישירה לרגיסטרי המעבד (MSRs, PCIe Config) לצורך ביצוע בדיקות מאמץ ודיבאג חומרה ישיר.',
-          'תוכנת הדמיה של מעבדים.',
-          'מערכת המותקנת בתוך ה-BIOS.'
+          'שגיאה שבה המחשב אינו משמיע קול בזמן קריסה.',
+          'מצב שבו מתרחש שינוי או השחתה של נתונים בזיכרון או במעבד ללא התרעה של מנגנוני החומרה (ללא זריקת Exception), מה שגורם לחישובים שגויים ללא ידיעת המשתמש.',
+          'באג שנגרם רק עקב התחממות.',
+          'מחיקת קובצי ה-BIOS.'
         ],
         correctIndex: 1,
-        explanation: 'SVOS היא מערכת הפעלה ייחודית של אינטל לביצוע בדיקות Post-Silicon. היא מספקת גישה ישירה לחומרה ומאפשרת להפעיל תוכניות בדיקה ייעודיות ללא מגבלות.'
-      },
-      {
-        id: 'q6_2',
-        question: 'למה משמש ה-Pass Splitter במעבדת הולידציה?',
-        options: [
-          'לפיצול זרם החשמל הראשי של המעבדה.',
-          'חומרה/תוכנה המפצלת ומנתבת אותות דיבאג מורכבים או בדיקות מקביליות בין ערוצים שונים בלוח הבדיקה.',
-          'לחיבור מסכים מרובים.',
-          'לאיחוד קבצי קוד.'
-        ],
-        correctIndex: 1,
-        explanation: 'ה-Pass Splitter משמש לניתוב וחלוקה של אותות בדיקה, ומאפשר לנתח תקשורת בין רכיבים במקביל.'
+        explanation: 'שגיאות SDC הן מהבאגים החמורים ביותר בחומרה. המעבד ממשיך לעבוד כרגיל אך מחזיר תוצאה מתמטית שגויה מבלי לדווח על שגיאה, מה שעלול לגרום לנזקים קשים במערכות קריטיות.'
       }
     ]
   },
   {
     id: 'l7',
-    title: 'Troubleshooting & Lab Diagnostics',
-    titleHe: 'פתרון תקלות (Troubleshooting) ואבחון במעבדה',
-    description: 'פיתוח יכולות של זיהוי שגיאות מעבדה מורכבות (כמו CATERR או Machine Check Exception), הבנת בדיקות מאמץ (Burn-in) ודיבאג זיכרון.',
-    whyItIsHere: 'שיעור מסכם זה לוקח את כל הידע שנצבר לאורך הקורס ומכשיר את המהנדס להתמודד עם מצבים של כשלים פיזיים במעבדה, ניתוח קודי שגיאה ושימוש במתודולוגיות דיבאג מתקדמות.',
-    prerequisites: ['l5', 'l6'],
+    title: 'Performance & Architecture Validation',
+    titleHe: 'ולידציה של ביצועים וארכיטקטורה',
+    description: 'מדידת מדדי ביצועים כמו IPC, CPI, הבנת צווארי בקבוק (Bottlenecks) ושימוש ב-Performance Monitoring Unit (PMU).',
+    whyItIsHere: 'מוודא שהמעבד לא רק עובד נכון, אלא גם עומד ביעדי המהירות, רוחב הפס והביצועים שהובטחו ללקוחות.',
+    prerequisites: ['l2'],
     videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
-    diagram: {
-      title: 'תהליך אבחון תקלה ודיבאג במעבדת הולידציה',
-      nodes: [
-        { id: 'n1', label: 'System Fail / Crash (כשל במערכת / מסך שחור / CATERR)', type: 'input' },
-        { id: 'n2', label: 'Verify BKC (וידוא הגדרות BKC וחומרה)', type: 'process' },
-        { id: 'n3', label: 'Read MSRs / Crash log (קריאת רגיסטרי שגיאה)', type: 'decision' },
-        { id: 'n4', label: 'Hardware Debug (החלפת חלקים / בדיקת מתחים)', type: 'process' },
-        { id: 'n5', label: 'Root Cause Identified (מציאת מקור התקלה)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n4', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_trouble', 'c_burn_in', 'c_pd', 'c_debuggable', 'c_mem_element', 'c_caterr_code', 'c_ierr_code', 'c_mce_code', 'c_hang_code', 'c_thermal_throttling'],
+    conceptIds: ['c_benchmark', 'c_ipc', 'c_cpi', 'c_throughput', 'c_latency', 'c_bottleneck', 'c_profiling', 'c_perf_counter', 'c_pmu'],
     quizQuestions: [
       {
         id: 'q7_1',
-        question: 'מה פירוש המושג CATERR (Catastrophic Error Signal)?',
+        question: 'מהו תפקידו של ה-PMU (Performance Monitoring Unit) במעבד?',
         options: [
-          'הודעת שגיאה על אי-חיבור כבל הרשת.',
-          'אות פיזי במעבד המציין כי התרחש כשל חומרה קטסטרופלי ובלתי הפיך (כגון שגיאת פרוטוקול פנימית או קריסה של ה-Ring Bus), הגורם לעצירה מיידית של פעולת המעבד.',
-          'שגיאה הניתנת לתיקון אוטומטי על ידי ה-BIOS.',
-          'מצב שבו מאוורר הקירור מפסיק לעבוד.'
+          'למדוד את צריכת החשמל של הלוח.',
+          'יחידת חומרה פנימית במעבד המכילה מונים מיוחדים (Performance Counters) המאפשרים לרשום אירועים פיזיים כמו החטאות מטמון, פענוח פקודות ודילוגי ענפים בזמן אמת ללא פגיעה בביצועים.',
+          'לכייל את שעוני ה-PLL.',
+          'לשלוט על מהירות התקשורת בשרת.'
         ],
         correctIndex: 1,
-        explanation: 'CATERR הוא אינדיקציית החומרה החמורה ביותר של המעבד. כאשר הוא מופעל, המעבד נעצר מיד כדי למנוע השחתת נתונים, והמעבדה צריכה לקרוא את רגיסטרי השגיאות.'
-      },
-      {
-        id: 'q7_2',
-        question: 'מה מטרת תהליך ה-Burn-in במעבדה?',
-        options: [
-          'לצרוב קושחה חדשה על המעבד.',
-          'להפעיל את המעבד בטמפרטורות גבוהות ובמתח מוגבר לאורך זמן כדי לזהות כשלי ייצור מוקדמים ולוודא אמינות לאורך זמן.',
-          'לנקות את הלוח מאבק.',
-          'לבדוק את תקינות חיבורי ה-HDMI.'
-        ],
-        correctIndex: 1,
-        explanation: 'בדיקות מאמץ בטמפרטורה ומתח גבוהים (Burn-in) נועדו לדמות הזדקנות מואצת של הסיליקון במטרה לאתר בעיות יציבות ופגמי ייצור מוסתרים.'
+        explanation: 'ה-PMU מאפשר למהנדסים ולמפתחי תוכנה למדוד בדיוק רב כיצד החומרה מתנהגת תחת עומסים שונים ולזהות היכן נוצרים צווארי בקבוק בעיבוד.'
       }
     ]
   },
   {
     id: 'l8',
-    title: 'Signal Integrity & Oscilloscope Analysis',
-    titleHe: 'שלמות אות (Signal Integrity) ואבחון באוסילוסקופ',
-    description: 'לימוד תחום ה-Electrical Validation (EV), ביצוע Margining של מתחים ותדרים, וניתוח איכות הסיגנל החשמלי במעבדה.',
-    whyItIsHere: 'לאחר שהבנו את בעיות הלוגיקה והתוכנה, שיעור זה מציג את עולם הולידציה החשמלית (EV). הבנת שלמות אותות, רעשי קווי תקשורת ודיאגרמות עין (Eye Diagrams) חיונית לפתרון באגים פיזיקליים מורכבים במעבדות אינטל.',
-    prerequisites: ['l2', 'l7'],
+    title: 'Memory Subsystem & Cache Validation',
+    titleHe: 'תת-מערכת הזיכרון ואימות זיכרון מטמון',
+    description: 'אימות זיכרונות המטמון (L1, L2, L3), יחידות ה-MMU/TLB, בדיקות קוד תיקון שגיאות (ECC) ושלבי אימון הזיכרון (DRAM Training).',
+    whyItIsHere: 'תת-מערכת הזיכרון היא מהרכיבים הרגישים והמורכבים ביותר במעבד. באגים בניהול זיכרון או ב-Cache Coherency יכולים להשבית את כל המערכת.',
+    prerequisites: ['l2', 'l6'],
     videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
-    diagram: {
-      title: 'תהליך ניתוח איכות סיגנל חשמלי במעבדה',
-      nodes: [
-        { id: 'n1', label: 'Signal Probe Placement (מיקום פרוב המדידה)', type: 'input' },
-        { id: 'n2', label: 'Eye Diagram Generation (יצירת דיאגרמת עין)', type: 'process' },
-        { id: 'n3', label: 'Measure Jitter & Cross-talk (מדידת רעש ותזמון)', type: 'decision' },
-        { id: 'n4', label: 'Adjust Tx Equalization (כיוונון מקור האות)', type: 'process' },
-        { id: 'n5', label: 'Signal Integrity Validated (שלמות אות מאושרת)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n4', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_ev', 'c_margining', 'c_jitter', 'c_crosstalk', 'c_eye_diagram', 'c_isi', 'c_impedance', 'c_probe_loading', 'c_reflection'],
+    conceptIds: ['c_l1_cache', 'c_l2_cache', 'c_l3_cache', 'c_tlb_val', 'c_mmu_val', 'c_ecc_testing', 'c_mem_controller', 'c_dram_training', 'c_mem_scrubbing'],
     quizQuestions: [
       {
         id: 'q8_1',
-        question: 'מה מייצגת "דיאגרמת עין" (Eye Diagram) בוולידציה חשמלית?',
+        question: 'מהי החשיבות של DRAM Training (אימון זיכרון) בזמן אתחול המחשב?',
         options: [
-          'תרשים המציג את תפקוד המעבד תחת עיני מצלמה תרמית.',
-          'הצגה חזותית מרובדת של אותות דיגיטליים מהירים המציגה את מרווח הרעש (גובה העין) ומרווח התזמון (רוחב העין) של קווי התקשורת.',
-          'תרשים זרימת קוד ה-BIOS.',
-          'מערכת לכיול מהירות הדיסק הקשיח.'
+          'לצרוב קוד על כרטיס הזיכרון.',
+          'כיול חשמלי עדין של מתחים וזמנים (Delays) בין בקר הזיכרון במעבד לבין שבבי ה-DRAM בלוח כדי ליצור "עין אות" (Signal Eye) פתוחה ויציבה לתקשורת במהירות גבוהה.',
+          'מחיקת קובצי מערכת ההפעלה מה-RAM.',
+          'הפחתת כמות החשמל שהמעבד צורך.'
         ],
         correctIndex: 1,
-        explanation: 'דיאגרמת עין נוצרת על ידי שילוב של אלפי מחזורי אות על גבי מסך אוסילוסקופ מהיר. היא מאפשרת להעריך במבט אחד את יציבות האות ורמות הרעש.'
-      },
-      {
-        id: 'q8_2',
-        question: 'מהו Jitter בהקשר של שלמות אותות?',
-        options: [
-          'תדר השעון המקסימלי של המעבד.',
-          'סטייה קצרת טווח ולא רצויה של האות החשמלי מזמני האתחול והמעבר האידיאליים שלו.',
-          'הפרש המתחים בין סוללת ה-CMOS ללוח.',
-          'מנגנון הגנה מפני חום יתר.'
-        ],
-        correctIndex: 1,
-        explanation: 'Jitter הוא רעש תזמון בציר הזמן (Phase Noise). הוא גורם למעברים של הביטים להתרחש מוקדם או מאוחר מדי, מה שעלול לגרום לשגיאות בקריאת הנתונים.'
+        explanation: 'בשל תדרים גבוהים מאוד בזיכרונות DDR מודרניים, שינויים פיזיים קלים בלוח משפיעים על זמני הגעת האותות. DRAM Training מכייל זמנים אלו בכל הדלקה מחדש.'
       }
     ]
   },
   {
     id: 'l9',
-    title: 'Workloads, Stress Testing & Functional Coverage',
-    titleHe: 'עומסי עבודה (Workloads), בדיקות מאמץ וכיסוי פונקציונלי',
-    description: 'לימוד שיטות ה-Functional Validation (FV), הרצת עומסי עבודה מיוחדים, ומדידת אחוזי הכיסוי הלוגי של הבדיקות.',
-    whyItIsHere: 'במקום התשיעי מכיוון שלאחר שהבטחנו שכל הפינים החשמליים יציבים (שיעור 8), אנו עוברים לוולידציה פונקציונלית מלאה (FV). אנו רוצים להפעיל את המעבד בלוגיקה המורכבת ביותר שלו, לאתר באגים בצינורות העיבוד ולהבטיח שכל תכונות הסיליקון נבדקו.',
-    prerequisites: ['l1', 'l7', 'l8'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
-    diagram: {
-      title: 'מחזור הרצת בדיקות פונקציונליות ואיסוף כיסוי',
-      nodes: [
-        { id: 'n1', label: 'Select Target Workload (בחירת עומס עבודה)', type: 'input' },
-        { id: 'n2', label: 'Stress Testing Loop (לולאת בדיקת מאמץ)', type: 'process' },
-        { id: 'n3', label: 'Collect Coverage Logs (איסוף נתוני כיסוי)', type: 'process' },
-        { id: 'n4', label: 'Identify Corner Cases (איתור מקרי קצה שלא נבדקו)', type: 'decision' },
-        { id: 'n5', label: 'Release Regression Pass (אישור הרצת רגרסיה)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n4', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_fv', 'c_workloads', 'c_stress', 'c_coverage', 'c_assertions', 'c_random_test', 'c_corner_cases', 'c_regressions', 'c_test_suite'],
+    title: 'Power Management & Thermal Throttling',
+    titleHe: 'ניהול צריכת חשמל והגנה תרמית',
+    description: 'אימות מנגנוני Power Gating, Clock Gating, מעברי DVFS דינמיים, מצבי שינה של הליבה (C-States) ומצבי ביצועים (P-States).',
+    whyItIsHere: 'מעבדים מודרניים דורשים ניהול אנרגיה אגרסיבי. באג בניהול צריכת החשמל עלול לשרוף את המעבד או לגרום לנפילות מתח קשות (Vdroop) שקוטעות את פעילות המערכת.',
+    prerequisites: ['l2', 'l6'],
+    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    conceptIds: ['c_power_gating', 'c_clock_gating', 'c_dvfs', 'c_sleep_states', 'c_cstates', 'c_pstates', 'c_thermal_throttling', 'c_turbo_validation'],
     quizQuestions: [
       {
         id: 'q9_1',
-        question: 'למה משמש ה-Functional Coverage (כיסוי פונקציונלי) בוולידציה?',
+        question: 'מה ההבדל בין Power Gating ל-Clock Gating במעבד?',
         options: [
-          'לכיסוי גוף המעבד במפזר חום.',
-          'מדד כמותי המראה אילו מצבי מערכת, מעברי רגיסטרים ושילובי פקודות נבדקו בפועל מתוך כל המצבים האפשריים המוגדרים במפרט.',
-          'לרישום שעות העבודה של צוות המעבדה.',
-          'למדידת אחוזי היעילות של ספק הכוח.'
+          'אין הבדל, שניהם מנתקים את אספקת המתח.',
+          'Clock Gating מכבה רק את אות השעון לרכיבים שאינם פעילים (חוסך צריכת חשמל דינמית), בעוד ש-Power Gating מנתק לחלוטין את זרם המתח הפיזי לאותו אזור בסיליקון (מבטל זרמי זליגה פסיביים).',
+          'Power Gating מבוצע רק במצב שינה עמוק של המחשב כולו.',
+          'Clock Gating מיועד רק למאווררי הקירור.'
         ],
         correctIndex: 1,
-        explanation: 'כיסוי פונקציונלי מאפשר למהנדסים לדעת אם ישנם תרחישים לוגיים במעבד שעדיין לא נבדקו כלל. ללא מדידת כיסוי, לא ניתן לדעת אם הבדיקות יסודיות מספיק.'
-      },
-      {
-        id: 'q9_2',
-        question: 'מה מאפיין בדיקות מאמץ (Stress Testing) פונקציונליות?',
-        options: [
-          'הרצת תסריטי בדיקה איטיים מאוד בלבד.',
-          'יצירת תנאי עומס קיצוניים במקביל (למשל: תעבורת זיכרון כבדה, הרצת קוד מתמטי ומעברי כוח מהירים בו-זמנית) במטרה לאתר באגים לוגיים הנוצרים רק בתרחישים כאלו.',
-          'מדידת גובה הלוח במעבדה.',
-          'כיבוי ה-SUT לזמן ממושך.'
-        ],
-        correctIndex: 1,
-        explanation: 'בדיקות מאמץ פונקציונליות מנסות "לדחוף" את המעבד לקצה גבול היכולת הלוגי והזמני שלו כדי לעורר באגים שקשורים להתנגשויות משאבים ותקשורת פנימית.'
+        explanation: 'Power Gating מציע חיסכון אנרגיה משמעותי בהרבה מכיוון שהוא מונע זרמי זליגה פסיביים (Leakage), אך החיסרון שלו הוא זמן התאוששות (Wakeup latency) ארוך יותר מאשר Clock Gating.'
       }
     ]
   },
   {
     id: 'l10',
-    title: 'Triage, NGA & Automation Infrastructure',
-    titleHe: 'טריאז\' (Triage), מערכת NGA ואוטומציית בדיקות',
-    description: 'לימוד מתודולוגיית סיווג התקלות (Triage), ניתוח לוגים אוטומטי, ושימוש במערכת ה-NGA לניהול הרצות מעבדה בקנה מידה ענק.',
-    whyItIsHere: 'בסיום המסלול, אנו מגיעים לשיעור האינטגרציה והאוטומציה הגדול ביותר. מהנדס וולידציה באינטל אינו מריץ רק בדיקות ידניות; עליו לדעת כיצד לנהל אלפי הרצות אוטומטיות ב-NGA, לנתח כשלי לוגים מבוזרים (Triage) ולדווח על Sightings בצורה מקצועית.',
-    prerequisites: ['l6', 'l9'],
+    title: 'Intel / AMD Core Interview Topics',
+    titleHe: 'נושאי הליבה לראיונות עבודה והסמכה',
+    description: 'ריכוז נושאי החומרה והתוכנה המרכזיים בראיונות עבודה ב-Intel ו-AMD: פרוטוקול PCIe, תהליך ה-Boot Flow, עקביות זיכרון מטמון, CDC ומיקרוקוד.',
+    whyItIsHere: 'זהו שיעור ההכנה הרשמי שלך לראיונות ולידציה. הוא מרכז את המושגים, הפרוטוקולים והספריות שבהם תשתמש מדי יום כמהנדס וולידציה מקצועי.',
+    prerequisites: ['l1', 'l2', 'l8', 'l9'],
     videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
-    diagram: {
-      title: 'מחזור חיים של תקלה במערכת NGA',
-      nodes: [
-        { id: 'n1', label: 'NGA Run Failure (נפילת בדיקה באוטומציה)', type: 'input' },
-        { id: 'n2', label: 'Triage (סיווג ראשוני של לוגים)', type: 'process' },
-        { id: 'n3', label: 'Reproduce on BKC (שחזור על גרסה מוכרת)', type: 'decision' },
-        { id: 'n4', label: 'File Sighting (פתיחת דיווח באג רשמי)', type: 'process' },
-        { id: 'n5', label: 'Fix Verification (אימות ותיקון הבאג)', type: 'output' }
-      ],
-      edges: [
-        { from: 'n1', to: 'n2' },
-        { from: 'n2', to: 'n3' },
-        { from: 'n3', to: 'n4' },
-        { from: 'n4', to: 'n5' }
-      ]
-    },
-    conceptIds: ['c_nga', 'c_triage', 'c_fail_rate', 'c_defect', 'c_log_analysis', 'c_automation_script', 'c_runtime', 'c_sighting'],
+    conceptIds: ['c_pcie', 'c_ddr', 'c_cache_coherency', 'c_interrupts', 'c_boot_flow', 'c_firmware', 'c_ucode', 'c_intel_vtx', 'c_cdc', 'c_sta', 'c_python', 'c_cpp', 'c_assembly'],
     quizQuestions: [
       {
         id: 'q10_1',
-        question: 'מה תפקידו של ה-Triage (טריאז\') בעבודת מהנדס הוולידציה?',
+        question: 'מהו ה-Clock Domain Crossing (CDC) ומדוע הוא מהווה אתגר חמור בוולידציה?',
         options: [
-          'לנקות את רכיבי החומרה במעבדה.',
-          'תהליך האבחון, המיון והסיווג של כשלי בדיקות במטרה לקבוע אם מדובר בבעיית תוכנה, בעיית חומרת לוח, בעיית הגדרת סביבה או באג אמיתי בסיליקון.',
-          'חלוקת המעבדים לפי מהירות ייצור.',
-          'טעינת קבצי ה-BIOS מרחוק.'
+          'מעבר בין חיבורי חשמל שונים בלוח.',
+          'מצב שבו אותות נתונים עוברים בין אזורים לוגיים במעבד הפועלים תחת תדרי שעון שונים ובלתי מסונכרנים, מה שעלול לגרום למטא-סטביליות (Metastability) ואיבוד נתונים ללא מנגנוני סנכרון מתאימים.',
+          'טעינת קבצי ה-BIOS.',
+          'מעבר ממצב טורבו למצב חיסכון בחשמל.'
         ],
         correctIndex: 1,
-        explanation: 'טריאז\' הוא תהליך סינון קריטי. מתוך אלפי כישלונות באוטומציה, המהנדס מנתח את הלוגים כדי לבודד את הגורם האמיתי ולשייך את התקלה לצוות הנכון.'
-      },
-      {
-        id: 'q10_2',
-        question: 'מהי מערכת NGA (Next Generation Automation) של אינטל?',
-        options: [
-          'ספריית קוד לגרפיקה.',
-          'פלטפורמת אוטומציה מרכזית לניהול, תזמון, הרצה ואיסוף תוצאות של מיליוני בדיקות וולידציה על גבי אלפי לוחות SUT מבוזרים ברחבי המעבדות.',
-          'תוכנה לציור תרשימים זורמים.',
-          'כלי להתקנת דרייברים על הנייד.'
-        ],
-        correctIndex: 1,
-        explanation: 'NGA היא מערכת האוטומציה המרכזית שמאפשרת לצוותי הולידציה להריץ בדיקות בקנה מידה עצום 24/7 ללא מגע יד אדם, ולרכז את כל תוצאות הבדיקה במאגר נתונים אחד.'
+        explanation: 'בעיות CDC הן מבאגי החומרה הקשים ביותר לאיתור. הם אקראיים לחלוטין ונובעים מהפרשי פאזה וזמנים זעירים בין שעונים, ולכן דורשים בדיקות לוגיות וחשמליות קפדניות.'
       }
     ]
   }
 ];
 
 export const initialConcepts: Concept[] = [
-  // Lesson 1
+  // 1. שלבי הולידציה
   {
-    id: 'c_cpu',
-    term: 'CPU',
+    id: 'c_pre_silicon',
+    term: 'Pre-Silicon Validation',
     lessonId: 'l1',
-    definition: 'יחידת העיבוד המרכזית (הלב) של המחשב, שמבצעת חישובים ופקודות.',
-    definitionHighLevel: 'רכיב לוגי מורכב (SoC) המבצע פענוח וביצוע של סט פקודות (ISA) כגון x86. הוא מורכב מליבות ביצוע (Cores) ויחידות Uncore המשלבות בקרי תקשורת, זיכרון ו-IO.',
-    context: 'בוולידציה אנו מוודאים שהמעבד מתפקד בצורה מושלמת בכל רמות המתח, הטמפרטורה והתדרים שנקבעו לו.'
+    category: 'שלבי הולידציה',
+    definition: 'אימות תכנון המעבד באמצעות מודלים ממוחשבים וסימולציות לפני ייצורו הפיזי במפעל.',
+    definitionHighLevel: 'Logic verification of CPU designs using RTL simulation, emulation platforms (Veloce/Palladium) and FPGA virtual boards to locate architectural bugs.',
+    context: 'בוולידציה זו מריצים תסריטי בדיקה מוקדמים על מודלי Verilog/SystemVerilog.'
   },
   {
     id: 'c_post_silicon',
     term: 'Post-Silicon Validation',
     lessonId: 'l1',
-    definition: 'בדיקת המעבד הפיזי במעבדה לאחר הייצור שלו במפעל, כדי למצוא באגים שלא התגלו בסימולציות.',
-    definitionHighLevel: 'ולידציה פיזית של הסיליקון המיוצר הפועל במהירות השעון המלאה שלו בסביבת מערכת מלאה, במטרה לאתר בעיות לוגיות, חשמליות ותרמיות שלא ניתן לסמלץ ב-Pre-Silicon.',
-    context: 'בשלב זה מריצים בדיקות מאמץ רבות תחת מערכות הפעלה מיוחדות כמו SVOS כדי לזהות באגים נדירים (Corner Cases).'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקת שבבי הסיליקון הפיזיים האמיתיים המגיעים מהמפעל בתוך מעבדות הבדיקה.',
+    definitionHighLevel: 'Physical testing of manufactured silicon working under full operating clock speeds and physical electrical conditions in validation system environments.',
+    context: 'בדיקת מעבדי ES ו-QS במעבדה על גבי לוחות StarGate תחת מערכות הפעלה מיוחדות כמו SVOS.'
   },
   {
-    id: 'c_sut',
-    term: 'SUT (System Under Test)',
+    id: 'c_func_val',
+    term: 'Functional Validation',
     lessonId: 'l1',
-    definition: 'לוח הבדיקה והמעבד המותקן עליו שעליהם מריצים כעת את הניסויים והבדיקות במעבדה.',
-    definitionHighLevel: 'מערך החומרה הכולל את מעבד המטרה, לוח הפיתוח המארח (Reference Validation Board), רכיבי קושחה (BIOS/Firmware) מוגדרים ורכיבי גישה חיצוניים.',
-    context: 'הגדרת ה-SUT קובעת בדיוק אילו גרסאות מותקנות כדי לוודא שתוצאות הבדיקה ניתנות לשחזור.'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקת נכונות הלוגיקה של המעבד כדי לוודא שכל הפקודות והמנגנונים הלוגיים מבוצעים בדיוק לפי המפרט.',
+    definitionHighLevel: 'Verification that the processor executes the complete instruction set architecture (ISA) and internal state transitions without functional bugs.',
+    context: 'מריצים בדיקות Stress לוגיות ו-workloads מורכבים במעבדה כדי למצוא באגים לוגיים ב-pipeline.'
   },
   {
-    id: 'c_bkc',
-    term: 'BKC (Best Known Configuration)',
+    id: 'c_design_val',
+    term: 'Design Validation',
     lessonId: 'l1',
-    definition: 'גרסאות החומרה, ה-BIOS, מערכת ההפעלה והדרייברים הכי יציבים שנמצאו יחד, המשמשים כבסיס עבודה קבוע.',
-    definitionHighLevel: 'מטריצה מתועדת ומאושרת של רכיבי פלטפורמה (BIOS, Microcode, P-code, OS Kernel) אשר עברו בדיקות אינטגרציה קפדניות ומשמשים כבסיס השוואה.',
-    context: 'כאשר מתגלה שגיאה במעבדה, מריצים אותה שוב על תצורת ה-BKC כדי לוודא שזו שגיאת מעבד ולא בעיה של סביבה לא יציבה.'
+    category: 'שלבי הולידציה',
+    definition: 'אימות שהתכנון הפיזי והמבני של השבב עונה על דרישות התכן ואינו מכיל באגים מבניים.',
+    definitionHighLevel: 'Verifying that the structural implementation of the SoC matches architectural specifications and logic designs.',
+    context: 'בדיקת קונפיגורציית הרכיבים, חיבורי אפיקי התקשורת ורגיסטרי הבקרה במוצר.'
   },
   {
-    id: 'c_plc',
-    term: 'Product Life Cycle (PLC)',
+    id: 'c_system_val',
+    term: 'System Validation',
     lessonId: 'l1',
-    definition: 'מחזור חיי המוצר - מששלב התכנון, דרך הייצור, הבדיקות במעבדה ועד המכירה בשוק.',
-    definitionHighLevel: 'שלבי התקדמות הפיתוח של המעבד: Pre-Silicon, Tape-Out (TO), בדיקות סיליקון מוקדם (A0 Stepping), הסמכה (Qualification) וייצור המוני (PRQ).',
-    context: 'לכל שלב ב-PLC יש יעדי איכות וקומפילציה שונים (לדוגמה, ייצוב הבוט בשלב ES1 מול בדיקות מאמץ מלאות בשלב QS).'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקת המעבד כחלק ממערכת מחשב מלאה הכוללת זיכרון, דיסק קשיח, ספק כוח וכרטיס מסך.',
+    definitionHighLevel: 'Evaluating the processor interaction within a fully configured system under concurrent Workloads and varying environmental conditions.',
+    context: 'ולידציה המוודאת שאין התנגשויות או בעיות תאימות בין המעבד לשאר חלקי המערכת תחת עומס.'
   },
   {
-    id: 'c_to',
-    term: 'Tape-Out (TO)',
+    id: 'c_platform_val',
+    term: 'Platform Validation',
     lessonId: 'l1',
-    definition: 'השלב שבו מסיימים לתכנן את המעבד במחשב ושולחים את השרטוטים לייצור פיזי במפעל.',
-    definitionHighLevel: 'השלב הסופי של תכנון השבב שבו קובץ השרטוט הלוגי (GDSII) נשלח למפעל הייצור ליצירת מסכות הסיליקון הפיזיות.',
-    context: 'זהו המועד שבו מסתיים שלב ה-Pre-Silicon ומתחילה ההיערכות לקראת הגעת הסיליקון הפיזי למעבדות (Post-Silicon).'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקת האינטגרציה בין המעבד ללוח האם הספציפי, ה-BIOS, הקושחה ומערכת ההפעלה.',
+    definitionHighLevel: 'Validation of the complete motherboard ecosystem (VRMs, PCH, BIOS/UEFI, CSME firmware) aligning with the silicon stepping configurations.',
+    context: 'אימות גרסאות ה-BKC השונות לוודא שהלוח, ה-BIOS והקושחות עובדים יחד בצורה הרמונית ויציבה.'
   },
   {
-    id: 'c_stepping',
-    term: 'Stepping (גרסת סיליקון)',
+    id: 'c_silicon_val',
+    term: 'Silicon Validation',
     lessonId: 'l1',
-    definition: 'גרסת הייצור הפיזית של שבב הסיליקון (כמו A0, A1, B0) המציינת תיקוני חומרה שבוצעו במפעל.',
-    definitionHighLevel: 'גרסת תכנון פיזית של שבב הסיליקון. גרסאות ראשיות (כמו A ל-B) כוללות שינוי מסכות בסיס, וגרסאות משניות (כמו A0 ל-A1) כוללות שינויי מסכות מתכת בלבד.',
-    context: 'בוולידציה בודקים אילו באגים תוקנו ב-Stepping החדש ואילו דרכי מעקף (Workarounds) כבר אינם נחוצים.'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקת שבב הסיליקון הפיזי עצמו כדי לאתר ליקויי ייצור או בעיות פיזיקליות של המוליכים למחצה.',
+    definitionHighLevel: 'Direct verification of physical silicon characteristics including transitor leakage, thermal properties, and path delays.',
+    context: 'בדיקות המבוצעות בשלבים ראשוניים של קבלת הסיליקון מהמפעל (A0 Stepping) כדי לאשר את תקינותו הבסיסית.'
   },
   {
-    id: 'c_qual',
-    term: 'Qualification',
+    id: 'c_product_val',
+    term: 'Product Validation',
     lessonId: 'l1',
-    definition: 'סדרת בדיקות איכות קפדניות שנועדו לוודא שהמעבד אמין מספיק כדי להימכר ללקוחות.',
-    definitionHighLevel: 'שלב אימות רשמי שבו המעבד נדרש לעמוד בכל מדדי האמינות, התקינות והעומס החשמלי/לוגי שנקבעו לו.',
-    context: 'מעבר בהצלחה של שלב ה-Qual מאפשר להנהלה לאשר את המעבר לייצור המוני.'
+    category: 'שלבי הולידציה',
+    definition: 'אימות סופי של המעבד מול הגדרות המוצר המיועד ללקוח הקצה (שימושיות, ביצועים ואמינות).',
+    definitionHighLevel: 'Validating the final product configuration against target user profiles, software application workloads and customer specifications.',
+    context: 'הרצת בנצ\'מרקים ויישומים מסחריים נפוצים כדי להבטיח חווית שימוש מושלמת ללקוח ללא קריסות.'
   },
   {
-    id: 'c_es_qs',
-    term: 'ES & QS',
+    id: 'c_manufacturing_val',
+    term: 'Manufacturing Validation',
     lessonId: 'l1',
-    definition: 'דגימות מעבדים מוקדמות (ES - הנדסי, QS - הסמכה) המשמשות את המהנדסים לבדיקות לפני תחילת השיווק.',
-    definitionHighLevel: 'Engineering Samples (ES) are early physical silicon versions. Qualification Samples (QS) are final silicon versions configured with identical behavior to the production model.',
-    context: 'במעבדת הולידציה אנו עובדים בעיקר עם מעבדי ES לפיתוח ודיבאג, ועם מעבדי QS לאישור סופי.'
-  },
-  {
-    id: 'c_prq',
-    term: 'PRQ',
-    lessonId: 'l1',
-    definition: 'האישור הסופי המאשר שהמעבד מוכן למכירה המונית בחנויות.',
-    definitionHighLevel: 'The final quality gate indicating that the silicon, microcode patches and software stack comply with shipping criteria.',
-    context: 'לאחר קבלת PRQ מופסק פיתוח גרסאות החומרה והמעבד מתחיל להימכר מסחרית.'
+    category: 'שלבי הולידציה',
+    definition: 'בדיקות מהירות המבוצעות במפעל הייצור על כל שבב ושבב כדי לוודא שלא נוצרו בו פגמים פיזיים במהלך הייצור.',
+    definitionHighLevel: 'High-throughput hardware screening tests (Structural Test, Sort, Class) executed at the wafer and package levels to filter defective parts.',
+    context: 'הרצת בדיקות BIST וקודים מיוחדים על קווי הייצור כדי לגלות שבבים פגומים לפני אריזתם.'
   },
 
-  // Lesson 2
+  // 2. סוגי בדיקות
   {
-    id: 'c_sys_controller',
-    term: 'System Controller',
+    id: 'c_func_test',
+    term: 'Functional Testing',
     lessonId: 'l2',
-    definition: 'בקר חומרה האחראי על ניהול התקשורת והעברת האותות בין רכיבי הלוח למעבד.',
-    definitionHighLevel: 'רכיב לוגי המנהל את קווי הבקרה, השעונים, פסיקות המערכת (Interrupts) ותיאום הערוצים בין המעבד ל-PCH.',
-    context: 'אנו בודקים את היציבות של בקר המערכת כדי למנוע התנגשויות נתונים ומצבי קיפאון (Deadlocks) בחומרה.'
+    category: 'סוגי בדיקות',
+    definition: 'הרצת בדיקות שנועדו לבדוק אם מנגנונים ספציפיים במעבד מבצעים את פעולתם הלוגית כנדרש.',
+    definitionHighLevel: 'Direct validation of architectural feature correctness by injecting planned stimuli and checking output values against expected behaviors.',
+    context: 'הרצת קודים קצרים הבודקים פעולת רגיסטרים, פקודות חשבון לוגיות ומעברי מצבים.'
   },
   {
-    id: 'c_sys_element',
-    term: 'System Element',
+    id: 'c_regression_test',
+    term: 'Regression Testing',
     lessonId: 'l2',
-    definition: 'כל רכיב חומרה פונקציונלי בלוח (כמו בקר מתח, כרטיס רשת או צ\'יפסט).',
-    definitionHighLevel: 'מודול לוגי מוגדר בפלטפורמה (IP block) בעל ממשק תקשורת סטנדרטי המהווה חלק ממערך הבדיקה.',
-    context: 'בוולידציה אנו ממפים את כל ה-System Elements של הפלטפורמה כדי לוודא שתוכנות הבדיקה מכסות את כולם.'
+    category: 'סוגי בדיקות',
+    definition: 'הרצה חוזרת של סדרת בדיקות קודמות שעברו בהצלחה כדי לוודא שעדכון חומרה או תוכנה חדש לא קלקל דבר.',
+    definitionHighLevel: 'Executing established test suites on new microcode/BIOS iterations to detect and prevent regressions in functional logic.',
+    context: 'הרצת ה-Regression Suite המרכזי בכל פעם שמקבלים גרסת BKC או uCode חדשה למעבדה.'
   },
   {
-    id: 'c_ring_bus',
-    term: 'Ring Bus',
+    id: 'c_smoke_test',
+    term: 'Smoke Testing',
     lessonId: 'l2',
-    definition: 'ערוץ מהיר וטבעתי בתוך המעבד המקשר בין הליבות, זיכרון המטמון (Cache) ובקר הזיכרון.',
-    definitionHighLevel: 'On-die high-speed interconnect bus connecting cores, LLC slices, and system agent using independent data, request, snoop, and acknowledge rings.',
-    context: 'אנו מריצים בדיקות מאמץ של מעבר נתונים ב-Ring Bus כדי למנוע בעיות תזמון (Timing violations) תחת תדרים מקסימליים.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקות בסיסיות ומהירות מאוד המבוצעות על גרסה חדשה כדי לוודא שהיא יציבה מספיק בשביל להתחיל בדיקות עמוקות.',
+    definitionHighLevel: 'A preliminary set of basic tests executed to confirm the build/platform is functional enough for general validation execution.',
+    context: 'בדיקה שהמערכת מצליחה לעשות בוט פשוט ולהעלות את מערכת ההפעלה SVOS ללא קריסה מיידית.'
   },
   {
-    id: 'c_subsystem',
-    term: 'Subsystem',
+    id: 'c_stress_test',
+    term: 'Stress Testing',
     lessonId: 'l2',
-    definition: 'תת-מערכת בתוך המעבד המבצעת תפקיד ספציפי (כמו תת-מערכת הגרפיקה או הזיכרון).',
-    definitionHighLevel: 'A cohesive block of IP modules operating under a dedicated controller (e.g. Graphics Subsystem) connected via internal fabric.',
-    context: 'בוולידציה בודקים את התפקוד של כל תת-מערכת בנפרד ואת האינטגרציה שלה מול הליבות הראשיות.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקות מאמץ קיצוניות המפעילות עומס מרבי על רכיבי המעבד במקביל כדי לאתר בעיות התנגשות משאבים.',
+    definitionHighLevel: 'Subjecting the processor to maximum transaction throughput and concurrency of workloads to trigger corner-case logic crashes.',
+    context: 'הרצת בדיקות מאמץ רציפות 24/7 באוטומציה של NGA.'
   },
   {
-    id: 'c_chip',
-    term: 'Chip',
+    id: 'c_stability_test',
+    term: 'Stability Testing',
     lessonId: 'l2',
-    definition: 'פיסת הסיליקון הפיזית (הג\'וק) המכילה את כל המעגלים האלקטרוניים.',
-    definitionHighLevel: 'The physical silicon die after dicing and mounting on the substrate (package), consisting of monolithic or tile-based architecture.',
-    context: 'אנו מוודאים שהחיבורים החשמליים של ה-Chip מול התושבת (Socket) תקינים ויציבים.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת יציבות המערכת לאורך זמן רב כדי להבטיח שהיא אינה סובלת מקריסות אקראיות או שחיקה מהירה.',
+    definitionHighLevel: 'Long-duration tests executing continuous validation scenarios to verify mean time between failures (MTBF) criteria.',
+    context: 'בדיקת יציבות הנמשכת מספר ימים רצופים כדי לגלות באגים אקראיים ונדירים.'
   },
   {
-    id: 'c_pcie',
-    term: 'PCI Express (PCIe)',
+    id: 'c_perf_test',
+    term: 'Performance Testing',
     lessonId: 'l2',
-    definition: 'ממשק תקשורת מהיר לחיבור כרטיסים חיצוניים כמו כרטיסי מסך וכונני SSD.',
-    definitionHighLevel: 'High-speed serial point-to-point interconnect operating with differential signaling lanes supporting multiple generation speeds (Gen 4/5/6).',
-    context: 'אנו בודקים את יציבות קישור ה-PCIe במעבר בין מצבי חיסכון בחשמל (L0, L1, L2) ללא קריסות.'
+    category: 'סוגי בדיקות',
+    definition: 'מדידת מהירות העבודה, רוחב הפס וזמני התגובה של המעבד תחת עומסי עבודה מוגדרים.',
+    definitionHighLevel: 'Measuring execution speeds, data bandwidth, and latency to confirm they match design targets and competitive benchmarks.',
+    context: 'הרצת בנצ\'מרקים מסחריים ומדידת IPC באמצעות כלי Profiling מיוחדים במעבדה.'
   },
   {
-    id: 'c_m2',
-    term: 'M.2',
+    id: 'c_compat_test',
+    term: 'Compatibility Testing',
     lessonId: 'l2',
-    definition: 'חיבור מהיר וקטן המשמש בעיקר עבור כונני SSD מהירים ומקלט Wi-Fi.',
-    definitionHighLevel: 'A compact physical expansion card specification (formerly NGFF) routing PCIe lanes, SATA and USB lines via key configurations.',
-    context: 'ולידציה בודקת שכונני M.2 מזוהים כראוי ואינם סובלים מבעיות תזמון בזמן אתחול.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת תאימות המעבד מול מגוון רחב של רכיבי חומרה חיצוניים, כרטיסי מסך, זכרונות ומערכות הפעלה בשוק.',
+    definitionHighLevel: 'Verifying seamless hardware and software interoperability with third-party components and older legacy devices.',
+    context: 'בדיקה שכרטיסי מסך שונים של יצרניות שונות מזוהים ועובדים בצורה מושלמת על ערוצי ה-PCIe.'
   },
   {
-    id: 'c_pca',
-    term: 'PCA',
+    id: 'c_power_test',
+    term: 'Power Testing',
     lessonId: 'l2',
-    definition: 'כרטיס מתאם אלקטרוני המאפשר למחשב החיצוני לשלוט בלוח ה-SUT במעבדה.',
-    definitionHighLevel: 'Platform Control Adapter. A hardware board interfacing the SUT with the host system, allowing automated power cycling and strap overrides.',
-    context: 'בעזרת ה-PCA אנו מבצעים איפוס חומרה (Hard Reset) אוטומטי כאשר המעבד קופא לחלוטין.'
+    category: 'סוגי בדיקות',
+    definition: 'מדידת צריכת האנרגיה של המעבד במצבי פעולה ומצבי שינה שונים ואימות מנגנוני החיסכון בחשמל.',
+    definitionHighLevel: 'Evaluating electrical power consumption across various operating states and transient power transitions.',
+    context: 'ניטור צריכת הזרם (Current) והמתח (Voltage) על קווי אספקת הכוח של המעבד במעבדה.'
   },
   {
-    id: 'c_upi',
-    term: 'UPI',
+    id: 'c_thermal_test',
+    term: 'Thermal Testing',
     lessonId: 'l2',
-    definition: 'ערוץ תקשורת מהיר המקשר בין מעבדים שונים בלוחות אם מרובי מעבדים (בשרתים).',
-    definitionHighLevel: 'Intel Ultra Path Interconnect. A cache-coherent processor interconnect allowing physical sockets to synchronize cache memory structures directly.',
-    context: 'ולידציה של שרתים דורשת הרצת בדיקות עקביות (Cache Coherency) על קווי ה-UPI.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת התנהגות המעבד תחת טמפרטורות קיצוניות ואימות תפקוד מנגנון ההגנה מפני חום יתר.',
+    definitionHighLevel: 'Validation of thermal sensors, fan speed controller triggers, and clock throttling protection loops at junction temperature limits.',
+    context: 'שימוש בתנורים תרמיים (Thermal Chambers) כדי להביא את ה-SUT לטמפרטורות סביבה של מתחת ל-0 או מעל ל-100 מעלות.'
   },
   {
-    id: 'c_uncore_core',
-    term: 'Core vs Uncore',
+    id: 'c_security_test',
+    term: 'Security Testing',
     lessonId: 'l2',
-    definition: 'החלוקה הפנימית במעבד: הליבות (Core) המבצעות חישובים, והשאר (Uncore) המנהל את הזיכרון והתקשורת.',
-    definitionHighLevel: 'Core handles execution units, pipelines and L1/L2 caches. Uncore represents the system agent, LLC, memory controller, and ring bus.',
-    context: 'אנו מריצים מבחנים ממוקדים כדי לבודד בעיות בליבות לעומת בעיות ברשת התקשורת של ה-Uncore.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקות שנועדו לאתר פרצות אבטחה, ערוצי דליפת מידע חבויים וכשלי הגנה במעבד.',
+    definitionHighLevel: 'Penetration testing of hardware security boundaries, side-channel attack mitigations, and secure boot cryptography.',
+    context: 'ניסיונות פריצה מבוקרים לתאי האבטחה (Secure Enclaves) של המעבד במעבדת הדיבאג.'
   },
   {
-    id: 'c_llc',
-    term: 'LLC',
+    id: 'c_reliability_test',
+    term: 'Reliability Testing',
     lessonId: 'l2',
-    definition: 'זיכרון המטמון המשותף והגדול ביותר במעבד (L3 Cache) המשפר את מהירות הגישה לנתונים.',
-    definitionHighLevel: 'The largest on-die cache layer shared among all cores on the ring bus, partitioned into associative slices.',
-    context: 'בוולידציה מריצים תבניות ביטים רועשות כדי לגלות באגים ובעיות שלמות נתונים ב-LLC.'
+    category: 'סוגי בדיקות',
+    definition: 'בדיקות המדמות הזדקנות מהירה ושחיקה של השבב כדי לוודא שהוא יעבוד בצורה אמינה לאורך שנים רבות.',
+    definitionHighLevel: 'Silicon stress validation utilizing elevated voltage and heat conditions to accelerate physical wearout mechanisms.',
+    context: 'בדיקות Burn-In הנמשכות שעות רבות במתח וטמפרטורה גבוהים מהרגיל.'
+  },
+  {
+    id: 'c_compliance_test',
+    term: 'Compliance Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'בדיקה שהמעבד עומד בצורה מדויקת בתקנים בינלאומיים רשמיים (כמו תקני PCIe, USB, ACPI וכו\').',
+    definitionHighLevel: 'Official protocol testing ensuring the target design complies with interface standards defined by industry bodies (e.g. PCI-SIG).',
+    context: 'הרצת חבילות בדיקה רשמיות של ארגוני התקינה לקבלת הסמכת מוצר רשמית.'
+  },
+  {
+    id: 'c_boot_test',
+    term: 'Boot Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'אימות שכל שלבי הדלקת המערכת והבוט מתבצעים בהצלחה ללא שגיאות או תקיעות.',
+    definitionHighLevel: 'Testing platform reset vector release, firmware reading, POST progression, and OS loading consistency.',
+    context: 'הרצת אלפי מחזורי אתחול (Boot cycles) רצופים כדי לגלות בעיות אקראיות בשלבי ה-BIOS.'
+  },
+  {
+    id: 'c_interrupt_test',
+    term: 'Interrupt Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת מנגנון פסיקות המערכת (Interrupts) המאפשר למכשירים חיצוניים לעצור את פעולת המעבד כדי לטפל באירועים דחופים.',
+    definitionHighLevel: 'Verifying APIC, MSI-X, and legacy interrupts behavior under heavy workload transitions.',
+    context: 'הזרקת אלפי פסיקות חומרה במקביל כדי לוודא שהמעבד מנהל את סדרי העדיפויות ביניהן ללא קריסות.'
+  },
+  {
+    id: 'c_mem_test',
+    term: 'Memory Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת יציבות, מהירות ואמינות קריאה וכתיבה מול זיכרון ה-RAM במצבים שונים.',
+    definitionHighLevel: 'Testing data bus signal integrity, training parameters, and memory access patterns over DDR channels.',
+    context: 'הרצת כלי MemTest במעבדה תחת תדרי זיכרון מקסימליים ומתחים נמוכים.'
+  },
+  {
+    id: 'c_cache_test',
+    term: 'Cache Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'אימות פעולת זיכרונות המטמון הפנימיים במעבד וסנכרון הנתונים ביניהם (Cache Coherency).',
+    definitionHighLevel: 'Validation of cache hits, misses, evictions, and coherency states (MESI) across multiple core layers.',
+    context: 'בדיקת קווי התקשורת ומהירות הגישה ל-L1, L2 ו-LLC.'
+  },
+  {
+    id: 'c_pipeline_test',
+    term: 'Pipeline Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'אימות שצינור העיבוד (Pipeline) של המעבד מפענח ומריץ פקודות בצורה תקינה ללא שגיאות תזמון.',
+    definitionHighLevel: 'Verifying execution pipeline hazards, stalls, register forwarding, and recovery steps on branch mispredictions.',
+    context: 'הרצת רצפי פקודות מורכבים המאתגרים את מנגנון ה-Out-of-Order של הצינור.'
+  },
+  {
+    id: 'c_io_test',
+    term: 'I/O Testing',
+    lessonId: 'l2',
+    category: 'סוגי בדיקות',
+    definition: 'בדיקת קווי הקלט והפלט (I/O) של המעבד מול בקרי הלוח והתקנים חיצוניים.',
+    definitionHighLevel: 'Validation of peripheral buses, system interfaces, and legacy I/O mappings to verify correct signal levels.',
+    context: 'בדיקות יציבות של קווי USB, SATA, ורשת מול המעבד.'
   },
 
-  // Lesson 3
+  // 3. אימות תכנון (Verification)
   {
-    id: 'c_bios',
-    term: 'BIOS / UEFI',
+    id: 'c_verification',
+    term: 'Verification',
     lessonId: 'l3',
-    definition: 'הקוד הראשוני שרץ עם הפעלת המחשב ואחראי לאתחל את רכיבי הלוח ולהעלות את מערכת ההפעלה.',
-    definitionHighLevel: 'The primary boot firmware initialized on release of cpu reset vector, executing PEI and DXE phases under UEFI specifications.',
-    context: 'אנו בודקים תאימות והגדרות BIOS שונות (NVRAM config) כדי לוודא שחומרת המעבד מוגדרת נכון.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'אימות שהלוגיקה של השבב נבנתה בדיוק לפי השרטוט והמפרט הלוגי שתוכנן במחשב.',
+    definitionHighLevel: 'Ensuring the design implementation complies with the logical specifications (RTL verification).',
+    context: 'מבוצע בעיקר בשלב ה-Pre-Silicon באמצעות סימולטורים של SystemVerilog.'
   },
   {
-    id: 'c_boot',
-    term: 'Boot',
+    id: 'c_validation',
+    term: 'Validation',
     lessonId: 'l3',
-    definition: 'תהליך העלייה של המערכת מרגע קבלת החשמל ועד לעליית מערכת ההפעלה.',
-    definitionHighLevel: 'The complete execution flow beginning from power-on, reset signal deassertion, flash reading, and OS bootloader handoff.',
-    context: 'אנו מבצעים אלפי מחזורי בוט רצופים (Boot Cycling) כדי לוודא שהפלטפורמה עולה תמיד ללא תקלות אקראיות.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'אימות שהשבב הפיזי עונה על צרכי המשתמש ותפקודו בפועל במערכת אמיתית תקין ויציב.',
+    definitionHighLevel: 'Confirming that the physical silicon executes software applications correctly and meets product goals in real-world scenarios.',
+    context: 'ולידציה מבוצעת בשלב ה-Post-Silicon על גבי חומרה אמיתית במעבדה.'
   },
   {
-    id: 'c_setup_flow',
-    term: 'Setup Flow',
+    id: 'c_formal_ver',
+    term: 'Formal Verification',
     lessonId: 'l3',
-    definition: 'תהליך הכנת המערכת והגדרת הלוח לפני הרצת בדיקות (כמו טעינת הגדרות BIOS מותאמות).',
-    definitionHighLevel: 'The automated configuration procedure setting target variables in BIOS and register values before test execution.',
-    context: 'כל בדיקה מתחילה ב-Setup Flow מוגדר כדי למנוע רעש והגדרות לא עקביות בלוחות.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'הוכחה מתמטית מוחלטת שהלוגיקה של המעבד תקינה ואינה מכילה שגיאות, ללא צורך בהרצת בדיקות.',
+    definitionHighLevel: 'Mathematical proof of design correctness against formal properties using model checking algorithms.',
+    context: 'שימוש בכלים מתמטיים מיוחדים לאימות מנגנונים קריטיים כמו בקרי פסיקות ופרוטוקולי אפיק תקשורת.'
   },
   {
-    id: 'c_default_flow',
-    term: 'Default Flow',
+    id: 'c_dynamic_ver',
+    term: 'Dynamic Verification',
     lessonId: 'l3',
-    definition: 'הדלקה רגילה של המערכת עם הגדרות ברירת מחדל ללא שינויים מיוחדים.',
-    definitionHighLevel: 'The standard platform boot sequence utilizing base configuration values without overrides or debug modes active.',
-    context: 'השוואה ל-Default Flow עוזרת לנו להבין אם תקלה נובעת מפרמטר בדיקה מיוחד שהגדרנו או שהיא קיימת תמיד.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'אימות הלוגיקה באמצעות הרצת בדיקות והזרקת אותות משתנים לאורך זמן בסימולציה.',
+    definitionHighLevel: 'Design verification executed by running test scenarios and checking dynamic signal behaviors over simulation clock cycles.',
+    context: 'הרצת קודים ובדיקות על מודל ה-RTL כדי לראות את האותות החשמליים משתנים בסימולטור.'
   },
   {
-    id: 'c_post',
-    term: 'POST (Power-On Self-Test)',
+    id: 'c_static_ver',
+    term: 'Static Verification',
     lessonId: 'l3',
-    definition: 'בדיקה עצמית ראשונית שהלוח מבצע כדי לוודא שכל הרכיבים הבסיסיים (כמו זיכרון ומעבד) קיימים ותקינים.',
-    definitionHighLevel: 'Early hardware diagnostics executed by the BIOS PEI stage, reporting status updates via hex values written to I/O Port 80h.',
-    context: 'במקרה של קריסה בזמן בוט, מהנדס הולידציה בודק את קוד ה-POST האחרון כדי לדעת איזה רכיב נכשל.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'ניתוח קוד הלוגיקה של המעבד ללא הרצה שלו, כדי לזהות שגיאות תחביר וחוקי תכנון.',
+    definitionHighLevel: 'Analyzing the code syntax, clock domain constraints, and structure rule compliance without simulating clock cycles.',
+    context: 'שימוש בכלי ל linting (כמו Leda/SpyGlass) כדי לאתר בעיות בקוד ה-RTL.'
   },
   {
-    id: 'c_mrc',
-    term: 'MRC',
+    id: 'c_simulation',
+    term: 'Simulation',
     lessonId: 'l3',
-    definition: 'קוד ה-BIOS האחראי על איתור, הגדרה ואימון של זיכרון ה-DDR בלוח.',
-    definitionHighLevel: 'A firmware library initializing the DDR interfaces, optimizing electrical eyes, signal alignment, and delays.',
-    context: 'אימון הזיכרון רגיש לשינויי טמפרטורה. אנו בודקים את ה-MRC תחת תנאי סביבה קיצוניים כדי למנוע קריסות.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'הדמיית התנהגות המעבד באמצעות תוכנת מחשב (איטית מאוד אך מדויקת ברמת השער הלוגי).',
+    definitionHighLevel: 'Software execution of the RTL design mapping transistor and gate actions cycle-by-cycle.',
+    context: 'הרצת סימולטורים של חברות כמו Synopsys או Cadence לאימות קוד RTL מוקדם.'
   },
   {
-    id: 'c_straps',
-    term: 'Straps',
+    id: 'c_emulation',
+    term: 'Emulation',
     lessonId: 'l3',
-    definition: 'נגדים או פינים פיזיים על הלוח שקובעים את מצב הפעולה של המעבד בזמן ההדלקה.',
-    definitionHighLevel: 'Physical board configurations sampled by the CPU on the release of Reset, determining boot clock sources and debug modes.',
-    context: 'בעזרת שינוי straps אנו יכולים להכניס את המעבד למצב דיבאג מיוחד או להגדיר תדר בסיס שונה.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'חיקוי פעולת המעבד באמצעות מכונות חומרה מורכבות המאיצות את מהירות הבדיקה פי אלפים מסימולטור.',
+    definitionHighLevel: 'Executing logic designs on specialized hardware accelerators simulating hardware gates at megahertz speeds.',
+    context: 'הרצת מודל המעבד על גבי מערכות אמיולציה (כגון Intel Veloce) כדי להריץ קטעי BIOS מוקדמים.'
   },
   {
-    id: 'c_fuse',
-    term: 'Fuse',
+    id: 'c_fpga_proto',
+    term: 'FPGA Prototyping',
     lessonId: 'l3',
-    definition: 'פיוזים אלקטרוניים זעירים במעבד שנצרבים פיזית במפעל וקובעים לצמיתות את התכונות והמהירות שלו.',
-    definitionHighLevel: 'On-die non-volatile electronic fuses (eFuses) programmed during manufacturing to set SKU, core configuration, and security keys.',
-    context: 'בוולידציה בודקים את המעבד תחת קונפיגורציות פיוזים שונות (מעבדי בדיקה מגיעים לרוב עם פיוזים פתוחים).'
+    category: 'אימות תכנון (Verification)',
+    definition: 'צריבה והרצה של קוד המעבד על גבי שבבים ניתנים לתכנות (FPGA) כדי לדמות חומרה מהירה במעבדה.',
+    definitionHighLevel: 'Synthesizing RTL designs into arrays of physical FPGAs to achieve near-real hardware operating speeds for early validation testing.',
+    context: 'שימוש בלוחות FPGA לפיתוח דרייברים ואימות קושחה מוקדם לפני הגעת הסיליקון מהמפעל.'
   },
   {
-    id: 'c_cmos',
-    term: 'CMOS / NVRAM',
+    id: 'c_abv',
+    term: 'Assertion-Based Verification (ABV)',
     lessonId: 'l3',
-    definition: 'זיכרון קטן בלוח האם שומר את הגדרות ה-BIOS שלך בעזרת סוללת גיבוי.',
-    definitionHighLevel: 'A battery-backed memory structure storing current BIOS parameters and system real-time clock data.',
-    context: 'אם המערכת נתקעת בבוט עקב הגדרת BIOS שגויה, אנו מבצעים Clear CMOS כדי להחזיר אותה למצב בטוח.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'שימוש בהצהרות בקרה פנימיות בקוד (Assertions) שמתריעות מיידית על מצב לוגי לא חוקי בזמן הריצה.',
+    definitionHighLevel: 'Integrating check properties inside RTL structures that monitor structural rules and instantly flag failures during tests.',
+    context: 'כתיבת Assertions ב-SystemVerilog לוודא שפרוטוקול האפיק אינו מופר.'
   },
   {
-    id: 'c_reset_vector',
-    term: 'Reset Vector',
+    id: 'c_crv',
+    term: 'Constrained Random Verification (CRV)',
     lessonId: 'l3',
-    definition: 'הכתובת הראשונה בזיכרון שאליה פונה המעבד עם הדלקתו כדי להתחיל לקרוא את קוד ה-BIOS.',
-    definitionHighLevel: 'The initial memory address (0xFFFFFFF0 in x86) fetched by the processor core upon deassertion of the reset pin.',
-    context: 'בוולידציה מוודאים כי המעבד מצליח לקרוא את ה-Reset Vector ללא שגיאות תקשורת מול ה-SPI Flash.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'הזרקת אותות ופקודות אקראיות תחת מגבלות מוגדרות כדי למצוא באגים בלתי צפויים.',
+    definitionHighLevel: 'Generating random stimulus inputs bounded by dynamic constraints to explore unanticipated design paths.',
+    context: 'שימוש במחולל בדיקות אקראי ליצירת שילובי פקודות נדירים שקשה לחשוב עליהם ידנית.'
   },
   {
-    id: 'c_port80',
-    term: 'Port 80h',
+    id: 'c_cdv',
+    term: 'Coverage-Driven Verification (CDV)',
     lessonId: 'l3',
-    definition: 'מסך דיאגנוסטיקה קטן בלוח האם המציג קודי תקלות (POST Codes) בזמן הדלקת המחשב.',
-    definitionHighLevel: 'An I/O port address mapping progress codes written by BIOS during execution steps to allow external debugging.',
-    context: 'זהו הכלי הראשון שבודקים במעבדה כאשר ה-SUT אינו מעלה מסך או נתקע בזמן הבוט.'
-  },
-  {
-    id: 'c_bootloop',
-    term: 'Bootloop',
-    lessonId: 'l3',
-    definition: 'קריסה חוזרת של המחשב במהלך הדלקתו הגורמת לו להתחיל מחדש שוב ושוב.',
-    definitionHighLevel: 'A cyclic restart scenario occurring when early boot stages trigger hardware errors or watchdogs before reaching OS.',
-    context: 'כדי לדבג Bootloop אנו מחברים טרמינל סריאלי ורושמים את הפלט המלא של ה-BIOS עד לרגע הקריסה.'
+    category: 'אימות תכנון (Verification)',
+    definition: 'שיטת עבודה שבה כותבים ומריצים בדיקות במטרה מוצהרת להעלות את אחוזי הכיסוי הלוגי של השבב.',
+    definitionHighLevel: 'Feedback loop testing where simulation runs are directed dynamically to hit unreached coverage metrics.',
+    context: 'ניתוח דוחות הכיסוי וכתיבת בדיקות ממוקדות לאזורים שלוגיקת הבדיקות טרם הגיעה אליהם.'
   },
 
-  // Lesson 4
+  // 4. כיסוי (Coverage)
   {
-    id: 'c_ucode',
-    term: 'Microcode (U-code)',
+    id: 'c_code_cov',
+    term: 'Code Coverage',
     lessonId: 'l4',
-    definition: 'קוד פנימי במעבד המתרגם פקודות תוכנה מורכבות לרצף פעולות פשוטות ישירות בחומרה, ומאפשר לתקן באגים באמצעות עדכוני תוכנה.',
-    definitionHighLevel: 'Internal processor firmware stored in Control ROM and RAM, translating macro-instructions into execution micro-operations.',
-    context: 'עדכוני מיקרוקוד נטענים בבוט כדי לתקן באגים פיזיים בסיליקון מבלי להחליף את המעבד.'
+    category: 'כיסוי (Coverage)',
+    definition: 'מדד המראה כמה אחוזים משורות הקוד שנכתבו עבור המעבד נבחנו בפועל על ידי הבדיקות.',
+    definitionHighLevel: 'A metric indicating the percentage of written HDL code lines evaluated during simulation execution.',
+    context: 'שימוש בכלי סימולציה להפקת דוח המציג אילו שורות קוד RTL נשארו ללא בדיקה.'
   },
   {
-    id: 'c_pcode',
-    term: 'P-code',
+    id: 'c_func_cov',
+    term: 'Functional Coverage',
     lessonId: 'l4',
-    definition: 'הקוד הרץ בבקר האנרגיה הפנימי של המעבד (PUNIT) ומנהל מתחים, תדרים וטמפרטורה.',
-    definitionHighLevel: 'Power Control Unit firmware executing DVFS algorithms based on thermal, load, and current sensors.',
-    context: 'אנו בודקים באגים ב-P-code הקשורים לטורבו ולמעברים בין מצבי כוח כדי למנוע קריסות מתח (Vdroop).'
+    category: 'כיסוי (Coverage)',
+    definition: 'מדד המציג אילו מצבים, תרחישים ושילובי פקודות מוגדרים נבדקו בפועל מתוך כלל המפרט.',
+    definitionHighLevel: 'Quantifying targeted test points, register values, and state changes configured by engineers to map requirements compliance.',
+    context: 'הגדרת Covergroups ב-SystemVerilog לאיסוף סטטיסטיקות על מעבר פקודות ב-pipeline.'
   },
   {
-    id: 'c_ucode_path',
-    term: 'Microcode Path',
+    id: 'c_toggle_cov',
+    term: 'Toggle Coverage',
     lessonId: 'l4',
-    definition: 'הקשר הפנימי בתוך מפענח המעבד המפנה פקודות מורכבות אל יחידת המיקרוקוד ROM.',
-    definitionHighLevel: 'The decoding pathway routing complex instructions to the microcode ROM sequencer instead of direct hardware decoding.',
-    context: 'בדיקות וולידציה מריצות פקודות מורכבות במיוחד כדי לוודא שאין חריגות תזמון בנתיב המיקרוקוד.'
+    category: 'כיסוי (Coverage)',
+    definition: 'בדיקה שכל פין או קו לוגי במעבד עבר בהצלחה ממצב של \'0\' ל-\'1\' ובחזרה במהלך הבדיקות.',
+    definitionHighLevel: 'Measuring whether net signals inside the design toggled between low and high states during test execution.',
+    context: 'מניעת קווים לוגיים תקועים בחומרה על ידי מעבר של כל קו בין מצבי 0 ו-1.'
   },
   {
-    id: 'c_ucode_acode',
-    term: 'Microcode A-code',
+    id: 'c_branch_cov',
+    term: 'Branch Coverage',
     lessonId: 'l4',
-    definition: 'שלב בקרה או מודול קוד ייעודי בתוך ארכיטקטורת המיקרוקוד האחראי על תהליכי אינטגרציה מוקדמים של החומרה.',
-    definitionHighLevel: 'A specialized early-stage control logic component loaded prior to the main microcode module to manage core setup steps and configure low-level structures.',
-    context: 'בדיקת קוד זה מתבצעת בסביבות דיבאג בעלות יכולת קריאה של רגיסטרים פנימיים מאוד (כמו JTAG).'
+    category: 'כיסוי (Coverage)',
+    definition: 'בדיקה שכל החלטת תנאי (כמו If/Else) נבחנה גם במצב חיובי וגם במצב שלילי.',
+    definitionHighLevel: 'Ensuring both true and false paths of decision points in RTL code are evaluated by tests.',
+    context: 'ולידציה של החלטות לוגיות כדי לוודא ששני נתיבי ההחלטה תקינים לחלוטין.'
   },
   {
-    id: 'c_turnpart',
-    term: 'Turn Part',
+    id: 'c_stmt_cov',
+    term: 'Statement Coverage',
     lessonId: 'l4',
-    definition: 'תהליך של שליחת חלקים או תצורות חדשות לריצות בדיקה במעבדה באופן מחזורי.',
-    definitionHighLevel: 'A cycle-based validation process where hardware parts are tested, rotated, or configured dynamically to isolate silicon wear-out from design errors.',
-    context: 'משמש לשמירה על עדכניות הלוחות במעבדה ומניעת מצבים בהם SUT יחיד שנשחק משבש את תוצאות הבדיקה הכלליות.'
+    category: 'כיסוי (Coverage)',
+    definition: 'מדד הבודק שכל שורת פקודה בודדת בקוד הופעלה לפחות פעם אחת.',
+    definitionHighLevel: 'Tracking individual statement block executions to confirm all branches of code were active.',
+    context: 'זהו מדד הכיסוי הבסיסי ביותר שמפיקים מכלי הסימולציה.'
   },
   {
-    id: 'c_ct',
-    term: 'CT (Cycle Time)',
+    id: 'c_path_cov',
+    term: 'Path Coverage',
     lessonId: 'l4',
-    definition: 'זמן המחזור הנדרש להרצת סבב בדיקות מלא על המעבד, או תהליך של בדיקות מתמשכות.',
-    definitionHighLevel: 'A key parameter in automated validation loops, measuring duration from microcode patch distribution to test result reporting across the validation cluster.',
-    context: 'אופטימיזציה של ה-CT מאפשרת לצוות הולידציה לשחרר BKC מהר יותר ולזהות רגרסיות תוך שעות ספורות מרגע הזנת קוד חדש.'
+    category: 'כיסוי (Coverage)',
+    definition: 'בדיקה של כל נתיבי זרימת הקוד האפשריים מתחילת התוכנית ועד סופה.',
+    definitionHighLevel: 'Verifying all execution sequence paths from entry to exit points within structural loops.',
+    context: 'נחשב למדד קשה מאוד להשגה (100% כיסוי) בשל שילובים כמעט אינסופיים של נתיבים.'
   },
   {
-    id: 'c_csme',
-    term: 'CSME',
+    id: 'c_cond_cov',
+    term: 'Condition Coverage',
     lessonId: 'l4',
-    definition: 'מנוע האבטחה הפנימי של המעבד (מיקרו-מעבד עצמאי) שאחראי על הצפנה ותפקודים מאובטחים.',
-    definitionHighLevel: 'Converged Security and Manageability Engine. An independent microcontroller managing platform security and remote system state monitoring.',
-    context: 'בוולידציה בודקים שה-CSME מאתחל ומצליח לטעון מפתחות אבטחה ללא תקלות.'
+    category: 'כיסוי (Coverage)',
+    definition: 'בדיקה שכל תנאי קטן בתוך ביטוי תנאי מורכב קיבל את כל השילובים האפשריים.',
+    definitionHighLevel: 'Validating each sub-expression factor within boolean logical checks during tests.',
+    context: 'מיועד להבטיח שאין חולשות לוגיות חבויות בתוך פקודות תנאי מורכבות.'
   },
   {
-    id: 'c_fit',
-    term: 'FIT',
+    id: 'c_fsm_cov',
+    term: 'FSM Coverage',
     lessonId: 'l4',
-    definition: 'טבלה ב-BIOS המכילה את כל הכתובות של רכיבי הקושחה המוקדמים שהמעבד צריך לקרוא בזמן האתחול.',
-    definitionHighLevel: 'Firmware Interface Table. A static directory structured at a fixed flash offset, pointing to microcode updates and ACM security binaries.',
-    context: 'טבלה לא תקינה ב-FIT תמנע את טעינת המיקרוקוד בבוט ותגרום למערכת לא לעלות.'
+    category: 'כיסוי (Coverage)',
+    definition: 'בדיקה שמכונת המצבים הפנימית במעבד (FSM) עברה בכל המצבים שלה ובכל מעברי המצבים האפשריים.',
+    definitionHighLevel: 'Ensuring all states and legal state transitions of Finite State Machines are covered during validation.',
+    context: 'חשוב במיוחד לאימות פרוטוקולי תקשורת ומנגנוני בקרה המנוהלים על ידי מכונות מצבים.'
+  },
+  {
+    id: 'c_cross_cov',
+    term: 'Cross Coverage',
+    lessonId: 'l4',
+    category: 'כיסוי (Coverage)',
+    definition: 'מדידת שילובים סימולטניים של משתנים שונים (למשל: סוג פקודה במקביל לרמת מתח ספציפית).',
+    definitionHighLevel: 'Evaluating cross-products of multiple coverpoints occurring at the exact same execution cycle.',
+    context: 'עוזר לזהות אם נבדקו מצבים משולבים (כמו עומס PCIe מלא יחד עם מעבר למצב שינה C6).'
   },
 
-  // Lesson 5
+  // 5. כלי Debug
   {
-    id: 'c_power_mgmt',
-    term: 'Power Management',
+    id: 'c_jtag',
+    term: 'JTAG',
     lessonId: 'l5',
-    definition: 'ניהול צריכת החשמל של המעבד (המעברים בין ביצועים גבוהים לחיסכון בחשמל).',
-    definitionHighLevel: 'ACPI power state management coordinating core sleep configurations (C-states), operating frequencies (P-states), and platform states (S-states).',
-    context: 'אנו בודקים מעברים מהירים במיוחד (Transient states) בין מצב פעיל למצבי שינה עמוקים.'
+    category: 'כלי Debug',
+    definition: 'ממשק חומרה וסטנדרט בינלאומי לביצוע דיבאג חומרתי ישיר, בדיקות לוח ועצירת פעולת המעבד.',
+    definitionHighLevel: 'IEEE 1149.1 standard for board and system testing, boundary scans, and in-target probe (ITP) debugging operations.',
+    context: 'חיבור הדיבאגר של אינטל ללוח דרך פיני JTAG מאפשר לעצור את ריצת המעבד בשורת קוד מסוימת.'
   },
   {
-    id: 'c_punit',
-    term: 'PUNIT',
+    id: 'c_boundary_scan',
+    term: 'Boundary Scan',
     lessonId: 'l5',
-    definition: 'מיקרו-בקר פנימי בתוך המעבד המנהל בפועל את אספקת המתח, תדרי השעון והטמפרטורה.',
-    definitionHighLevel: 'A specialized microcontroller in the uncore managing power control unit (PCU) configurations, telemetry monitoring, and voltage regulator commands.',
-    context: 'כאשר המעבד מתחמם יתר על המידה, ה-PUNIT מפעיל מנגנון הגנה של הפחתת תדר (Thermal Throttling) כדי למנוע נזק פיזי לשבב.'
+    category: 'כלי Debug',
+    definition: 'בדיקה חשמלית המאפשרת לבחון את חיבורי הפינים של המעבד ללוח ללא צורך במגע פיזי עליהם.',
+    definitionHighLevel: 'Utilizing boundary scan cells on signal pins via JTAG interface to test board connectivity and pin-to-pad physical contacts.',
+    context: 'בדיקת קווים מנותקים או קצרים חשמליים בלוחות אם מורכבים במעבדה.'
   },
   {
-    id: 'c_pmc',
-    term: 'PMC',
+    id: 'c_trace',
+    term: 'Trace',
     lessonId: 'l5',
-    definition: 'בקר ניהול הכוח החיצוני למעבד (בצ\'יפסט) המתאם את מצבי האנרגיה של המערכת כולה.',
-    definitionHighLevel: 'Power Management Controller. A hardware block in PCH managing global platform power sequencing and reset operations.',
-    context: 'בוולידציה מוודאים כי ה-PMC מתאם כראוי עם ה-PUNIT של המעבד את הכניסה והיציאה ממצבי שינה עמוקים.'
+    category: 'כלי Debug',
+    definition: 'הקלטה רציפה של פעולות המעבד והוראות הקוד שהוא מריץ בזמן אמת, לצורך ניתוח קריסות בדיעבד.',
+    definitionHighLevel: 'Continuous execution capture stream recording instruction flows, branch results, and register updates.',
+    context: 'שימוש ב-Trace Buffer כדי להבין בדיוק מה עשה המעבד במחזורי השעון האחרונים לפני שקפא.'
   },
   {
-    id: 'c_pmreset',
-    term: 'PMRESET',
+    id: 'c_logic_analyzer',
+    term: 'Logic Analyzer',
     lessonId: 'l5',
-    definition: 'אות איפוס ייעודי הקשור למערכת ניהול האנרגיה, המשמש לאיפוס רכיבי בקרה ללא איבוד כוח ראשי.',
-    definitionHighLevel: 'A physical hardware status line generated by the PMC or system agent during state changes to clear registers on sub-nodes without dropping core phase voltages.',
-    context: 'ניטור אות ה-PMRESET באמצעות אוסילוסקופ מסייע לאבחן מדוע מערכת נתקעה במהלך מעבר למצב שינה.'
+    category: 'כלי Debug',
+    definition: 'מכשיר מדידה אלקטרוני המציג ומנתח מאות אותות דיגיטליים במקביל בלוח האם.',
+    definitionHighLevel: 'Test equipment capturing high-channel-count digital states to trace complex bus timing behaviors.',
+    context: 'חיבור לוגיק אנלייזר לקווי אפיק התקשורת של המעבד כדי לאתר בעיות סינכרון.'
   },
   {
-    id: 'c_warm_reset',
-    term: 'Warm Reset',
+    id: 'c_oscilloscope',
+    term: 'Oscilloscope',
     lessonId: 'l5',
-    definition: 'אתחול מחדש מהיר ללא הפסקת מתח לחלקים כמו הזיכרון, החוסך זמן אימון זיכרון.',
-    definitionHighLevel: 'A logical CPU reset which bypasses full DDR retraining, retaining memory controller electrical setups.',
-    context: 'אנו מריצים בדיקות Warm Reset חוזרות תחת מאמץ כדי לוודא שרכיבי ה-PCIe מתאפסים למצב תקין.'
+    category: 'כלי Debug',
+    definition: 'מכשיר מדידה המציג את האות החשמלי האנלוגי המשתנה בזמן (מתח, רעש, גליות).',
+    definitionHighLevel: 'Analog measurement instrument capturing voltage waveforms over time to analyze signal integrity.',
+    context: 'מדידת רעשי Vdroop או איכות סיגנלים חשמליים מהירים במעבדת הולידציה החשמלית (EV).'
   },
   {
-    id: 'c_pim',
-    term: 'PIM',
+    id: 'c_debug_port',
+    term: 'Debug Port',
     lessonId: 'l5',
-    definition: 'רכיב או מודול תוכנה/חומרה המשלב את הגדרות האנרגיה וערכי המתח של המערכת.',
-    definitionHighLevel: 'An integrated power distribution board interface allowing fine telemetry controls, voltage rail offsets, and current limit tuning.',
-    context: 'משמש לכוונון עדין של טבלאות המתחים במהלך בדיקות Margining במעבדה.'
+    category: 'כלי Debug',
+    definition: 'חיבור פיזי ייעודי בלוח האם המיועד לחיבור כלי אבחון ודיבאג חיצוניים.',
+    definitionHighLevel: 'Dedicated physical header (e.g. XDP) routing internal CPU debug signals out of the board for debugger interfaces.',
+    context: 'חיבור מתאמי XDP או ITP ללוח הבדיקות כדי לתקשר עם המעבד.'
   },
   {
-    id: 'c_bat_charge',
-    term: 'Battery Charge State',
+    id: 'c_intel_dci',
+    term: 'Intel DCI',
     lessonId: 'l5',
-    definition: 'מצב טעינת הסוללה וניהול אספקת הכוח החיצונית במחשבים ניידים.',
-    definitionHighLevel: 'Evaluating Power Delivery (PD) profile negotiated between Host Type-C port and SUT PMIC/EC controllers.',
-    context: 'ולידציה של מחשבים ניידים דורשת בדיקה שהסוללה נטענת כראוי תחת עומס מעבד מרבי.'
+    category: 'כלי Debug',
+    definition: 'טכנולוגיית דיבאג של אינטל המאפשרת גישה לחומרת הדיבאג הפנימית של המעבד באמצעות כבל USB 3.0 פשוט.',
+    definitionHighLevel: 'Direct Connect Interface routing JTAG and trace signals directly through external USB 3.0 ports on SUT.',
+    context: 'מאפשר ביצוע דיבאג חומרה מלא גם על מערכות סגורות שאין בהן מחברי דיבאג ייעודיים על הלוח.'
   },
   {
-    id: 'c_l',
-    term: 'L State',
+    id: 'c_uart_debug',
+    term: 'UART Debug',
     lessonId: 'l5',
-    definition: 'מצבי צריכת החשמל של ערוץ ה-PCI Express (כמו L0 לפעולה מלאה, ו-L1 לחיסכון בחשמל).',
-    definitionHighLevel: 'PCIe link power states defining active communication (L0) and low-power states (L0s, L1, L2).',
-    context: 'מעברים מהירים בין L0 ל-L1 נבדקים תדיר עקב נטייה לשגיאות תזמון.'
+    category: 'כלי Debug',
+    definition: 'חיבור תקשורת טקסטואלי סריאלי פשוט לקבלת פלטי אבחון והקלדת פקודות (מסוף UART).',
+    definitionHighLevel: 'Universal Asynchronous Receiver-Transmitter serial console connection displaying firmware boot messages.',
+    context: 'חיבור כבל סריאלי ל-SUT כדי לראות את פלט ה-BIOS וה-Kernel בזמן הבוט.'
   },
   {
-    id: 'c_pr',
-    term: 'PR (Power Reduction)',
+    id: 'c_pcie_analyzer',
+    term: 'PCIe Analyzer',
     lessonId: 'l5',
-    definition: 'מצב מיוחד של הפחתת צריכת האנרגיה של השבב בתנאי קיצון.',
-    definitionHighLevel: 'A physical hardware protection mechanism which reduces core frequencies in single clock cycles when current limits are exceeded.',
-    context: 'משמש להגנה על מייצבי המתח שעל הלוח מפני פיצוץ או שריפה בעת הרצת אספקת כוח מאמץ קיצונית.'
+    category: 'כלי Debug',
+    definition: 'מכשיר ייעודי המקליט ומנתח את חבילות המידע העוברות בערוץ ה-PCI Express.',
+    definitionHighLevel: 'Protocol analyzer capturing physical, link, and transaction layer packets traversing the PCIe interface.',
+    context: 'ניתוח חבילות LTSSM ונתונים במקרה של ניתוקי כרטיסי הרחבה או האטה בביצועים.'
   },
   {
-    id: 'c_sst',
-    term: 'SST',
+    id: 'c_etm',
+    term: 'ETM (Embedded Trace Macrocell)',
     lessonId: 'l5',
-    definition: 'טכנולוגיית תקשורת בעלת חוט בודד המשמש להעברת מידע על חיישנים, טמפרטורה ומצבי מערכת.',
-    definitionHighLevel: 'A single-wire proprietary bus interface allowing out-of-band monitoring of thermal, diagnostic and core telemetry metrics on SUT.',
-    context: 'בעזרת ה-SST המערכת המארחת יכולה לדעת אם ה-SUT סובל מבעיה תרמית עוד לפני שמערכת ההפעלה עלתה.'
+    category: 'כלי Debug',
+    definition: 'רכיב חומרה פנימי במעבד המאפשר להקליט את פעולות המעבד ללא האטה שלו.',
+    definitionHighLevel: 'On-die trace module generating compressed instruction and data stream records for hardware-assisted debugging.',
+    context: 'משמש את המהנדסים לקבלת תמונת מצב מדויקת של ריצת הקוד ברמת מחזור השעון הבודד.'
+  },
+
+  // 6. תקלות (Bugs)
+  {
+    id: 'c_func_bug',
+    term: 'Functional Bug',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'שגיאה שבה המעבד אינו מחזיר את התוצאה הלוגית הנכונה או אינו מבצע את הפעולה שהתבקש.',
+    definitionHighLevel: 'A defect in logic design violating functional specs, resulting in incorrect calculations or behaviors.',
+    context: 'מציאת שגיאה שבה פקודת חישוב מסוימת מחזירה ערך שגוי תחת תנאים מסוימים.'
   },
   {
-    id: 'c_sits',
-    term: 'SITS',
-    lessonId: 'l5',
-    definition: 'חבילת בדיקות אינטגרציה מקיפה המשמשת לבדיקת יציבות המערכת במצבי כוח ומצבים משולבים.',
-    definitionHighLevel: 'A comprehensive integration testing environment simulating concurrent stress on CPU states, memory training, power state changes and PCIe link transitions.',
-    context: 'הרצת SITS היא תנאי הכרחי לשחרור גרסת BKC חדשה לצוותי הבדיקות הרחבים.'
+    id: 'c_timing_bug',
+    term: 'Timing Bug',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'באג שקורה רק בתדרי שעון מסוימים או עקב עיכובים זעירים בהגעת האותות החשמליים בשבב.',
+    definitionHighLevel: 'A physical silicon failure manifesting under specific frequencies, voltage levels or signal delay margins.',
+    context: 'באגים המתרחשים לרוב רק בטמפרטורות גבוהות או במתחים נמוכים במיוחד.'
+  },
+  {
+    id: 'c_race_condition',
+    term: 'Race Condition',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'באג שבו שתי פעולות מתחרות על אותו משאב והתוצאה הסופית תלויה באקראי במי שהגיעה קודם.',
+    definitionHighLevel: 'An unsynchronized concurrent access conflict leading to unpredictable logical results.',
+    context: 'תקלה המתרחשת כאשר שתי ליבות מעבד מנסות לכתוב לאותה כתובת זיכרון במקביל ללא נעילה.'
+  },
+  {
+    id: 'c_deadlock',
+    term: 'Deadlock',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'מצב קיפאון שבו שתי יחידות במעבד מחכות זו לזו שישחררו משאב מסוים, ושניהם נעצרים לנצח.',
+    definitionHighLevel: 'Mutual exclusion deadlock where multiple processes hold resources while waiting for other held resources.',
+    context: 'קריסת מעבד (Hang) הנגרמת עקב חסימה הדדית בין בקרי הזיכרון ל-Ring Bus.'
+  },
+  {
+    id: 'c_livelock',
+    term: 'Livelock',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'מצב שבו שתי יחידות במעבד משנות את מצבן ללא הרף בתגובה זו לזו, אך אינן מתקדמות בביצוע המשימה.',
+    definitionHighLevel: 'Active execution loop where components continuously switch states in response to each other without making progress.',
+    context: 'זיהוי מעבד שצורך 100% אנרגיה אך אינו מריץ קוד בפועל עקב לולאת תגובה פנימית.'
+  },
+  {
+    id: 'c_data_corruption',
+    term: 'Data Corruption',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'השחתה או שינוי לא רצוי של מידע השמור בזיכרון או במעבד.',
+    definitionHighLevel: 'Unintended alterations in data structures driven by hardware defects, signal noise or logic bugs.',
+    context: 'מצב שבו נתונים שנקראים מהדיסק הקשיח או הזיכרון מגיעים משובשים למעבד.'
+  },
+  {
+    id: 'c_sdc',
+    term: 'Silent Data Corruption (SDC)',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'השחתת נתונים שקטה ללא התרעה מהחומרה, שהיא התקלה המסוכנת ביותר.',
+    definitionHighLevel: 'Data corruption occurring without any hardware warnings or system exception flags driven by logic faults.',
+    context: 'בדיקת חישובים מתמטיים מול מודל התייחסות כדי לוודא שאין SDC בצינורות העיבוד.'
+  },
+  {
+    id: 'c_cache_coherency_bug',
+    term: 'Cache Coherency Bug',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'שגיאה שבה ליבה אחת במעבד קוראת גרסה לא מעודכנת של נתון הנמצא בזיכרון המטמון של ליבה אחרת.',
+    definitionHighLevel: 'Failure in coherency protocol (MESI/MOESI) transitions, leading to stale memory views across CPU cores.',
+    context: 'דיבאג של תקלות תקשורת UPI/Ring Bus שיוצרות אי עקביות בנתוני זיכרון המטמון.'
+  },
+  {
+    id: 'c_mem_leak',
+    term: 'Memory Leak',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'זליגת זיכרון - אי-שחרור של תאי זיכרון שאינם בשימוש עוד, הגורמת לאתר להאט או לקרוס מחוסר מקום.',
+    definitionHighLevel: 'Failure to deallocate dynamically allocated memory blocks, leading to resource depletion over runtime.',
+    context: 'בוולידציה בודקים שהתוכנות וסקריפטי האוטומציה אינם סובלים מזליגת זיכרון שמכשילה את המערכות בלילה.'
+  },
+  {
+    id: 'c_hang',
+    term: 'Hang',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'תקיעה מוחלטת של המעבד, שבה המערכת מפסיקה להגיב לחלוטין.',
+    definitionHighLevel: 'System lockup where execution clocks freeze or instructions stop retiring due to internal deadlocks.',
+    context: 'שימוש ב-DCI כדי לעצור את המערכת התקועה ולמצוא היכן נגרם הקיפאון.'
+  },
+  {
+    id: 'c_crash',
+    term: 'Crash',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'קריסה מוחלטת של מערכת ההפעלה או תוכנת הבדיקה עקב שגיאת חומרה חמורה.',
+    definitionHighLevel: 'Sudden termination of execution driven by unrecoverable hardware exceptions or kernel panic states.',
+    context: 'ניתוח קבצי Core Dump לאחר קריסת ה-SUT במעבדה.'
+  },
+  {
+    id: 'c_exception',
+    term: 'Exception',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'הפרעה למהלך הריצה הרגיל של התוכנית בעקבות אירוע מיוחד (כמו חלוקה באפס או שגיאת גישת זיכרון).',
+    definitionHighLevel: 'Architectural state redirection triggered by error conditions (e.g. Page Fault, General Protection Fault).',
+    context: 'אימות שפסיקות החומרה והשגיאות מטופלות נכון על ידי מערכת ההפעלה.'
+  },
+  {
+    id: 'c_mce',
+    term: 'Machine Check Exception (MCE)',
+    lessonId: 'l6',
+    category: 'תקלות (Bugs)',
+    definition: 'מנגנון של המעבד המדווח למערכת ההפעלה על תקלות חומרה פנימיות שזוהו.',
+    definitionHighLevel: 'Hardware error reporting architecture driving core exceptions on internal parity, ecc, or bus faults.',
+    context: 'קריאת בנקי ה-MSR registers של ה-MCE לאבחון מקור התקלה שגרמה למסך כחול.'
+  },
+
+  // 7. ביצועים
+  {
+    id: 'c_benchmark',
+    term: 'Benchmark',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'תוכנת בדיקה סטנדרטית המשמשת למדידה והשוואה של ביצועי מעבדים ומחשבים שונים.',
+    definitionHighLevel: 'Standardized workload suites (e.g. SPEC CPU, Cinebench) executing defined math vectors to measure speed and efficiency.',
+    context: 'הרצת SPEC CPU במעבדה כדי לוודא שביצועי ה-ES תואמים להערכות הסימולציה.'
+  },
+  {
+    id: 'c_ipc',
+    term: 'IPC (Instructions Per Cycle)',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'מספר הפקודות הממוצע שהמעבד מסיים לבצע בכל מחזור שעון (מדד ליעילות ארכיטקטונית).',
+    definitionHighLevel: 'Instructions Per Cycle. The average number of micro-operations completed (retired) per clock frequency tick.',
+    context: 'בוולידציה שואפים ל-IPC גבוה ככל הניתן; ירידה ב-IPC מעידה על צוואר בקבוק במפענח או בעיכוב זיכרון.'
+  },
+  {
+    id: 'c_cpi',
+    term: 'CPI (Cycles Per Instruction)',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'כמה מחזורי שעון נדרשים בממוצע כדי לבצע פקודה בודדת (ההופכי של IPC).',
+    definitionHighLevel: 'Cycles Per Instruction. The execution clock cycle count required to complete a single instruction.',
+    context: 'מדידת CPI של פקודות מורכבות כדי לזהות יעילות של יחידות חישוב.'
+  },
+  {
+    id: 'c_throughput',
+    term: 'Throughput',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'קצב העבודה הכולל - כמות הנתונים או הבדיקות המבוצעות ביחידת זמן.',
+    definitionHighLevel: 'The rate of successful data delivery over communication channels or execution units.',
+    context: 'מדידת רוחב הפס המרבי של ממשקי PCIe או הזיכרון.'
+  },
+  {
+    id: 'c_latency',
+    term: 'Latency',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'זמן השהייה - הזמן שחולף מרגע שליחת הבקשה ועד לקבלת התגובה הראשונית.',
+    definitionHighLevel: 'The time duration between stimulus input initiation and response detection.',
+    context: 'מדידת זמן גישה לזיכרון ה-RAM (נמדד בננו-שניות).'
+  },
+  {
+    id: 'c_bottleneck',
+    term: 'Bottleneck',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'צוואר בקבוק - הרכיב הכי איטי במערכת שמגביל ומאט את מהירותה הכוללת.',
+    definitionHighLevel: 'The performance-limiting factor within execution pipelines, data paths or peripheral connections.',
+    context: 'איתור צווארי בקבוק בחומרת המעבד באמצעות מונים פנימיים (PMU counters).'
+  },
+  {
+    id: 'c_profiling',
+    term: 'Profiling',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'ניתוח ומדידת זמני ריצה של תוכנית כדי לדעת אילו חלקים צורכים הכי הרבה משאבי עיבוד.',
+    definitionHighLevel: 'Dynamic program analysis mapping cycle consumption and memory overhead to source code segments.',
+    context: 'שימוש בכלי Profiling (כמו Intel VTune) לזיהוי "אזורים חמים" בבדיקות.'
+  },
+  {
+    id: 'c_perf_counter',
+    term: 'Performance Counter',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'מוני חומרה פנימיים הרושמים אירועי מעבד ללא הפרעה לריצה.',
+    definitionHighLevel: 'On-die hardware counters logging execution events (e.g. Cache Misses, Branch Mispredictions).',
+    context: 'קריאת מונים אלו לאפיון הביצועים של ה-SUT.'
+  },
+  {
+    id: 'c_pmu',
+    term: 'PMU (Performance Monitoring Unit)',
+    lessonId: 'l7',
+    category: 'ביצועים',
+    definition: 'יחידת החומרה במעבד המרכזת את המונים ובדיקות הביצועים.',
+    definitionHighLevel: 'A microarchitectural hardware block managing configuration and reading of performance event counters.',
+    context: 'שימוש ב-PMU לאימות קצבי העיבוד של השבב.'
+  },
+
+  // 8. זיכרון
+  {
+    id: 'c_l1_cache',
+    term: 'L1 Cache',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'זיכרון המטמון המהיר והקטן ביותר, הממוקם ישירות בתוך ליבת המעבד (L1 Cache).',
+    definitionHighLevel: 'Primary cache array closest to core pipeline execution units, split into Instruction and Data arrays.',
+    context: 'בדיקת מהירות הגישה המרבית ל-L1 (זמן השהייה של מספר מחזורי שעון בודדים).'
+  },
+  {
+    id: 'c_l2_cache',
+    term: 'L2 Cache',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'זיכרון מטמון משני בליבת המעבד (L2 Cache), מעט גדול ואיטי יותר מ-L1.',
+    definitionHighLevel: 'Secondary cache layer tightly coupled to each core, acting as buffer between L1 and shared cache.',
+    context: 'אימות מנגנוני ה-Eviction של נתונים מ-L1 ל-L2.'
+  },
+  {
+    id: 'c_l3_cache',
+    term: 'L3 Cache (LLC)',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'זיכרון המטמון המשותף והגדול ביותר במעבד (L3 Cache), המקשר בין כל הליבות לזיכרון ה-RAM.',
+    definitionHighLevel: 'Last Level Cache shared among core agents, partitioned into ring/mesh bus slices.',
+    context: 'בדיקות יציבות ושלמות נתונים ב-LLC תחת עומסי קריאה מרובים מכל הליבות במקביל.'
+  },
+  {
+    id: 'c_tlb_val',
+    term: 'TLB Validation',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'אימות תקינות זיכרון המטמון לתרגום כתובות (TLB), השומר תרגומי כתובות זיכרון וירטואליות לפיזיות.',
+    definitionHighLevel: 'Verification of Translation Lookaside Buffer hit, miss, invalidate (TLB shootdown) logic.',
+    context: 'מניעת קריסות או השחתת זיכרון במעבר בין תהליכים שונים במערכת ההפעלה.'
+  },
+  {
+    id: 'c_mmu_val',
+    term: 'MMU Validation',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'בדיקת יחידת ניהול הזיכרון (MMU) האחראית על תרגום כתובות והגנת זיכרון.',
+    definitionHighLevel: 'Validation of Memory Management Unit page table walks, page faults, and access permissions.',
+    context: 'בדיקה שתוכנה אינה מורשית לגשת לזיכרון השייך לתוכנה אחרת.'
+  },
+  {
+    id: 'c_ecc_testing',
+    term: 'ECC Testing',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'בדיקת מנגנון קוד תיקון שגיאות (ECC) המסוגל לגלות ולתקן שגיאות זיכרון אקראיות.',
+    definitionHighLevel: 'Injecting single-bit and double-bit error states into memory arrays to verify correction and reporting triggers.',
+    context: 'שימוש במזרקי שגיאות (Error Injectors) כדי לבדוק שהחומרה מתקנת שגיאות ביט בודד (Single-bit correction) ומדווחת על שגיאות חמורות יותר.'
+  },
+  {
+    id: 'c_mem_controller',
+    term: 'Memory Controller Validation',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'ולידציה של בקר הזיכרון האחראי על תזמון וניתוב זרם הנתונים בין המעבד ל-RAM.',
+    definitionHighLevel: 'Verifying DDR protocol timings, command queues scheduling and power-saving refresh sequences.',
+    context: 'אימות עמידה בחוקי התזמון הקפדניים של ממשקי DDR4/DDR5.'
+  },
+  {
+    id: 'c_dram_training',
+    term: 'DRAM Training',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'תהליך כיול האותות והזמנים מול ה-DDR המבוצע בכל הדלקה.',
+    definitionHighLevel: 'Early initialization sequencing aligning command, clock and data strobes via register sweep calibrations.',
+    context: 'בוולידציה בודקים שה-DRAM Training מצליח לעבור גם תחת תנאי חום וקור קשים במעבדה.'
+  },
+  {
+    id: 'c_mem_scrubbing',
+    term: 'Memory Scrubbing',
+    lessonId: 'l8',
+    category: 'זיכרון',
+    definition: 'מנגנון רקע שסורק את הזיכרון באופן קבוע ומציב תיקון אוטומטי לשגיאות ביט שקטות.',
+    definitionHighLevel: 'Systematic memory array scanning reading rows and rewriting corrected ECC values to prevent error accumulation.',
+    context: 'מוודא שזכרונות שרתים נשארים נקיים מרעשי קרינה קוסמית ושגיאות קטנות לאורך חודשי פעילות.'
+  },
+
+  // 9. צריכת חשמל
+  {
+    id: 'c_power_gating',
+    term: 'Power Gating',
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'ניתוק פיזי מוחלט של אספקת המתח לאזורים במעבד שאינם בשימוש כדי למנוע זליגת זרם.',
+    definitionHighLevel: 'Utilizing power transistors to physically disconnect unused silicon blocks, reducing static leakage current to near-zero.',
+    context: 'בדיקת יציבות המעבד בזמן שהוא מכבה ומדליק ליבות שלמות תוך כדי עבודה.'
+  },
+  {
+    id: 'c_clock_gating',
+    term: 'Clock Gating',
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'עצירת אות השעון לרכיבים לוגיים שאינם פעילים כרגע כדי לחסוך בצריכת חשמל דינמית.',
+    definitionHighLevel: 'Disabling clock signals to registers that do not need updating in the current cycle to save dynamic switching power.',
+    context: 'זהו המנגנון המיידי ביותר לחסכון באנרגיה במעבד ומבוצע באופן אוטומטי בחומרה.'
+  },
+  {
+    id: 'c_dvfs',
+    term: 'DVFS',
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'שינוי דינמי של מתח ותדר המעבד בזמן אמת לפי רמת העומס הנדרשת.',
+    definitionHighLevel: 'Dynamic Voltage and Frequency Scaling. Adjusting voltage rails and PLL clocks to match target workload performance demand.',
+    context: 'בדיקת יציבות מייצבי המתח (VR) במעברים מהירים במיוחד בין רמות מתח שונות.'
+  },
+  {
+    id: 'c_sleep_states',
+    term: 'Sleep States (S-States)',
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'מצבי השינה והכיבוי של המערכת כולה (כמו מצבי ACPI S3, S4, S5).',
+    definitionHighLevel: 'ACPI defined platform sleep configurations coordinating global power rail terminations.',
+    context: 'בדיקת זיהוי חומרה מלא לאחר שה-SUT יוצא ממצב שינה עמוק.'
   },
   {
     id: 'c_cstates',
     term: 'C-States',
-    lessonId: 'l5',
-    definition: 'מצבי שינה של הליבה כאשר היא אינה פעילה (C0 = עובד, C10 = שינה עמוקה מאוד).',
-    definitionHighLevel: 'ACPI core power savings states that progressively clock-gate and power-gate core structures to minimize leakage current.',
-    context: 'אנו בודקים את זמני המעבר ממצבי שינה עמוקים כדי למנוע קפיאות מערכת.'
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'מצבי שינה פנימיים של ליבות המעבד (C0 לפעולה, C10 לשינה עמוקה ביותר).',
+    definitionHighLevel: 'ACPI core power savings states regulating core clock gating and power gating depth.',
+    context: 'מדידת זמני ההתעוררות (Wakeup Latency) של ליבות ממצב C10.'
   },
   {
     id: 'c_pstates',
     term: 'P-States',
-    lessonId: 'l5',
-    definition: 'מצבי תדר ומתח בזמן שהליבה פעילה (כמו תדר טורבו מול תדר חיסכון).',
-    definitionHighLevel: 'Coordinated frequency and voltage operating points managed dynamically under DVFS logic.',
-    context: 'אנו מוודאים כי מייצבי המתח (VR) יציבים במעברים מהירים בין תדרים שונים.'
-  },
-  {
-    id: 'c_sstates',
-    term: 'S-States',
-    lessonId: 'l5',
-    definition: 'מצבי שינה של המחשב כולו (S0 = עובד, S3 = שינה ל-RAM, S4 = שינה לדיסק, S5 = כבוי).',
-    definitionHighLevel: 'System sleep configurations defined by ACPI that coordinate board power rail behavior.',
-    context: 'אנו מריצים אלפי מחזורי כניסה ויציאה משינה (S3-to-S0) כדי לגלות בעיות זיהוי חומרה.'
-  },
-
-  // Lesson 6
-  {
-    id: 'c_stargate',
-    term: 'StarGate Board',
-    lessonId: 'l6',
-    definition: 'לוח האם המיוחד במעבדה המשמש לארח את המעבדים הנבדקים ומאפשר גישה נוחה למתחים ופינים.',
-    definitionHighLevel: 'A reference validation host board designed with open sockets, breakout points for scopes, and interface chips.',
-    context: 'ה-StarGate מהווה את התשתית הפיזית שעליה מותקן המעבד הנבדק ומאפשר שליטה מלאה בפרמטרים החשמליים שלו.'
-  },
-  {
-    id: 'c_svos',
-    term: 'SVOS',
-    lessonId: 'l6',
-    definition: 'מערכת הפעלה מיוחדת של אינטל מבוססת לינוקס המאפשרת גישה ישירה לרגיסטרי המעבד והרצת תוכניות בדיקה.',
-    definitionHighLevel: 'Silicon Validation OS. A Ring 0 Linux distribution equipped with custom drivers for direct MSR and register manipulations.',
-    context: 'כמעט כל בדיקות ה-Post-Silicon מתבצעות תחת SVOS. מהנדס הולידציה מתחבר ל-SUT ומריץ תסריטי Python/C המנצלים את הכלים המובנים במערכת הפעלה זו.'
-  },
-  {
-    id: 'c_pud',
-    term: 'PUD',
-    lessonId: 'l6',
-    definition: 'הגדרה למערכת בדיקות שנמצאת במצב אבחון וניתוח תקלות פעיל.',
-    definitionHighLevel: 'Platform Under Debug. A system state marked for diagnostic analysis. The CPU clocks are stopped, allowing internal microarchitectural states to be dumped via debug interfaces.',
-    context: 'כאשר בדיקה נכשלת באוטומציה, המערכת מסווגת כ-PUD ומועברת לטיפול ידני של מהנדס דיבאג.'
-  },
-  {
-    id: 'c_terminal',
-    term: 'Terminal Connection',
-    lessonId: 'l6',
-    definition: 'חיבור תקשורת טקסטואלי (כמו חיבור סריאלי) המאפשר לשלוט ב-SUT ולראות את פלט האתחול והבדיקה שלו בזמן אמת.',
-    definitionHighLevel: 'ערוץ תקשורת מבוסס UART או USB-TTY המקשר בין ה-SUT לבין מחשב הבקרה. מאפשר תקשורת פקודות בסיסית גם כאשר ה-SUT אינו מסוגל להציג תמונה על מסך.',
-    context: 'חיבור הטרמינל הוא הכלי החשוב ביותר לדיבאג שלבי ה-POST המוקדמים.'
-  },
-  {
-    id: 'c_to_env',
-    term: 'TO',
-    lessonId: 'l6',
-    definition: 'המהנדס האחראי על הרצת הבדיקות הספציפיות, או ממשק הבקרה של עמדת הטרמינל.',
-    definitionHighLevel: 'The active user session or automation process managing the console I/O stream of a SUT during validation operations.',
-    context: 'במערכות אוטומטיות, ה-Terminal Operator הוא רכיב תוכנה המנתח את זרם הטקסט של הבוט ומחפש מילות מפתח המעידות על שגיאות.'
-  },
-  {
-    id: 'c_mode_work',
-    term: 'Mode of Work',
-    lessonId: 'l6',
-    definition: 'מצב הפעולה המוגדר של מערכת הבדיקות (למשל: מצב בדיקת ביצועים, מצב דיבאג, מצב חיסכון בחשמל).',
-    definitionHighLevel: 'The designated execution environment setting, toggling low-level configuration registers and strap pins (e.g. Debug Mode, Production Mode).',
-    context: 'הגדרת ה-Mode of Work הנכון מבטיחה כי הבדיקה מתבצעת תחת התנאים הרלוונטיים.'
-  },
-  {
-    id: 'c_gui',
-    term: 'GUI',
-    lessonId: 'l6',
-    definition: 'ממשק המשתמש הגרפי המאפשר למהנדס לשלוט במערכות הבדיקה בצורה ויזואלית נוחה.',
-    definitionHighLevel: 'Front-end applications (such as Intel System Studio) representing internal architecture configuration controls visually.',
-    context: 'למרות שרוב העבודה היא טקסטואלית, שימוש ב-GUI נוח להצגת תרשימים גרפיים של מתחים בזמן אמת.'
-  },
-  {
-    id: 'c_config_mgmt',
-    term: 'Configuration Management',
-    lessonId: 'l6',
-    definition: 'ניהול ובקרת התצורות של ה-SUTs במעבדה, כולל גרסאות ה-BIOS, המיקרוקוד והחומרה של כל מערכת.',
-    definitionHighLevel: 'Systematic tracking of firmware, silicon stepping, board versions, and software stacks to ensure reproducibility in tests.',
-    context: 'ניהול תצורה קפדני מונע מצב שבו מהנדס מריץ בדיקות על גרסה לא נכונה ומבזבז ימי עבודה.'
-  },
-  {
-    id: 'c_mtbf',
-    term: 'MTBF',
-    lessonId: 'l6',
-    definition: 'הזמן הממוצע שחולף בין תקלה לתקלה במערכת - מדד מרכזי ליציבות ואמינות של המעבד.',
-    definitionHighLevel: 'Mean Time Between Failures. A statistical calculation of total cumulated runtime hours divided by the total number of hardware or firmware faults observed.',
-    context: 'בדיקות יציבות נועדו לוודא שה-MTBF של המעבד במשימות שונות עומד בדרישות הלקוח.'
-  },
-  {
-    id: 'c_pass_splitter',
-    term: 'Pass Splitter',
-    lessonId: 'l6',
-    definition: 'כלי חומרה או תוכנה במעבדה המאפשר לפצל ולנתב אותות דיבאג מורכבים מבלי להפריע לפעולת המערכת.',
-    definitionHighLevel: 'A physical signal divider card allowing diagnostic equipment to sniff bus lines (e.g. SMBus, I3C, PCIe) inline without introducing trace distortions.',
-    context: 'ה-Pass Splitter מאפשר לנטר את תעבורת הנתונים ב-PCIe בזמן אמת ולגלות שגיאות פרוטוקול.'
-  },
-  {
-    id: 'c_pva',
-    term: 'PVA',
-    lessonId: 'l6',
-    definition: 'ארכיטקטורה ומתודולוגיה מוגדרת המגדירה כיצד לבצע את בדיקות הולידציה בצורה שיטתית ועקבית.',
-    definitionHighLevel: 'The proprietary Intel framework defining the guidelines, workloads, and scripts for systematic platform and silicon verification.',
-    context: 'עבודה לפי ה-PVA מבטיחה כי תוצאות בדיקה של מעבד מדור מסוים ניתנות להשוואה ישירה מול מעבד מדור קודם.'
-  },
-  {
-    id: 'c_dci_jtag',
-    term: 'JTAG & DCI',
-    lessonId: 'l6',
-    definition: 'ממשקי חומרה לדיבאג עמוק, המאפשרים לעצור את המעבד ולקרוא רגיסטרים פנימיים דרך חיבור USB 3.0.',
-    definitionHighLevel: 'Debug interfaces for hardware testing. DCI enables JTAG packet transfer over USB cables, bypassing target probes.',
-    context: 'כאשר המעבד נתקע קשיח, חיבור ה-DCI מאפשר לקרוא את תוכן זיכרון השגיאות (Crash log).'
-  },
-  {
-    id: 'c_itp',
-    term: 'ITP',
-    lessonId: 'l6',
-    definition: 'מכשיר חומרה ייעודי המתחבר ללוח הבדיקה ומקשר בין ממשק הדיבאג של המעבד לשרת הדיבאג במחשב.',
-    definitionHighLevel: 'Intel In-Target Probe. The hardware connection device translating host debugger packets into JTAG interface signals.',
-    context: 'בדיעבד אנו מריצים פקודות PythonSV דרך ה-ITP כדי לשלוט במחזור השעון של ה-SUT.'
-  },
-
-  // Lesson 7
-  {
-    id: 'c_trouble',
-    term: 'Troubleshooting',
-    lessonId: 'l7',
-    definition: 'מתודולוגיה לזיהוי, ניתוח ופתרון תקלות של לוחות, תוכנה או סיליקון במעבדה.',
-    definitionHighLevel: 'The diagnostic methodology of isolating failing factors, checking voltage rails, and capturing register states.',
-    context: 'יכולת Troubleshooting מעולה מאפשרת לגלות במהירות האם הבעיה היא בלוח הבדיקה או באג מעבד אמיתי.'
-  },
-  {
-    id: 'c_burn_in',
-    term: 'Burn-in',
-    lessonId: 'l7',
-    definition: 'בדיקת מאמץ ממושכת תחת תנאי חום ומתח גבוהים כדי לגלות פגמי ייצור מוקדמים.',
-    definitionHighLevel: 'Stress testing designed to accelerate silicon aging using thermal and voltage stress factors to trigger early failure rates.',
-    context: 'אנו מריצים בדיקות Burn-in כדי לוודא שהמעבד עמיד לאורך שנים ולא יקרוס אצל הלקוח.'
-  },
-  {
-    id: 'c_pd',
-    term: 'PD (Power Delivery)',
-    lessonId: 'l7',
-    definition: 'רשת אספקת החשמל והמתח למעבד, כולל מייצבי המתח (VRMs) והקבלים.',
-    definitionHighLevel: 'Power Delivery Network (PDN) design managing power planes, routing impedances, and decoupling capacitors.',
-    context: 'אנו בודקים שה-PD יציב ואינו סובל מרעשים (Ripple) במעברים חדים של תדרים.'
-  },
-  {
-    id: 'c_debuggable',
-    term: 'Debuggable',
-    lessonId: 'l7',
-    definition: 'מערכת המתוכננת כך שיש אליה גישה נוחה לכלי דיבאג חיצוניים המאפשרים לראות את המצב הפנימי של המעבד.',
-    definitionHighLevel: 'Architectural feature enabling CPU register dump, hardware state tracing, and step execution controls.',
-    context: 'מעבדי הולידציה נבחרים להיות Debuggable כדי שנוכל לחקור קריסות בקלות.'
-  },
-  {
-    id: 'c_mem_element',
-    term: 'Type of memory element',
-    lessonId: 'l7',
-    definition: 'סוגי רכיבי הזיכרון השונים במעבד וסביבתו והדרכים לבדוק את תקינותם.',
-    definitionHighLevel: 'Classification of on-die storage structures: registers, SRAM arrays, and external dynamic DRAM architectures.',
-    context: 'אנו מריצים בדיקות ייעודיות לכל סוג זיכרון (כמו בדיקות ECC ל-SRAM הפנימי).'
-  },
-  {
-    id: 'c_caterr_code',
-    term: 'CATERR',
-    lessonId: 'l7',
-    definition: 'אות שגיאה חמור המורה על קריסה מוחלטת של המעבד ללא יכולת התאוששות עצמית.',
-    definitionHighLevel: 'Catastrophic Error. A physical active-low pin assertion triggered by SA on fatal IDI bus parity or timeout conditions.',
-    context: 'כאשר נורת CATERR נדלקת במעבדה, ה-SUT נעצר ומחכים לחיבור הדיבאגר לקריאת ה-Crash log.'
-  },
-  {
-    id: 'c_ierr_code',
-    term: 'IERR',
-    lessonId: 'l7',
-    definition: 'אות המופעל במעבד המציין כי התרחשה שגיאה לוגית פנימית חמורה בליבה.',
-    definitionHighLevel: 'Internal Error. Core parity fault or pipeline lockup driving an hardware error signal to indicate fatal exception.',
-    context: 'שגיאות IERR עוזרות לנו למקד את הבאג לליבה ספציפית במעבד.'
-  },
-  {
-    id: 'c_mce_code',
-    term: 'MCE (Machine Check Exception)',
-    lessonId: 'l7',
-    definition: 'מנגנון שגיאה פנימי של המעבד המדווח למערכת ההפעלה על תקלות חומרה פנימיות או חיצוניות שזוהו.',
-    definitionHighLevel: 'Architectural CPU interrupt reporting hardware errors logged inside Machine Check MSR banks.',
-    context: 'בעזרת סקריפטים של PythonSV אנו קוראים את ה-MSR registers של בנקי ה-Machine Check (MC0-MC24) כדי למצוא את מקור התקלה.'
-  },
-  {
-    id: 'c_hang_code',
-    term: 'Hang / Lockup',
-    lessonId: 'l7',
-    definition: 'מצב שבו המעבד מפסיק לבצע פקודות והמערכת הופכת ללא מגיבה.',
-    definitionHighLevel: 'Microarchitectural deadlock occurring in internal fabrics (e.g. Ring and PCIe interface conflicts).',
-    context: 'בעת Hang אנו שולחים פקודת JTAG לקבלת ה-Instruction Pointer (IP) כדי לראות היכן הקוד נעצר.'
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'מצבי ביצועים של המעבד הפעיל (שילובים שונים של תדר ומתח עבודה).',
+    definitionHighLevel: 'ACPI power-performance states configuring frequency targets under active execution cycles.',
+    context: 'אימות שהמעבד משתמש ב-P-states הנמוכים בזמן מנוחה כדי למנוע צריכת זרם מיותרת.'
   },
   {
     id: 'c_thermal_throttling',
     term: 'Thermal Throttling',
-    lessonId: 'l7',
-    definition: 'מנגנון בטיחות המוריד את מהירות המעבד כשהוא מתחמם מדי כדי למנוע נזק.',
-    definitionHighLevel: 'PROCHOT# signal assert driving duty cycle scaling controlled by PCU to drop TDP during hot junction limits.',
-    context: 'אנו מוודאים שהמעבד מפעיל את מנגנון ה-Throttling בטמפרטורה הנכונה ואינו קורס עקב שינויי מתח מהירים.'
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'מנגנון בטיחות המוריד את מהירות המעבד כשהוא מתחמם יתר על המידה כדי למנוע נזק פיזי.',
+    definitionHighLevel: 'Triggering clock duty cycle scaling or frequency drops when internal junction sensors report temperature limits.',
+    context: 'בדיקה שהמעבד מוריד תדר בהצלחה ברגע שהוא מגיע ל-TjMax.'
+  },
+  {
+    id: 'c_turbo_validation',
+    term: 'Turbo Boost Validation',
+    lessonId: 'l9',
+    category: 'צריכת חשמל',
+    definition: 'אימות מנגנון המאיץ את תדר הליבות מעבר לתדר הבסיס כאשר יש מרווח טמפרטורה והספק פנוי.',
+    definitionHighLevel: 'Verifying dynamic frequency boosting algorithm based on target budget telemetry parameters.',
+    context: 'מדידת יציבות המעבד במהירויות שיא תחת עומסי עבודה קצרים.'
   },
 
-  // Lesson 8
+  // 10. תזמונים (Core Interview Topics)
   {
-    id: 'c_ev',
-    term: 'Electrical Validation (EV)',
-    lessonId: 'l8',
-    definition: 'בדיקת המאפיינים החשמליים הפיזיים של המעבד (מתחים, זמנים ושלמות האות) כדי לוודא עמידה בתקני חומרה.',
-    definitionHighLevel: 'The verification of physical layer analog characteristics including voltage tolerances, transition times, and signal integrity constraints.',
-    context: 'במעבדת EV משתמשים באוסילוסקופים מהירים של GHz כדי למדוד סיגנלים ישירות מקווי הלוח.'
+    id: 'c_cdc',
+    term: 'Clock Domain Crossing (CDC)',
+    lessonId: 'l10',
+    category: 'תזמונים',
+    definition: 'מעבר של אות נתונים בין שני אזורים במעבד הפועלים תחת תדרי שעון שונים ובלתי מסונכרנים.',
+    definitionHighLevel: 'Signals routing between logic registers driven by unsynchronized clock trees, creating metastability risks.',
+    context: 'בדיקת קיומם של מסנכרנים (Synchronizers) בקצוות האזורים כדי למנוע איבוד ביטים.'
   },
   {
-    id: 'c_margining',
-    term: 'Margining',
-    lessonId: 'l8',
-    definition: 'בדיקת גבולות היציבות של המעבד על ידי שינוי יזום של מתח העבודה ותדר השעון עד שמתקבלות שגיאות.',
-    definitionHighLevel: 'The methodical process of sweeping voltage and frequency coordinates to determine the safe operational boundary (V-F curve) of silicon logic.',
-    context: 'מריצים בדיקות Margining אוטומטיות כדי לוודא שיש מרווח בטיחות (Guardband) מספיק בין תדר העבודה לנקודת הכשל.'
-  },
-  {
-    id: 'c_jitter',
-    term: 'Jitter',
-    lessonId: 'l8',
-    definition: 'סטייה קצרת טווח בזמנים של האות החשמלי, שעלולה לגרום לשגיאות בקריאת נתונים מהירה.',
-    definitionHighLevel: 'The short-term variations of a signal\'s significant instants from their ideal positions in time (deterministic and random jitter components).',
-    context: 'מדידת Jitter מבוצעת על קווי תקשורת מהירים כמו PCIe ו-DDR כדי להבטיח מרווח זמן (Setup/Hold) תקין.'
-  },
-  {
-    id: 'c_crosstalk',
-    term: 'Cross-talk',
-    lessonId: 'l8',
-    definition: 'הפרעה אלקטרומגנטית שנגרמת עקב מעבר אות בקו תקשורת שכן, המשבשת את האות בקו המטרה.',
-    definitionHighLevel: 'The undesired electromagnetic coupling between parallel PCB traces or silicon interconnect metal lines (victim and aggressor lines).',
-    context: 'מזעור Cross-talk נעשה על ידי תכנון נכון של מרווחי הולכה בלוח (PCB design) ובדיקה שלו על ידי שליחת פטרנים רועשים במיוחד.'
-  },
-  {
-    id: 'c_eye_diagram',
-    term: 'Eye Diagram',
-    lessonId: 'l8',
-    definition: 'תרשים ויזואלי באוסילוסקופ המציג את איכות האות הדיגיטלי המהיר בצורה של עין פתוחה.',
-    definitionHighLevel: 'An oscilloscope display representation created by overlapping repetitive sweeps of a high-speed data stream to visualize timing and voltage noise margins.',
-    context: 'עין פתוחה ונקייה מעידה על שלמות אותות מעולה, בעוד עין סגורה מעידה על רעשים ושגיאות ביט (Bit Errors).'
-  },
-  {
-    id: 'c_isi',
-    term: 'Inter-Symbol Interference (ISI)',
-    lessonId: 'l8',
-    definition: 'הפרעה שבה ביטים קודמים שנשלחו בקו משפיעים על המתח של הביט הנוכחי ומשבשים אותו.',
-    definitionHighLevel: 'A distortion of a signal in which one symbol (bit) interferes with subsequent symbols due to channel dispersion and reflection characteristics.',
-    context: 'שימוש במנגנוני Equalization (כמו CTLE או DFE) מיושם בבקר המעבד כדי לפצות על השפעות ה-ISI.'
-  },
-  {
-    id: 'c_impedance',
-    term: 'Impedance Matching',
-    lessonId: 'l8',
-    definition: 'התאמת ההתנגדות החשמלית של קווי ההולכה כדי למנוע החזרות אותות ורעשים בממשקים מהירים.',
-    definitionHighLevel: 'The practice of designing transmission line characteristic impedance to match source and load termination values (typically 50 or 85 ohms).',
-    context: 'חוסר התאמת עכבות גורם להחזרי אותות (Reflections) שיוצרים עיוותים ורעש קשה בדיאגרמת העין.'
-  },
-  {
-    id: 'c_probe_loading',
-    term: 'Probe Loading',
-    lessonId: 'l8',
-    definition: 'השפעה חשמלית שלילית שפרוב המדידה של האוסילוסקופ יוצר על קו התקשורת בזמן הבדיקה.',
-    definitionHighLevel: 'The distortion introduced to a circuit under test by the capacitive, resistive and inductive parameters of the measuring scope probe.',
-    context: 'בעבודה עם ממשקים מהירים מאוד, משתמשים בפרובים אקטיביים עם התנגדות כניסה גבוהה במיוחד כדי למנוע Probe Loading שיכול להשבית את התקשורת.'
-  },
-  {
-    id: 'c_reflection',
-    term: 'Signal Reflection',
-    lessonId: 'l8',
-    definition: 'החזרה של האות החשמלי לאחור כאשר הוא נתקל בשינוי התנגדות בקו, בדומה להד של קול.',
-    definitionHighLevel: 'The fraction of an electromagnetic wave reflected back to the source due to impedance discontinuities along the transmission path.',
-    context: 'החזרים גורמים להפרעות קשות בשלמות האות ומאובחנים על ידי זיהוי עיוותים (Overshoot/Undershoot) בסיגנל.'
+    id: 'c_sta',
+    term: 'Static Timing Analysis (STA)',
+    lessonId: 'l10',
+    category: 'תזמונים',
+    definition: 'ניתוח תיאורטי של זמני הגעת האותות החשמליים בשבב כדי לוודא שאין שגיאות תזמון.',
+    definitionHighLevel: 'Verification of design paths delays without simulation, confirming setup and hold requirements are met.',
+    context: 'מבוצע בשלב ה-Pre-Silicon כדי להבטיח סגירת תזמונים (Timing Closure) במהירות השעון המיועדת.'
   },
 
-  // Lesson 9
+  // 11. ארכיטקטורה
   {
-    id: 'c_fv',
-    term: 'Functional Validation (FV)',
-    lessonId: 'l9',
-    definition: 'בדיקת תקינות הלוגיקה והמנגנונים הלוגיים של המעבד כדי לוודא שהוא מבצע את פקודותיו בצורה נכונה לחלוטין.',
-    definitionHighLevel: 'The process of verifying that the logical design of the SoC operates in strict compliance with the architectural specification.',
-    context: 'בדיקות FV מתמקדות במציאת באגים של קוד, רגיסטרים ותסריטי שימוש מורכבים במעבד.'
+    id: 'c_pcie',
+    term: 'PCI Express (PCIe)',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'פרוטוקול תקשורת מהיר לחיבור כרטיסים חיצוניים (כמו כרטיסי מסך) ישירות למעבד.',
+    definitionHighLevel: 'High-speed serial computer expansion bus standard featuring point-to-point packet communication.',
+    context: 'זהו ממשק החיבור החיצוני המרכזי של מעבדי אינטל; ולידציה שלו דורשת ניתוח חשמלי ולוגי מעמיק.'
   },
   {
-    id: 'c_workloads',
-    term: 'Workloads',
-    lessonId: 'l9',
-    definition: 'תוכניות ועומסי עבודה מוגדרים שמריצים על המעבד כדי לבדוק את התפקוד והביצועים שלו.',
-    definitionHighLevel: 'The designated software programs, scripts or instruction streams executed on SUT to exercise specific processor subunits.',
-    context: 'אנו מריצים מגוון Workloads משרתים אמיתיים ומחקי משחקים כדי לבחון את יציבות הסיליקון.'
+    id: 'c_ddr',
+    term: 'DDR Memory',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'זיכרון הגישה האקראית (RAM) הראשי של המערכת המקושר למעבד.',
+    definitionHighLevel: 'Double Data Rate synchronous dynamic random-access memory interface specification.',
+    context: 'בדיקת בקרי הזיכרון במעבד מול מודולי זיכרון DDR4 ו-DDR5.'
   },
   {
-    id: 'c_stress',
-    term: 'Stress Testing',
-    lessonId: 'l9',
-    definition: 'בדיקות מאמץ המפעילות לחץ כבד על כל יחידות המעבד במקביל כדי לעורר באגים שמתרחשים רק בעומס גבוה.',
-    definitionHighLevel: 'The validation technique of concurrently exercising multiple hardware blocks at maximum throughput limits to reveal synchronization failures.',
-    context: 'הרצת בדיקות Stress לאורך ימים (24/7) עוזרת לאתר באגים שקשורים להתנגשויות תקשורת פנימית.'
+    id: 'c_cache_coherency',
+    term: 'Cache Coherency',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'מנגנון השומר על עקביות ועדכניות הנתונים בכל זיכרונות המטמון של הליבות השונות.',
+    definitionHighLevel: 'Ensuring consistent data views across distributed cache memories on multi-core systems via hardware protocols.',
+    context: 'זהו אחד מנושאי הראיונות החשובים ביותר (MESI protocol) מכיוון שהוא מונע השחתת נתונים ביישומים מרובי תהליכים.'
   },
   {
-    id: 'c_coverage',
-    term: 'Functional Coverage',
-    lessonId: 'l9',
-    definition: 'מדד המציג כמה אחוזים מתוך מגוון התרחישים הלוגיים האפשריים של המעבד נבדקו בפועל.',
-    definitionHighLevel: 'A quantitative metric measuring the percentage of architectural states and transition vectors exercised during execution.',
-    context: 'איסוף נתוני כיסוי מסייע לנו לכוון את הבדיקות הבאות אל עבר אזורים לוגיים שלא נבדקו כלל.'
+    id: 'c_interrupts',
+    term: 'Interrupts',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'אותות חומרה או תוכנה המודיעים למעבד שעליו להפסיק זמנית את התוכנית הנוכחית כדי לטפל באירוע דחוף.',
+    definitionHighLevel: 'Asynchronous signals asserting core vector redirections to execute Interrupt Service Routines (ISRs).',
+    context: 'בוולידציה בודקים את מנגנוני ה-APIC וה-MSI-X של המעבד.'
   },
   {
-    id: 'c_assertions',
-    term: 'Hardware Assertions',
-    lessonId: 'l9',
-    definition: 'מנגנוני בקרה פנימיים בחומרת המעבד שמתריעים מיידית כאשר מתרחש מצב לוגי לא חוקי.',
-    definitionHighLevel: 'Declarative statements embedded inside logic designs verifying that specific structural properties hold true during execution cycles.',
-    context: 'כאשר Assertion מופעל, הוא מסייע למהנדסי הדיבאג לאתר את המיקום המדויק של הכשל מיד ברגע התרחשותו.'
+    id: 'c_boot_flow',
+    term: 'Boot Flow',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'רצף השלבים שהמערכת עוברת מהרגע שהחשמל נדלק ועד שמערכת ההפעלה עולה במלואה.',
+    definitionHighLevel: 'The structured hardware reset evaluation and initialization sequence leading to operating system boot.',
+    context: 'הבנת ה-Boot Flow היא קריטית לביצוע דיאגנוסטיקה ראשונית של בעיות SUT במעבדה.'
   },
   {
-    id: 'c_random_test',
-    term: 'Constrained Random Testing',
-    lessonId: 'l9',
-    definition: 'שיטת בדיקה שבה מייצרים פקודות ותרחישים אקראיים תחת מגבלות לוגיות כדי למצוא באגים לא צפויים.',
-    definitionHighLevel: 'Generating pseudo-random instruction streams constrained within legal architecture boundaries to discover unpredicted bug states.',
-    context: 'זוהי השיטה היעילה ביותר למציאת באגים של שילובי פקודות נדירים שמהנדס אנושי לא היה חושב לכתוב באופן ידני.'
+    id: 'c_firmware',
+    term: 'Firmware',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'קוד התוכנה הבסיסי ביותר המוטמע בתוך רכיבי חומרה ומאפשר להם לפעול (כמו BIOS או CSME).',
+    definitionHighLevel: 'Low-level device software stored in non-volatile flash memory managing physical component configurations.',
+    context: 'ולידציה בודקת שהקושחות השונות מתקשרות נכון מול המעבד.'
   },
   {
-    id: 'c_corner_cases',
-    term: 'Corner Cases',
-    lessonId: 'l9',
-    definition: 'מצבי כשל נדירים המתרחשים רק כאשר מספר פרמטרים קיצוניים מתקיימים במקביל (מתח נמוך, חום גבוה ועומס ספציפי).',
-    definitionHighLevel: 'Anomalous bugs manifested only at intersection points of multiple independent environmental and architectural parameters.',
-    context: 'איתור Corner Cases הוא היעד המרכזי של Post-Silicon Validation, שכן אלו באגים שסימולציות Pre-Silicon לרוב מפספסות.'
+    id: 'c_ucode',
+    term: 'Microcode',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'קוד פנימי בתוך המעבד המתרגם את פקודות ה-x86 המורכבות לרצף פעולות חומרה פשוטות.',
+    definitionHighLevel: 'Internal processor sequencer micro-operations decoding macro-instructions inside execution cores.',
+    context: 'שימוש בעדכוני מיקרוקוד לביצוע תיקוני חומרה מהירים במעבדה ללא החלפת השבב.'
   },
   {
-    id: 'c_regressions',
-    term: 'Regression Testing',
-    lessonId: 'l9',
-    definition: 'הרצה מחדש של בדיקות קודמות כדי לוודא שתיקון באג מסוים לא קלקל או שבר רכיבים אחרים במעבד.',
-    definitionHighLevel: 'The validation phase of executing previously passed test suites to ensure new microcode or BIOS builds do not introduce functional regressions.',
-    context: 'בכל פעם שמקבלים גרסת מיקרוקוד (U-code patch) חדשה, מריצים Regression Suite מלא של כל בדיקות הבסיס.'
-  },
-  {
-    id: 'c_test_suite',
-    term: 'Test Suite',
-    lessonId: 'l9',
-    definition: 'חבילת בדיקות המרכזת קבוצה של תסריטי בדיקה ממוקדים עבור רכיב או תרחיש מוגדר.',
-    definitionHighLevel: 'A collection of test cases configured to verify a specific hardware IP block or platform configuration.',
-    context: 'לכל מהנדס הולידציה יש Test Suite המותאם לרכיב שהוא אחראי עליו (למשל: PCIe Test Suite).'
+    id: 'c_intel_vtx',
+    term: 'Intel VT-x',
+    lessonId: 'l10',
+    category: 'ארכיטקטורה',
+    definition: 'טכנולוגיית הוירטואליזציה של אינטל המאפשרת להריץ מספר מערכות הפעלה מבודדות במקביל על אותו מעבד.',
+    definitionHighLevel: 'Hardware-assisted virtualization technology introducing VMX transitions and nested paging controls.',
+    context: 'ולידציה של רגיסטרי ה-VMCS ופקודות ה-VMX בראיונות עבודה ובדיקות מעבדה.'
   },
 
-  // Lesson 10
+  // 12. סקריפטים ושפות (Interview Tools)
   {
-    id: 'c_nga',
-    term: 'NGA (Next Generation Automation)',
+    id: 'c_python',
+    term: 'Python',
     lessonId: 'l10',
-    definition: 'מערכת האוטומציה המרכזית באינטל המנהלת ומריצה בדיקות וולידציה על אלפי מעבדים במקביל.',
-    definitionHighLevel: 'Intel proprietary distributed automation platform scheduling, executing, and logging test runs across global validation hardware targets.',
-    context: 'באמצעות ה-NGA, המהנדס יכול לשלוח הרצה של 500 בדיקות לביצוע על 20 SUTs שונים במעבדה בו-זמנית.'
+    category: 'אוטומציה',
+    definition: 'שפת התכנות הנפוצה ביותר בכתיבת סקריפטים של אוטומציה ודיבאג חומרה באינטל (ספריית PythonSV).',
+    definitionHighLevel: 'The primary scripting language utilized in post-silicon validation for test execution, register parsing, and JTAG debugger control.',
+    context: 'שימוש יומיומי ב-PythonSV כדי לתשאל רגיסטרים ולקרוא קבצי קריסה.'
   },
   {
-    id: 'c_triage',
-    term: 'Triage',
+    id: 'c_cpp',
+    term: 'C/C++',
     lessonId: 'l10',
-    definition: 'תהליך ניתוח הלוגים וסיווג כשלים במעבדה כדי לקבוע מה גרם לתקלה ומי הצוות שצריך לטפל בה.',
-    definitionHighLevel: 'The diagnostic categorization flow isolating execution logs to pinpoint whether a failure is host-related, code-related or silicon-related.',
-    context: 'הטריאז\' הוא השלב הראשון לאחר זיהוי נפילת בדיקה ב-NGA; הוא מונע בזבוז זמן על בדיקת בעיות שאינן באג אמיתי.'
+    category: 'אוטומציה',
+    definition: 'שפות פיתוח המשמשות לכתיבת קוד ה-BIOS והקושחות הפנימיות הרצות במעבדים.',
+    definitionHighLevel: 'Low-level language stack for BIOS driver structures, microcode development and bare-metal performance test suites.',
+    context: 'קריאה וכתיבה של קודי BIOS בשלבי פיתוח מוקדמים.'
   },
   {
-    id: 'c_fail_rate',
-    term: 'Fail Rate',
+    id: 'c_assembly',
+    term: 'Assembly (x86)',
     lessonId: 'l10',
-    definition: 'שיעור או אחוז הכישלונות של בדיקה מסוימת מתוך סך ההרצות שלה.',
-    definitionHighLevel: 'The statistical ratio of failed test runs compared to the total number of attempts on a specific silicon stepping and build configuration.',
-    context: 'בדיקה עם Fail Rate נמוך (למשל 1 ל-1000) מעידה על באג נדיר הדורש ניתוח מעמיק JTAG כדי לשחזר אותו.'
-  },
-  {
-    id: 'c_defect',
-    term: 'Defect Tracking',
-    lessonId: 'l10',
-    definition: 'מערכת לניהול, רישום ומעקב אחר באגים וליקויים שהתגלו בחומרה או בתוכנה.',
-    definitionHighLevel: 'The database system (such as Intel HSD-ES) documenting defect life cycles from discovery to root-cause and official fix closure.',
-    context: 'כאשר מהנדס הולידציה מוודא באג חומרה חדש, הוא פותח כרטיס באג במערכת ה-Defect Tracking ומצרף את כל ה-Crash logs.'
-  },
-  {
-    id: 'c_log_analysis',
-    term: 'Log Analysis',
-    lessonId: 'l10',
-    definition: 'ניתוח קבצי הטקסט והנתונים שהמערכת רושמת בזמן הבוט והריצה כדי לאבחן את סיבת הקריסה.',
-    definitionHighLevel: 'The analytical parse of serial console output, crash data registers, and OS kernel logs to reconstruct the failure event timeline.',
-    context: 'ניתוח לוגים אוטומטי בעזרת סקריפטים של Python מסייע לסנן רעשים ולזהות קודי שגיאה חבויים.'
-  },
-  {
-    id: 'c_automation_script',
-    term: 'Automation Scripting',
-    lessonId: 'l10',
-    definition: 'כתיבת קוד (לרוב ב-Python או Bash) המריץ בדיקות, משנה הגדרות ומנתח תוצאות ללא מגע יד אדם.',
-    definitionHighLevel: 'Developing executable program configurations orchestrating test loops, telemetry acquisition, and result uploading to central databases.',
-    context: 'כתיבת סקריפטים חוסכת שעות עבודה רבות ומאפשרת להריץ בדיקות רגרסיה מורכבות בלילה.'
-  },
-  {
-    id: 'c_runtime',
-    term: 'Run-time Environment',
-    lessonId: 'l10',
-    definition: 'סביבת התוכנה והחומרה שבה הבדיקה רצה בפועל (גרסת הלינוקס של SVOS, דרייברים וספריות תוכנה).',
-    definitionHighLevel: 'The execution framework containing compilers, interpreters, libraries, and kernel drivers defining the execution space on the target device.',
-    context: 'אי התאמה בסביבת הריצה (למשל ספרייה לא מעודכנת) יכולה לגרום לבדיקה להיכשל סתם; לכן שומרים על אחידותה.'
-  },
-  {
-    id: 'c_sighting',
-    term: 'Sighting',
-    lessonId: 'l10',
-    definition: 'המונח הרשמי באינטל לדיווח על באג חומרה או תוכנה חדש שנמצא בתהליך חקירה.',
-    definitionHighLevel: 'Intel term for a documented product issue or anomaly submitted into HSD-ES for official engineering board review and resolution tracking.',
-    context: 'דיווח Sighting איכותי חייב להכיל צעדי שחזור ברורים, גרסת BKC מדויקת, קבצי לוג וסקריפטים המדגימים את הכשל.'
+    category: 'אוטומציה',
+    definition: 'שפת המכונה הבסיסית ביותר של המעבד, המשמשת לכתיבת קטעי קוד קריטיים בזמן הדלקה ראשונית ובדיקות לוגיות של הליבות.',
+    definitionHighLevel: 'x86 assembly language targeting direct machine instructions execution on CPU pipelines bypassing high-level compilers.',
+    context: 'כתיבת פטרנים של בדיקות לוגיות ממוקדות ב-x86 Assembly.'
   }
 ];
 
@@ -1442,7 +1333,7 @@ export const initialLabErrors: LabError[] = [
       'חוסר יציבות בעבודה בתדרי טורבו גבוהים.'
     ],
     debugFlow: [
-      'השתמש באוסילוסקופ מהיר עם פרובים אקטיביים כדי למדוד את המתח בנקודות הקרובות ביותר למעבד (Vcc sensing points).',
+      'השתמש באוסילוסקופ מהיר עם פרובים אקטיביים כדי למדוד את המתח בנקות הקרובות ביותר למעבד (Vcc sensing points).',
       'שנה את הגדרות ה-Loadline Calibration (LLC) ב-BIOS כדי לפצות על נפילות המתח.',
       'עדכן את קובץ ה-P-code לגרסה המכילה אלגוריתמי פיצוי מתח משופרים.',
       'בדוק את קבצי הגדרות ה-Margining החשמליות ב-SUT.'

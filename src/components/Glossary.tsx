@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import type { Concept, Lesson } from '../types/validationData';
-import { Search, BookOpen, User, Bookmark } from 'lucide-react';
+import { Search, BookOpen, User, Bookmark, Tag } from 'lucide-react';
 
 interface GlossaryProps {
   concepts: Concept[];
@@ -19,6 +19,13 @@ export const Glossary: React.FC<GlossaryProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLessonId, setSelectedLessonId] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  // Extract unique categories from all concepts
+  const categories = useMemo(() => {
+    const allCats = concepts.map((c) => c.category).filter((cat): cat is string => !!cat);
+    return Array.from(new Set(allCats)).sort();
+  }, [concepts]);
 
   const filteredConcepts = useMemo(() => {
     return concepts.filter((c) => {
@@ -28,10 +35,11 @@ export const Glossary: React.FC<GlossaryProps> = ({
         c.definitionHighLevel.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchLesson = selectedLessonId === 'all' ? true : c.lessonId === selectedLessonId;
+      const matchCategory = selectedCategory === 'all' ? true : c.category === selectedCategory;
 
-      return matchQuery && matchLesson;
+      return matchQuery && matchLesson && matchCategory;
     });
-  }, [concepts, searchQuery, selectedLessonId]);
+  }, [concepts, searchQuery, selectedLessonId, selectedCategory]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -46,6 +54,8 @@ export const Glossary: React.FC<GlossaryProps> = ({
 
       {/* Filter and Search controls */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        
+        {/* Search */}
         <div style={{ position: 'relative' }}>
           <Search size={16} style={{ position: 'absolute', right: '12px', top: '14px', color: 'var(--text-muted)' }} />
           <input
@@ -58,20 +68,43 @@ export const Glossary: React.FC<GlossaryProps> = ({
           />
         </div>
 
-        <div>
-          <select
-            className="form-select"
-            value={selectedLessonId}
-            onChange={(e) => setSelectedLessonId(e.target.value)}
-            style={{ width: '100%', padding: '12px' }}
-          >
-            <option value="all">כל השיעורים</option>
-            {lessons.map((lesson, idx) => (
-              <option key={lesson.id} value={lesson.id}>
-                שיעור {idx + 1}: {lesson.titleHe}
-              </option>
-            ))}
-          </select>
+        {/* Filters grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
+          {/* Lesson Filter */}
+          <div>
+            <label className="form-label" style={{ fontSize: '0.72rem', marginBottom: '4px', display: 'block' }}>סינון לפי שיעור:</label>
+            <select
+              className="form-select"
+              value={selectedLessonId}
+              onChange={(e) => setSelectedLessonId(e.target.value)}
+              style={{ width: '100%', padding: '10px', fontSize: '0.8rem' }}
+            >
+              <option value="all">כל השיעורים</option>
+              {lessons.map((lesson, idx) => (
+                <option key={lesson.id} value={lesson.id}>
+                  שיעור {idx + 1}: {lesson.titleHe}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Category Filter */}
+          <div>
+            <label className="form-label" style={{ fontSize: '0.72rem', marginBottom: '4px', display: 'block' }}>סינון לפי קטגוריית מפתח:</label>
+            <select
+              className="form-select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{ width: '100%', padding: '10px', fontSize: '0.8rem' }}
+            >
+              <option value="all">כל הקטגוריות</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -112,6 +145,13 @@ export const Glossary: React.FC<GlossaryProps> = ({
                     </span>
 
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      {concept.category && (
+                        <span className="badge badge-blue" style={{ gap: '4px', fontSize: '0.62rem' }}>
+                          <Tag size={10} />
+                          {concept.category}
+                        </span>
+                      )}
+                      
                       {concept.isCustom && (
                         <span className="badge badge-success" style={{ gap: '4px', fontSize: '0.62rem' }}>
                           <User size={10} />
