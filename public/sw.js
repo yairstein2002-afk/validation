@@ -1,4 +1,4 @@
-const CACHE_NAME = 'validation-academy-v1';
+const CACHE_NAME = 'validation-academy-v2'; // Incremented cache name to force client update
 const ASSETS = [
   '/',
   '/index.html',
