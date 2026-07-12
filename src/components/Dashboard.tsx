@@ -203,7 +203,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <div>
         <h3 style={{ fontSize: '1.15rem', marginBottom: '16px', fontWeight: 'bold' }}>מסלול הלמידה הלוגי</h3>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <div className="lessons-grid">
           {lessons.map((lesson, index) => {
             const locked = isLessonLocked(lesson);
             const done = getLessonProgress(lesson.id);
