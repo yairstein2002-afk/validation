@@ -26,9 +26,15 @@ function App() {
     const storedCompleted = localStorage.getItem('validation_completed_lessons');
     if (storedCompleted) {
       try {
-        setCompletedLessons(JSON.parse(storedCompleted));
+        const parsed = JSON.parse(storedCompleted);
+        if (Array.isArray(parsed)) {
+          setCompletedLessons(parsed);
+        } else {
+          setCompletedLessons([]);
+        }
       } catch (e) {
         console.error('Error loading completed lessons', e);
+        setCompletedLessons([]);
       }
     }
 
@@ -36,20 +42,27 @@ function App() {
     const storedMarked = localStorage.getItem('validation_marked_concept_ids');
     if (storedMarked) {
       try {
-        setMarkedConceptIds(JSON.parse(storedMarked));
+        const parsed = JSON.parse(storedMarked);
+        if (Array.isArray(parsed)) {
+          setMarkedConceptIds(parsed);
+        } else {
+          setMarkedConceptIds([]);
+        }
       } catch (e) {
         console.error('Error loading marked concepts', e);
+        setMarkedConceptIds([]);
       }
     }
   }, []);
 
   // Toggle marked concept for review
   const handleToggleMarkConcept = (conceptId: string) => {
+    const currentMarked = Array.isArray(markedConceptIds) ? markedConceptIds : [];
     let updated;
-    if (markedConceptIds.includes(conceptId)) {
-      updated = markedConceptIds.filter((id) => id !== conceptId);
+    if (currentMarked.includes(conceptId)) {
+      updated = currentMarked.filter((id) => id !== conceptId);
     } else {
-      updated = [...markedConceptIds, conceptId];
+      updated = [...currentMarked, conceptId];
     }
     setMarkedConceptIds(updated);
     localStorage.setItem('validation_marked_concept_ids', JSON.stringify(updated));
@@ -74,10 +87,10 @@ function App() {
           <Dashboard
             lessons={lessons}
             concepts={concepts}
-            completedLessons={completedLessons}
+            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
             onSelectLesson={handleSelectLessonFromDashboard}
             difficulty={difficulty}
-            markedConceptIds={markedConceptIds}
+            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
             onToggleMarkConcept={handleToggleMarkConcept}
           />
         )}
@@ -88,10 +101,10 @@ function App() {
             concepts={concepts}
             activeLessonId={activeLessonId}
             setActiveLessonId={setActiveLessonId}
-            completedLessons={completedLessons}
+            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
             setCompletedLessons={setCompletedLessons}
             difficulty={difficulty}
-            markedConceptIds={markedConceptIds}
+            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
             onToggleMarkConcept={handleToggleMarkConcept}
           />
         )}
@@ -101,7 +114,7 @@ function App() {
             concepts={concepts}
             lessons={lessons}
             difficulty={difficulty}
-            markedConceptIds={markedConceptIds}
+            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
             onToggleMarkConcept={handleToggleMarkConcept}
           />
         )}
@@ -115,7 +128,7 @@ function App() {
         {activeTab === 'quiz' && (
           <QuizManager
             lessons={lessons}
-            completedLessons={completedLessons}
+            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
           />
         )}
       </main>

@@ -27,22 +27,32 @@ export const Dashboard: React.FC<DashboardProps> = ({
     const storedNotes = localStorage.getItem('validation_notes');
     if (storedNotes) {
       try {
-        setUserNotes(JSON.parse(storedNotes));
+        const parsed = JSON.parse(storedNotes);
+        if (parsed && typeof parsed === 'object') {
+          setUserNotes(parsed);
+        } else {
+          setUserNotes({});
+        }
       } catch (e) {
         console.error(e);
+        setUserNotes({});
       }
     }
   }, [markedConceptIds]);
 
   const isLessonLocked = (lesson: Lesson) => {
-    return lesson.prerequisites.some((prereqId) => !completedLessons.includes(prereqId));
+    const completed = Array.isArray(completedLessons) ? completedLessons : [];
+    return lesson.prerequisites.some((prereqId) => !completed.includes(prereqId));
   };
 
   const getLessonProgress = (lessonId: string) => {
-    return completedLessons.includes(lessonId);
+    const completed = Array.isArray(completedLessons) ? completedLessons : [];
+    return completed.includes(lessonId);
   };
 
-  const reviewConcepts = concepts.filter((c) => markedConceptIds.includes(c.id));
+  const currentMarked = Array.isArray(markedConceptIds) ? markedConceptIds : [];
+  const reviewConcepts = concepts.filter((c) => currentMarked.includes(c.id));
+  const activeLessonsCount = lessons.filter(l => !l.isPlanned).length;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -87,7 +97,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               מושגים במאגר: <strong style={{ color: 'var(--primary)' }}>{concepts.length}</strong>
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              הושלמו: <strong style={{ color: 'var(--success)' }}>{completedLessons.length}/{lessons.length - 2} שיעורים</strong>
+              הושלמו: <strong style={{ color: 'var(--success)' }}>{completedLessons.length}/{activeLessonsCount} שיעורים</strong>
             </div>
           </div>
         </div>
@@ -135,7 +145,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {reviewConcepts.map((concept) => {
               const lessonName = lessons.find((l) => l.id === concept.lessonId)?.titleHe || 'מושג מותאם אישית';
-              const savedNote = userNotes[concept.id];
+              const savedNote = (userNotes && typeof userNotes === 'object') ? userNotes[concept.id] : undefined;
 
               return (
                 <div
