@@ -5,9 +5,10 @@ import { LessonViewer } from './components/LessonViewer';
 import { Glossary } from './components/Glossary';
 import { QuizManager } from './components/QuizManager';
 import { ErrorLab } from './components/ErrorLab';
+import { ProgressPage } from './components/ProgressPage';
 import type { Concept, Lesson } from './types/validationData';
 import { initialLessons, initialConcepts } from './data/initialData';
-import { BookOpen, Layers, ShieldAlert, HelpCircle } from 'lucide-react';
+import { BookOpen, Layers, ShieldAlert, HelpCircle, Trophy } from 'lucide-react';
 import './index.css';
 
 function App() {
@@ -134,6 +135,16 @@ function App() {
             completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
           />
         )}
+
+        {activeTab === 'progress' && (
+          <ProgressPage
+            lessons={lessons}
+            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
+            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
+            onSelectTab={setActiveTab}
+            onSelectLesson={handleSelectLessonFromDashboard}
+          />
+        )}
       </main>
 
       {/* Premium Footer */}
@@ -181,6 +192,14 @@ function App() {
         >
           <Layers size={20} />
           <span>מושגים</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'progress' ? 'active' : ''}`}
+          onClick={() => setActiveTab('progress')}
+        >
+          <Trophy size={20} />
+          <span>התקדמות</span>
         </button>
 
         <button

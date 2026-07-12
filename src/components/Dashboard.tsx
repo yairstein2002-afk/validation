@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Lesson, Concept } from '../types/validationData';
-import { ArrowLeft, CheckCircle2, ShieldCheck, Smartphone, Info, Bookmark, Trash2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, Smartphone, Info, Bookmark, Trash2, Folder, FolderOpen, Lock, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface DashboardProps {
   lessons: Lesson[];
@@ -22,6 +22,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onToggleMarkConcept
 }) => {
   const [userNotes, setUserNotes] = useState<{ [key: string]: string }>({});
+  const [expandedModules, setExpandedModules] = useState<number[]>([0]); // Expand first chapter by default
 
   useEffect(() => {
     const storedNotes = localStorage.getItem('validation_notes');
@@ -50,9 +51,51 @@ export const Dashboard: React.FC<DashboardProps> = ({
     return completed.includes(lessonId);
   };
 
+  const toggleModule = (idx: number) => {
+    if (expandedModules.includes(idx)) {
+      setExpandedModules(expandedModules.filter(i => i !== idx));
+    } else {
+      setExpandedModules([...expandedModules, idx]);
+    }
+  };
+
   const currentMarked = Array.isArray(markedConceptIds) ? markedConceptIds : [];
   const reviewConcepts = concepts.filter((c) => currentMarked.includes(c.id));
   const activeLessonsCount = lessons.filter(l => !l.isPlanned).length;
+
+  // Group lessons by Modules (Folders/Chapters)
+  const modules = [
+    {
+      name: 'תיקייה 1: מבוא לעולם המעבדים וארכיטקטורה',
+      lessonIds: ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'l9', 'l10', 'l11', 'l12'],
+      desc: 'יסודות המעבד, מחזור הפקודה ויחידות החישוב והפענוח.'
+    },
+    {
+      name: 'תיקייה 2: היררכיית הזיכרון והאחסון',
+      lessonIds: ['l13', 'l14', 'l15', 'l16', 'l17', 'l18', 'l19', 'l20', 'l21', 'l22'],
+      desc: 'זכרונות מטמון (Caches), עקביות זיכרון, בקר הזיכרון ותהליך ה-Boot.'
+    },
+    {
+      name: 'תיקייה 3: לוחות אם, ממשקים ופסיקות',
+      lessonIds: ['l23', 'l24', 'l25', 'l26', 'l27', 'l28', 'l29', 'l30', 'l31'],
+      desc: 'PCIe, USB, NVMe, פסיקות חומרה וגישה ישירה (DMA).'
+    },
+    {
+      name: 'תיקייה 4: ניהול כוח, תזמון ושעונים',
+      lessonIds: ['l32', 'l33', 'l34', 'l35', 'l36', 'l37', 'l38'],
+      desc: 'מחזורי שעון, Clock/Power Gating, מצבי שינה (C-States/P-States) ו-VRM.'
+    },
+    {
+      name: 'תיקייה 5: עקרונות הולידציה והבדיקות',
+      lessonIds: ['l39', 'l40', 'l41', 'l42', 'l43', 'l44', 'l45', 'l46', 'l47', 'l48', 'l49', 'l50', 'l51'],
+      desc: 'מתודולוגיות Pre-Silicon ו-Post-Silicon, בדיקות מאמץ ואימות ממשקים.'
+    },
+    {
+      name: 'תיקייה 6: שלמות אותות, CDC ודיבאג מעבדה',
+      lessonIds: ['l52', 'l53', 'l54', 'l55', 'l56', 'l57', 'l58', 'l59', 'l60'],
+      desc: 'Signal Integrity, CDC, כלי דיבאג (JTAG/Oscilloscope) ושגרת המעבדה.'
+    }
+  ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -140,7 +183,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div>
             <h4 style={{ fontSize: '0.9rem', fontWeight: 'bold', marginBottom: '4px' }}>💡 איך ללמוד נכון?</h4>
             <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-              מתקדמים לפי הסדר: קודם מבינים את הבסיס, אחר כך את תהליך העבודה, ורק אז את הכלים. **אם מושג לא ברור — סמן אותו לחזרה (🔖) וכתוב עליו הערה אישית!**
+              פתחו את אחת מ-6 תיקיות הלימוד במסלול. השלימו את כרטיסיות המושגים, רשמו הערות ועברו את מבחן הסיכום כדי לפתוח את השיעור הבא.
             </p>
           </div>
         </div>
@@ -212,70 +255,125 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       )}
 
-      {/* Logical Pathway */}
+      {/* Logical Pathway - Collapsible Folders */}
       <div>
-        <h3 style={{ fontSize: '1.15rem', marginBottom: '16px', fontWeight: 'bold' }}>מסלול הלמידה הלוגי</h3>
+        <h3 style={{ fontSize: '1.15rem', marginBottom: '16px', fontWeight: 'bold' }}>תיקיות לימוד ומסלול התקדמות</h3>
 
-        <div className="lessons-grid">
-          {lessons.map((lesson, index) => {
-            const locked = isLessonLocked(lesson);
-            const done = getLessonProgress(lesson.id);
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {modules.map((mod, modIdx) => {
+            const isExpanded = expandedModules.includes(modIdx);
+            const modLessons = lessons.filter(l => mod.lessonIds.includes(l.id));
+            const completedInMod = modLessons.filter(l => completedLessons.includes(l.id)).length;
 
             return (
-              <div
-                key={lesson.id}
-                onClick={() => !locked && !lesson.isPlanned && onSelectLesson(lesson.id)}
-                className={`glass-card ${locked || lesson.isPlanned ? '' : 'glass-card-interactive'}`}
-                style={{
-                  padding: '16px',
-                  borderRight: lesson.isPlanned
-                    ? '4px solid var(--text-muted)'
-                    : done
-                    ? '4px solid var(--success)'
-                    : locked
-                    ? '4px solid var(--text-muted)'
-                    : '4px solid var(--primary)',
-                  opacity: locked || lesson.isPlanned ? 0.6 : 1,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: '12px'
+              <div 
+                key={modIdx} 
+                className="glass-card" 
+                style={{ 
+                  padding: '0', 
+                  overflow: 'hidden', 
+                  borderRadius: 'var(--radius-md)', 
+                  border: isExpanded ? '1px solid rgba(6, 182, 212, 0.25)' : '1px solid var(--border-color)' 
                 }}
               >
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                      {index + 1}.
-                    </span>
-                    <h4 style={{ fontSize: '0.92rem', fontWeight: 'bold' }}>
-                      {lesson.titleHe}
-                    </h4>
+                {/* Folder Header Row */}
+                <div 
+                  onClick={() => toggleModule(modIdx)}
+                  style={{ 
+                    padding: '16px 20px', 
+                    background: isExpanded ? 'rgba(6, 182, 212, 0.04)' : 'rgba(255, 255, 255, 0.01)', 
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    {isExpanded ? (
+                      <FolderOpen size={22} style={{ color: 'var(--primary)' }} />
+                    ) : (
+                      <Folder size={22} style={{ color: 'var(--text-muted)' }} />
+                    )}
+                    <div>
+                      <h4 style={{ fontSize: '0.96rem', fontWeight: 'bold', color: '#fff' }}>{mod.name}</h4>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{mod.desc}</p>
+                    </div>
                   </div>
-                  <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', direction: 'ltr', textAlign: 'right', marginBottom: '8px' }}>
-                    {lesson.title}
-                  </p>
-                  
-                  {lesson.isPlanned ? (
-                    <span className="badge badge-cyan" style={{ background: 'rgba(234, 179, 8, 0.1)', color: '#eab308', borderColor: 'rgba(234, 179, 8, 0.2)', padding: '1px 4px' }}>
-                      בקרוב - שיעור מתוכנן
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span className="badge badge-cyan" style={{ fontSize: '0.66rem' }}>
+                      {completedInMod} / {modLessons.length} הושלמו
                     </span>
-                  ) : locked ? (
-                    <span className="badge badge-danger" style={{ color: 'var(--text-muted)', borderColor: 'var(--border-color)', background: 'transparent', padding: '1px 4px' }}>
-                      נעול - דורש שיעור קודם
-                    </span>
-                  ) : done ? (
-                    <span className="badge badge-success" style={{ padding: '1px 4px' }}>
-                      הושלם
-                    </span>
-                  ) : (
-                    <span className="badge badge-cyan" style={{ padding: '1px 4px' }}>
-                      זמין
-                    </span>
-                  )}
+                    {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </div>
                 </div>
 
-                {!locked && !lesson.isPlanned && (
-                  <ArrowLeft size={16} style={{ color: 'var(--primary)', transform: 'scaleX(-1)', flexShrink: 0 }} />
+                {/* Folder Body (List of Lessons) */}
+                {isExpanded && (
+                  <div style={{ padding: '16px 20px', borderTop: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.1)' }}>
+                    <div className="lessons-grid">
+                      {modLessons.map((lesson) => {
+                        const locked = isLessonLocked(lesson);
+                        const done = getLessonProgress(lesson.id);
+
+                        return (
+                          <div
+                            key={lesson.id}
+                            onClick={() => !locked && !lesson.isPlanned && onSelectLesson(lesson.id)}
+                            className={`glass-card ${locked || lesson.isPlanned ? '' : 'glass-card-interactive'}`}
+                            style={{
+                              padding: '12px 16px',
+                              background: 'rgba(15, 15, 20, 0.5)',
+                              borderRight: lesson.isPlanned
+                                ? '4px solid var(--text-muted)'
+                                : done
+                                ? '4px solid var(--success)'
+                                : locked
+                                ? '4px solid var(--text-muted)'
+                                : '4px solid var(--primary)',
+                              opacity: locked || lesson.isPlanned ? 0.6 : 1,
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              gap: '12px'
+                            }}
+                          >
+                            <div style={{ flex: 1 }}>
+                              <h5 style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#fff', marginBottom: '2px' }}>
+                                {lesson.titleHe}
+                              </h5>
+                              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', direction: 'ltr', textAlign: 'right', marginBottom: '6px' }}>
+                                {lesson.title}
+                              </p>
+                              
+                              {lesson.isPlanned ? (
+                                <span className="badge badge-cyan" style={{ background: 'rgba(234, 179, 8, 0.1)', color: '#eab308', borderColor: 'rgba(234, 179, 8, 0.2)', padding: '0 4px', fontSize: '0.62rem' }}>
+                                  בקרוב
+                                </span>
+                              ) : locked ? (
+                                <span className="badge badge-danger" style={{ color: 'var(--text-muted)', borderColor: 'var(--border-color)', background: 'transparent', padding: '0 4px', fontSize: '0.62rem', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                  <Lock size={8} /> נעול (השלם שיעור קודם)
+                                </span>
+                              ) : done ? (
+                                <span className="badge badge-success" style={{ padding: '0 4px', fontSize: '0.62rem' }}>
+                                  הושלם
+                                </span>
+                              ) : (
+                                <span className="badge badge-cyan" style={{ padding: '0 4px', fontSize: '0.62rem' }}>
+                                  זמין
+                                </span>
+                              )}
+                            </div>
+
+                            {!locked && !lesson.isPlanned && (
+                              <ArrowLeft size={14} style={{ color: 'var(--primary)', transform: 'scaleX(-1)', flexShrink: 0 }} />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
               </div>
             );
