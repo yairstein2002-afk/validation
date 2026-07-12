@@ -364,28 +364,160 @@ export const initialLessons: Lesson[] = [
     ]
   },
   {
-    id: 'l_future_1',
-    title: 'Advanced Error Injection & Silicon Debug hooks',
-    titleHe: 'הזרקת שגיאות מתקדמת ודיבאג חומרה',
-    description: 'שימוש בכלי חומרה מתקדמים ובמנגנוני הזרקה כדי לעורר ולנטר באגים מורכבים בסיליקון.',
-    whyItIsHere: 'שיעור עתידי מתוכנן. ייפתח בעדכונים הבאים לאחר השלמת הבסיס.',
-    prerequisites: ['l7'],
-    videoUrl: '',
-    conceptIds: [],
-    quizQuestions: [],
-    isPlanned: true
+    id: 'l8',
+    title: 'Signal Integrity & Oscilloscope Analysis',
+    titleHe: 'שלמות אות (Signal Integrity) ואבחון באוסילוסקופ',
+    description: 'לימוד תחום ה-Electrical Validation (EV), ביצוע Margining של מתחים ותדרים, וניתוח איכות הסיגנל החשמלי במעבדה.',
+    whyItIsHere: 'לאחר שהבנו את בעיות הלוגיקה והתוכנה, שיעור זה מציג את עולם הולידציה החשמלית (EV). הבנת שלמות אותות, רעשי קווי תקשורת ודיאגרמות עין (Eye Diagrams) חיונית לפתרון באגים פיזיקליים מורכבים במעבדות אינטל.',
+    prerequisites: ['l2', 'l7'],
+    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    diagram: {
+      title: 'תהליך ניתוח איכות סיגנל חשמלי במעבדה',
+      nodes: [
+        { id: 'n1', label: 'Signal Probe Placement (מיקום פרוב המדידה)', type: 'input' },
+        { id: 'n2', label: 'Eye Diagram Generation (יצירת דיאגרמת עין)', type: 'process' },
+        { id: 'n3', label: 'Measure Jitter & Cross-talk (מדידת רעש ותזמון)', type: 'decision' },
+        { id: 'n4', label: 'Adjust Tx Equalization (כיוונון מקור האות)', type: 'process' },
+        { id: 'n5', label: 'Signal Integrity Validated (שלמות אות מאושרת)', type: 'output' }
+      ],
+      edges: [
+        { from: 'n1', to: 'n2' },
+        { from: 'n2', to: 'n3' },
+        { from: 'n3', to: 'n4' },
+        { from: 'n4', to: 'n5' }
+      ]
+    },
+    conceptIds: ['c_ev', 'c_margining', 'c_jitter', 'c_crosstalk', 'c_eye_diagram', 'c_isi', 'c_impedance', 'c_probe_loading', 'c_reflection'],
+    quizQuestions: [
+      {
+        id: 'q8_1',
+        question: 'מה מייצגת "דיאגרמת עין" (Eye Diagram) בוולידציה חשמלית?',
+        options: [
+          'תרשים המציג את תפקוד המעבד תחת עיני מצלמה תרמית.',
+          'הצגה חזותית מרובדת של אותות דיגיטליים מהירים המציגה את מרווח הרעש (גובה העין) ומרווח התזמון (רוחב העין) של קווי התקשורת.',
+          'תרשים זרימת קוד ה-BIOS.',
+          'מערכת לכיול מהירות הדיסק הקשיח.'
+        ],
+        correctIndex: 1,
+        explanation: 'דיאגרמת עין נוצרת על ידי שילוב של אלפי מחזורי אות על גבי מסך אוסילוסקופ מהיר. היא מאפשרת להעריך במבט אחד את יציבות האות ורמות הרעש.'
+      },
+      {
+        id: 'q8_2',
+        question: 'מהו Jitter בהקשר של שלמות אותות?',
+        options: [
+          'תדר השעון המקסימלי של המעבד.',
+          'סטייה קצרת טווח ולא רצויה של האות החשמלי מזמני האתחול והמעבר האידיאליים שלו.',
+          'הפרש המתחים בין סוללת ה-CMOS ללוח.',
+          'מנגנון הגנה מפני חום יתר.'
+        ],
+        correctIndex: 1,
+        explanation: 'Jitter הוא רעש תזמון בציר הזמן (Phase Noise). הוא גורם למעברים של הביטים להתרחש מוקדם או מאוחר מדי, מה שעלול לגרום לשגיאות בקריאת הנתונים.'
+      }
+    ]
   },
   {
-    id: 'l_future_2',
-    title: 'Electrical & Thermal Margining',
-    titleHe: 'בדיקות Margining חשמליות ותרמיות',
-    description: 'לימוד כיול מתחים וטמפרטורות קיצון למציאת גבולות היציבות של המעבד.',
-    whyItIsHere: 'שיעור עתידי מתוכנן. ייפתח בעדכונים הבאים.',
-    prerequisites: ['l7'],
-    videoUrl: '',
-    conceptIds: [],
-    quizQuestions: [],
-    isPlanned: true
+    id: 'l9',
+    title: 'Workloads, Stress Testing & Functional Coverage',
+    titleHe: 'עומסי עבודה (Workloads), בדיקות מאמץ וכיסוי פונקציונלי',
+    description: 'לימוד שיטות ה-Functional Validation (FV), הרצת עומסי עבודה מיוחדים, ומדידת אחוזי הכיסוי הלוגי של הבדיקות.',
+    whyItIsHere: 'במקום התשיעי מכיוון שלאחר שהבטחנו שכל הפינים החשמליים יציבים (שיעור 8), אנו עוברים לוולידציה פונקציונלית מלאה (FV). אנו רוצים להפעיל את המעבד בלוגיקה המורכבת ביותר שלו, לאתר באגים בצינורות העיבוד ולהבטיח שכל תכונות הסיליקון נבדקו.',
+    prerequisites: ['l1', 'l7', 'l8'],
+    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    diagram: {
+      title: 'מחזור הרצת בדיקות פונקציונליות ואיסוף כיסוי',
+      nodes: [
+        { id: 'n1', label: 'Select Target Workload (בחירת עומס עבודה)', type: 'input' },
+        { id: 'n2', label: 'Stress Testing Loop (לולאת בדיקת מאמץ)', type: 'process' },
+        { id: 'n3', label: 'Collect Coverage Logs (איסוף נתוני כיסוי)', type: 'process' },
+        { id: 'n4', label: 'Identify Corner Cases (איתור מקרי קצה שלא נבדקו)', type: 'decision' },
+        { id: 'n5', label: 'Release Regression Pass (אישור הרצת רגרסיה)', type: 'output' }
+      ],
+      edges: [
+        { from: 'n1', to: 'n2' },
+        { from: 'n2', to: 'n3' },
+        { from: 'n3', to: 'n4' },
+        { from: 'n4', to: 'n5' }
+      ]
+    },
+    conceptIds: ['c_fv', 'c_workloads', 'c_stress', 'c_coverage', 'c_assertions', 'c_random_test', 'c_corner_cases', 'c_regressions', 'c_test_suite'],
+    quizQuestions: [
+      {
+        id: 'q9_1',
+        question: 'למה משמש ה-Functional Coverage (כיסוי פונקציונלי) בוולידציה?',
+        options: [
+          'לכיסוי גוף המעבד במפזר חום.',
+          'מדד כמותי המראה אילו מצבי מערכת, מעברי רגיסטרים ושילובי פקודות נבדקו בפועל מתוך כל המצבים האפשריים המוגדרים במפרט.',
+          'לרישום שעות העבודה של צוות המעבדה.',
+          'למדידת אחוזי היעילות של ספק הכוח.'
+        ],
+        correctIndex: 1,
+        explanation: 'כיסוי פונקציונלי מאפשר למהנדסים לדעת אם ישנם תרחישים לוגיים במעבד שעדיין לא נבדקו כלל. ללא מדידת כיסוי, לא ניתן לדעת אם הבדיקות יסודיות מספיק.'
+      },
+      {
+        id: 'q9_2',
+        question: 'מה מאפיין בדיקות מאמץ (Stress Testing) פונקציונליות?',
+        options: [
+          'הרצת תסריטי בדיקה איטיים מאוד בלבד.',
+          'יצירת תנאי עומס קיצוניים במקביל (למשל: תעבורת זיכרון כבדה, הרצת קוד מתמטי ומעברי כוח מהירים בו-זמנית) במטרה לאתר באגים לוגיים הנוצרים רק בתרחישים כאלו.',
+          'מדידת גובה הלוח במעבדה.',
+          'כיבוי ה-SUT לזמן ממושך.'
+        ],
+        correctIndex: 1,
+        explanation: 'בדיקות מאמץ פונקציונליות מנסות "לדחוף" את המעבד לקצה גבול היכולת הלוגי והזמני שלו כדי לעורר באגים שקשורים להתנגשויות משאבים ותקשורת פנימית.'
+      }
+    ]
+  },
+  {
+    id: 'l10',
+    title: 'Triage, NGA & Automation Infrastructure',
+    titleHe: 'טריאז\' (Triage), מערכת NGA ואוטומציית בדיקות',
+    description: 'לימוד מתודולוגיית סיווג התקלות (Triage), ניתוח לוגים אוטומטי, ושימוש במערכת ה-NGA לניהול הרצות מעבדה בקנה מידה ענק.',
+    whyItIsHere: 'בסיום המסלול, אנו מגיעים לשיעור האינטגרציה והאוטומציה הגדול ביותר. מהנדס וולידציה באינטל אינו מריץ רק בדיקות ידניות; עליו לדעת כיצד לנהל אלפי הרצות אוטומטיות ב-NGA, לנתח כשלי לוגים מבוזרים (Triage) ולדווח על Sightings בצורה מקצועית.',
+    prerequisites: ['l6', 'l9'],
+    videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
+    diagram: {
+      title: 'מחזור חיים של תקלה במערכת NGA',
+      nodes: [
+        { id: 'n1', label: 'NGA Run Failure (נפילת בדיקה באוטומציה)', type: 'input' },
+        { id: 'n2', label: 'Triage (סיווג ראשוני של לוגים)', type: 'process' },
+        { id: 'n3', label: 'Reproduce on BKC (שחזור על גרסה מוכרת)', type: 'decision' },
+        { id: 'n4', label: 'File Sighting (פתיחת דיווח באג רשמי)', type: 'process' },
+        { id: 'n5', label: 'Fix Verification (אימות ותיקון הבאג)', type: 'output' }
+      ],
+      edges: [
+        { from: 'n1', to: 'n2' },
+        { from: 'n2', to: 'n3' },
+        { from: 'n3', to: 'n4' },
+        { from: 'n4', to: 'n5' }
+      ]
+    },
+    conceptIds: ['c_nga', 'c_triage', 'c_fail_rate', 'c_defect', 'c_log_analysis', 'c_automation_script', 'c_runtime', 'c_sighting'],
+    quizQuestions: [
+      {
+        id: 'q10_1',
+        question: 'מה תפקידו של ה-Triage (טריאז\') בעבודת מהנדס הוולידציה?',
+        options: [
+          'לנקות את רכיבי החומרה במעבדה.',
+          'תהליך האבחון, המיון והסיווג של כשלי בדיקות במטרה לקבוע אם מדובר בבעיית תוכנה, בעיית חומרת לוח, בעיית הגדרת סביבה או באג אמיתי בסיליקון.',
+          'חלוקת המעבדים לפי מהירות ייצור.',
+          'טעינת קבצי ה-BIOS מרחוק.'
+        ],
+        correctIndex: 1,
+        explanation: 'טריאז\' הוא תהליך סינון קריטי. מתוך אלפי כישלונות באוטומציה, המהנדס מנתח את הלוגים כדי לבודד את הגורם האמיתי ולשייך את התקלה לצוות הנכון.'
+      },
+      {
+        id: 'q10_2',
+        question: 'מהי מערכת NGA (Next Generation Automation) של אינטל?',
+        options: [
+          'ספריית קוד לגרפיקה.',
+          'פלטפורמת אוטומציה מרכזית לניהול, תזמון, הרצה ואיסוף תוצאות של מיליוני בדיקות וולידציה על גבי אלפי לוחות SUT מבוזרים ברחבי המעבדות.',
+          'תוכנה לציור תרשימים זורמים.',
+          'כלי להתקנת דרייברים על הנייד.'
+        ],
+        correctIndex: 1,
+        explanation: 'NGA היא מערכת האוטומציה המרכזית שמאפשרת לצוותי הולידציה להריץ בדיקות בקנה מידה עצום 24/7 ללא מגע יד אדם, ולרכז את כל תוצאות הבדיקה במאגר נתונים אחד.'
+      }
+    ]
   }
 ];
 
@@ -427,7 +559,7 @@ export const initialConcepts: Concept[] = [
     id: 'c_plc',
     term: 'Product Life Cycle (PLC)',
     lessonId: 'l1',
-    definition: 'מחזור חיי המוצר - משלב התכנון, דרך הייצור, הבדיקות במעבדה ועד המכירה בשוק.',
+    definition: 'מחזור חיי המוצר - מששלב התכנון, דרך הייצור, הבדיקות במעבדה ועד המכירה בשוק.',
     definitionHighLevel: 'שלבי התקדמות הפיתוח של המעבד: Pre-Silicon, Tape-Out (TO), בדיקות סיליקון מוקדם (A0 Stepping), הסמכה (Qualification) וייצור המוני (PRQ).',
     context: 'לכל שלב ב-PLC יש יעדי איכות וקומפילציה שונים (לדוגמה, ייצוב הבוט בשלב ES1 מול בדיקות מאמץ מלאות בשלב QS).'
   },
@@ -449,7 +581,7 @@ export const initialConcepts: Concept[] = [
   },
   {
     id: 'c_qual',
-    term: 'Qualification (הסמכה)',
+    term: 'Qualification',
     lessonId: 'l1',
     definition: 'סדרת בדיקות איכות קפדניות שנועדו לוודא שהמעבד אמין מספיק כדי להימכר ללקוחות.',
     definitionHighLevel: 'שלב אימות רשמי שבו המעבד נדרש לעמוד בכל מדדי האמינות, התקינות והעומס החשמלי/לוגי שנקבעו לו.',
@@ -465,7 +597,7 @@ export const initialConcepts: Concept[] = [
   },
   {
     id: 'c_prq',
-    term: 'PRQ (Production Release Qualification)',
+    term: 'PRQ',
     lessonId: 'l1',
     definition: 'האישור הסופי המאשר שהמעבד מוכן למכירה המונית בחנויות.',
     definitionHighLevel: 'The final quality gate indicating that the silicon, microcode patches and software stack comply with shipping criteria.',
@@ -555,7 +687,7 @@ export const initialConcepts: Concept[] = [
   },
   {
     id: 'c_llc',
-    term: 'LLC (Last Level Cache)',
+    term: 'LLC',
     lessonId: 'l2',
     definition: 'זיכרון המטמון המשותף והגדול ביותר במעבד (L3 Cache) המשפר את מהירות הגישה לנתונים.',
     definitionHighLevel: 'The largest on-die cache layer shared among all cores on the ring bus, partitioned into associative slices.',
@@ -605,7 +737,7 @@ export const initialConcepts: Concept[] = [
   },
   {
     id: 'c_mrc',
-    term: 'MRC (Memory Reference Code)',
+    term: 'MRC',
     lessonId: 'l3',
     definition: 'קוד ה-BIOS האחראי על איתור, הגדרה ואימון של זיכרון ה-DDR בלוח.',
     definitionHighLevel: 'A firmware library initializing the DDR interfaces, optimizing electrical eyes, signal alignment, and delays.',
@@ -681,7 +813,7 @@ export const initialConcepts: Concept[] = [
     id: 'c_ucode_path',
     term: 'Microcode Path',
     lessonId: 'l4',
-    definition: 'נתיב החומרה הפנימי המשתמש בקוד המיקרוקוד לביצוע פקודות מורכבות במעבד.',
+    definition: 'הקשר הפנימי בתוך מפענח המעבד המפנה פקודות מורכבות אל יחידת המיקרוקוד ROM.',
     definitionHighLevel: 'The decoding pathway routing complex instructions to the microcode ROM sequencer instead of direct hardware decoding.',
     context: 'בדיקות וולידציה מריצות פקודות מורכבות במיוחד כדי לוודא שאין חריגות תזמון בנתיב המיקרוקוד.'
   },
@@ -721,9 +853,9 @@ export const initialConcepts: Concept[] = [
     id: 'c_fit',
     term: 'FIT',
     lessonId: 'l4',
-    definition: 'טבלה מובנית בקוד ה-BIOS במיקום קבוע, המכילה הצבעות לקבצי קושחה חיוניים כמו קוד מיקרוקוד ובקר CSME.',
-    definitionHighLevel: 'A static data structure located at a predefined offset in the BIOS flash memory. The CPU hardware controller reads the FIT table directly at power-on to locate and load early firmware patches (like microcode and ACM) before executing the reset vector.',
-    context: 'טבלה פגומה ב-FIT תגרום למערכת לא לעלות מתח או להיתקע מיד ללא POST codes.'
+    definition: 'טבלה ב-BIOS המכילה את כל הכתובות של רכיבי הקושחה המוקדמים שהמעבד צריך לקרוא בזמן האתחול.',
+    definitionHighLevel: 'Firmware Interface Table. A static directory structured at a fixed flash offset, pointing to microcode updates and ACM security binaries.',
+    context: 'טבלה לא תקינה ב-FIT תמנע את טעינת המיקרוקוד בבוט ותגרום למערכת לא לעלות.'
   },
 
   // Lesson 5
@@ -797,7 +929,7 @@ export const initialConcepts: Concept[] = [
     lessonId: 'l5',
     definition: 'מצב מיוחד של הפחתת צריכת האנרגיה של השבב בתנאי קיצון.',
     definitionHighLevel: 'A physical hardware protection mechanism which reduces core frequencies in single clock cycles when current limits are exceeded.',
-    context: 'משמש להגנה על מייצבי המתח שעל הלוח מפני פיצוץ או שריפה בעת הרצת אפליקציות מאמץ קיצוניות.'
+    context: 'משמש להגנה על מייצבי המתח שעל הלוח מפני פיצוץ או שריפה בעת הרצת אספקת כוח מאמץ קיצונית.'
   },
   {
     id: 'c_sst',
@@ -943,7 +1075,7 @@ export const initialConcepts: Concept[] = [
     lessonId: 'l6',
     definition: 'מכשיר חומרה ייעודי המתחבר ללוח הבדיקה ומקשר בין ממשק הדיבאג של המעבד לשרת הדיבאג במחשב.',
     definitionHighLevel: 'Intel In-Target Probe. The hardware connection device translating host debugger packets into JTAG interface signals.',
-    context: 'בדיבאג מעשי אנו מריצים פקודות PythonSV דרך ה-ITP כדי לשלוט במחזור השעון של ה-SUT.'
+    context: 'בדיעבד אנו מריצים פקודות PythonSV דרך ה-ITP כדי לשלוט במחזור השעון של ה-SUT.'
   },
 
   // Lesson 7
@@ -1026,6 +1158,220 @@ export const initialConcepts: Concept[] = [
     definition: 'מנגנון בטיחות המוריד את מהירות המעבד כשהוא מתחמם מדי כדי למנוע נזק.',
     definitionHighLevel: 'PROCHOT# signal assert driving duty cycle scaling controlled by PCU to drop TDP during hot junction limits.',
     context: 'אנו מוודאים שהמעבד מפעיל את מנגנון ה-Throttling בטמפרטורה הנכונה ואינו קורס עקב שינויי מתח מהירים.'
+  },
+
+  // Lesson 8
+  {
+    id: 'c_ev',
+    term: 'Electrical Validation (EV)',
+    lessonId: 'l8',
+    definition: 'בדיקת המאפיינים החשמליים הפיזיים של המעבד (מתחים, זמנים ושלמות האות) כדי לוודא עמידה בתקני חומרה.',
+    definitionHighLevel: 'The verification of physical layer analog characteristics including voltage tolerances, transition times, and signal integrity constraints.',
+    context: 'במעבדת EV משתמשים באוסילוסקופים מהירים של GHz כדי למדוד סיגנלים ישירות מקווי הלוח.'
+  },
+  {
+    id: 'c_margining',
+    term: 'Margining',
+    lessonId: 'l8',
+    definition: 'בדיקת גבולות היציבות של המעבד על ידי שינוי יזום של מתח העבודה ותדר השעון עד שמתקבלות שגיאות.',
+    definitionHighLevel: 'The methodical process of sweeping voltage and frequency coordinates to determine the safe operational boundary (V-F curve) of silicon logic.',
+    context: 'מריצים בדיקות Margining אוטומטיות כדי לוודא שיש מרווח בטיחות (Guardband) מספיק בין תדר העבודה לנקודת הכשל.'
+  },
+  {
+    id: 'c_jitter',
+    term: 'Jitter',
+    lessonId: 'l8',
+    definition: 'סטייה קצרת טווח בזמנים של האות החשמלי, שעלולה לגרום לשגיאות בקריאת נתונים מהירה.',
+    definitionHighLevel: 'The short-term variations of a signal\'s significant instants from their ideal positions in time (deterministic and random jitter components).',
+    context: 'מדידת Jitter מבוצעת על קווי תקשורת מהירים כמו PCIe ו-DDR כדי להבטיח מרווח זמן (Setup/Hold) תקין.'
+  },
+  {
+    id: 'c_crosstalk',
+    term: 'Cross-talk',
+    lessonId: 'l8',
+    definition: 'הפרעה אלקטרומגנטית שנגרמת עקב מעבר אות בקו תקשורת שכן, המשבשת את האות בקו המטרה.',
+    definitionHighLevel: 'The undesired electromagnetic coupling between parallel PCB traces or silicon interconnect metal lines (victim and aggressor lines).',
+    context: 'מזעור Cross-talk נעשה על ידי תכנון נכון של מרווחי הולכה בלוח (PCB design) ובדיקה שלו על ידי שליחת פטרנים רועשים במיוחד.'
+  },
+  {
+    id: 'c_eye_diagram',
+    term: 'Eye Diagram',
+    lessonId: 'l8',
+    definition: 'תרשים ויזואלי באוסילוסקופ המציג את איכות האות הדיגיטלי המהיר בצורה של עין פתוחה.',
+    definitionHighLevel: 'An oscilloscope display representation created by overlapping repetitive sweeps of a high-speed data stream to visualize timing and voltage noise margins.',
+    context: 'עין פתוחה ונקייה מעידה על שלמות אותות מעולה, בעוד עין סגורה מעידה על רעשים ושגיאות ביט (Bit Errors).'
+  },
+  {
+    id: 'c_isi',
+    term: 'Inter-Symbol Interference (ISI)',
+    lessonId: 'l8',
+    definition: 'הפרעה שבה ביטים קודמים שנשלחו בקו משפיעים על המתח של הביט הנוכחי ומשבשים אותו.',
+    definitionHighLevel: 'A distortion of a signal in which one symbol (bit) interferes with subsequent symbols due to channel dispersion and reflection characteristics.',
+    context: 'שימוש במנגנוני Equalization (כמו CTLE או DFE) מיושם בבקר המעבד כדי לפצות על השפעות ה-ISI.'
+  },
+  {
+    id: 'c_impedance',
+    term: 'Impedance Matching',
+    lessonId: 'l8',
+    definition: 'התאמת ההתנגדות החשמלית של קווי ההולכה כדי למנוע החזרות אותות ורעשים בממשקים מהירים.',
+    definitionHighLevel: 'The practice of designing transmission line characteristic impedance to match source and load termination values (typically 50 or 85 ohms).',
+    context: 'חוסר התאמת עכבות גורם להחזרי אותות (Reflections) שיוצרים עיוותים ורעש קשה בדיאגרמת העין.'
+  },
+  {
+    id: 'c_probe_loading',
+    term: 'Probe Loading',
+    lessonId: 'l8',
+    definition: 'השפעה חשמלית שלילית שפרוב המדידה של האוסילוסקופ יוצר על קו התקשורת בזמן הבדיקה.',
+    definitionHighLevel: 'The distortion introduced to a circuit under test by the capacitive, resistive and inductive parameters of the measuring scope probe.',
+    context: 'בעבודה עם ממשקים מהירים מאוד, משתמשים בפרובים אקטיביים עם התנגדות כניסה גבוהה במיוחד כדי למנוע Probe Loading שיכול להשבית את התקשורת.'
+  },
+  {
+    id: 'c_reflection',
+    term: 'Signal Reflection',
+    lessonId: 'l8',
+    definition: 'החזרה של האות החשמלי לאחור כאשר הוא נתקל בשינוי התנגדות בקו, בדומה להד של קול.',
+    definitionHighLevel: 'The fraction of an electromagnetic wave reflected back to the source due to impedance discontinuities along the transmission path.',
+    context: 'החזרים גורמים להפרעות קשות בשלמות האות ומאובחנים על ידי זיהוי עיוותים (Overshoot/Undershoot) בסיגנל.'
+  },
+
+  // Lesson 9
+  {
+    id: 'c_fv',
+    term: 'Functional Validation (FV)',
+    lessonId: 'l9',
+    definition: 'בדיקת תקינות הלוגיקה והמנגנונים הלוגיים של המעבד כדי לוודא שהוא מבצע את פקודותיו בצורה נכונה לחלוטין.',
+    definitionHighLevel: 'The process of verifying that the logical design of the SoC operates in strict compliance with the architectural specification.',
+    context: 'בדיקות FV מתמקדות במציאת באגים של קוד, רגיסטרים ותסריטי שימוש מורכבים במעבד.'
+  },
+  {
+    id: 'c_workloads',
+    term: 'Workloads',
+    lessonId: 'l9',
+    definition: 'תוכניות ועומסי עבודה מוגדרים שמריצים על המעבד כדי לבדוק את התפקוד והביצועים שלו.',
+    definitionHighLevel: 'The designated software programs, scripts or instruction streams executed on SUT to exercise specific processor subunits.',
+    context: 'אנו מריצים מגוון Workloads משרתים אמיתיים ומחקי משחקים כדי לבחון את יציבות הסיליקון.'
+  },
+  {
+    id: 'c_stress',
+    term: 'Stress Testing',
+    lessonId: 'l9',
+    definition: 'בדיקות מאמץ המפעילות לחץ כבד על כל יחידות המעבד במקביל כדי לעורר באגים שמתרחשים רק בעומס גבוה.',
+    definitionHighLevel: 'The validation technique of concurrently exercising multiple hardware blocks at maximum throughput limits to reveal synchronization failures.',
+    context: 'הרצת בדיקות Stress לאורך ימים (24/7) עוזרת לאתר באגים שקשורים להתנגשויות תקשורת פנימית.'
+  },
+  {
+    id: 'c_coverage',
+    term: 'Functional Coverage',
+    lessonId: 'l9',
+    definition: 'מדד המציג כמה אחוזים מתוך מגוון התרחישים הלוגיים האפשריים של המעבד נבדקו בפועל.',
+    definitionHighLevel: 'A quantitative metric measuring the percentage of architectural states and transition vectors exercised during execution.',
+    context: 'איסוף נתוני כיסוי מסייע לנו לכוון את הבדיקות הבאות אל עבר אזורים לוגיים שלא נבדקו כלל.'
+  },
+  {
+    id: 'c_assertions',
+    term: 'Hardware Assertions',
+    lessonId: 'l9',
+    definition: 'מנגנוני בקרה פנימיים בחומרת המעבד שמתריעים מיידית כאשר מתרחש מצב לוגי לא חוקי.',
+    definitionHighLevel: 'Declarative statements embedded inside logic designs verifying that specific structural properties hold true during execution cycles.',
+    context: 'כאשר Assertion מופעל, הוא מסייע למהנדסי הדיבאג לאתר את המיקום המדויק של הכשל מיד ברגע התרחשותו.'
+  },
+  {
+    id: 'c_random_test',
+    term: 'Constrained Random Testing',
+    lessonId: 'l9',
+    definition: 'שיטת בדיקה שבה מייצרים פקודות ותרחישים אקראיים תחת מגבלות לוגיות כדי למצוא באגים לא צפויים.',
+    definitionHighLevel: 'Generating pseudo-random instruction streams constrained within legal architecture boundaries to discover unpredicted bug states.',
+    context: 'זוהי השיטה היעילה ביותר למציאת באגים של שילובי פקודות נדירים שמהנדס אנושי לא היה חושב לכתוב באופן ידני.'
+  },
+  {
+    id: 'c_corner_cases',
+    term: 'Corner Cases',
+    lessonId: 'l9',
+    definition: 'מצבי כשל נדירים המתרחשים רק כאשר מספר פרמטרים קיצוניים מתקיימים במקביל (מתח נמוך, חום גבוה ועומס ספציפי).',
+    definitionHighLevel: 'Anomalous bugs manifested only at intersection points of multiple independent environmental and architectural parameters.',
+    context: 'איתור Corner Cases הוא היעד המרכזי של Post-Silicon Validation, שכן אלו באגים שסימולציות Pre-Silicon לרוב מפספסות.'
+  },
+  {
+    id: 'c_regressions',
+    term: 'Regression Testing',
+    lessonId: 'l9',
+    definition: 'הרצה מחדש של בדיקות קודמות כדי לוודא שתיקון באג מסוים לא קלקל או שבר רכיבים אחרים במעבד.',
+    definitionHighLevel: 'The validation phase of executing previously passed test suites to ensure new microcode or BIOS builds do not introduce functional regressions.',
+    context: 'בכל פעם שמקבלים גרסת מיקרוקוד (U-code patch) חדשה, מריצים Regression Suite מלא של כל בדיקות הבסיס.'
+  },
+  {
+    id: 'c_test_suite',
+    term: 'Test Suite',
+    lessonId: 'l9',
+    definition: 'חבילת בדיקות המרכזת קבוצה של תסריטי בדיקה ממוקדים עבור רכיב או תרחיש מוגדר.',
+    definitionHighLevel: 'A collection of test cases configured to verify a specific hardware IP block or platform configuration.',
+    context: 'לכל מהנדס הולידציה יש Test Suite המותאם לרכיב שהוא אחראי עליו (למשל: PCIe Test Suite).'
+  },
+
+  // Lesson 10
+  {
+    id: 'c_nga',
+    term: 'NGA (Next Generation Automation)',
+    lessonId: 'l10',
+    definition: 'מערכת האוטומציה המרכזית באינטל המנהלת ומריצה בדיקות וולידציה על אלפי מעבדים במקביל.',
+    definitionHighLevel: 'Intel proprietary distributed automation platform scheduling, executing, and logging test runs across global validation hardware targets.',
+    context: 'באמצעות ה-NGA, המהנדס יכול לשלוח הרצה של 500 בדיקות לביצוע על 20 SUTs שונים במעבדה בו-זמנית.'
+  },
+  {
+    id: 'c_triage',
+    term: 'Triage',
+    lessonId: 'l10',
+    definition: 'תהליך ניתוח הלוגים וסיווג כשלים במעבדה כדי לקבוע מה גרם לתקלה ומי הצוות שצריך לטפל בה.',
+    definitionHighLevel: 'The diagnostic categorization flow isolating execution logs to pinpoint whether a failure is host-related, code-related or silicon-related.',
+    context: 'הטריאז\' הוא השלב הראשון לאחר זיהוי נפילת בדיקה ב-NGA; הוא מונע בזבוז זמן על בדיקת בעיות שאינן באג אמיתי.'
+  },
+  {
+    id: 'c_fail_rate',
+    term: 'Fail Rate',
+    lessonId: 'l10',
+    definition: 'שיעור או אחוז הכישלונות של בדיקה מסוימת מתוך סך ההרצות שלה.',
+    definitionHighLevel: 'The statistical ratio of failed test runs compared to the total number of attempts on a specific silicon stepping and build configuration.',
+    context: 'בדיקה עם Fail Rate נמוך (למשל 1 ל-1000) מעידה על באג נדיר הדורש ניתוח מעמיק JTAG כדי לשחזר אותו.'
+  },
+  {
+    id: 'c_defect',
+    term: 'Defect Tracking',
+    lessonId: 'l10',
+    definition: 'מערכת לניהול, רישום ומעקב אחר באגים וליקויים שהתגלו בחומרה או בתוכנה.',
+    definitionHighLevel: 'The database system (such as Intel HSD-ES) documenting defect life cycles from discovery to root-cause and official fix closure.',
+    context: 'כאשר מהנדס הולידציה מוודא באג חומרה חדש, הוא פותח כרטיס באג במערכת ה-Defect Tracking ומצרף את כל ה-Crash logs.'
+  },
+  {
+    id: 'c_log_analysis',
+    term: 'Log Analysis',
+    lessonId: 'l10',
+    definition: 'ניתוח קבצי הטקסט והנתונים שהמערכת רושמת בזמן הבוט והריצה כדי לאבחן את סיבת הקריסה.',
+    definitionHighLevel: 'The analytical parse of serial console output, crash data registers, and OS kernel logs to reconstruct the failure event timeline.',
+    context: 'ניתוח לוגים אוטומטי בעזרת סקריפטים של Python מסייע לסנן רעשים ולזהות קודי שגיאה חבויים.'
+  },
+  {
+    id: 'c_automation_script',
+    term: 'Automation Scripting',
+    lessonId: 'l10',
+    definition: 'כתיבת קוד (לרוב ב-Python או Bash) המריץ בדיקות, משנה הגדרות ומנתח תוצאות ללא מגע יד אדם.',
+    definitionHighLevel: 'Developing executable program configurations orchestrating test loops, telemetry acquisition, and result uploading to central databases.',
+    context: 'כתיבת סקריפטים חוסכת שעות עבודה רבות ומאפשרת להריץ בדיקות רגרסיה מורכבות בלילה.'
+  },
+  {
+    id: 'c_runtime',
+    term: 'Run-time Environment',
+    lessonId: 'l10',
+    definition: 'סביבת התוכנה והחומרה שבה הבדיקה רצה בפועל (גרסת הלינוקס של SVOS, דרייברים וספריות תוכנה).',
+    definitionHighLevel: 'The execution framework containing compilers, interpreters, libraries, and kernel drivers defining the execution space on the target device.',
+    context: 'אי התאמה בסביבת הריצה (למשל ספרייה לא מעודכנת) יכולה לגרום לבדיקה להיכשל סתם; לכן שומרים על אחידותה.'
+  },
+  {
+    id: 'c_sighting',
+    term: 'Sighting',
+    lessonId: 'l10',
+    definition: 'המונח הרשמי באינטל לדיווח על באג חומרה או תוכנה חדש שנמצא בתהליך חקירה.',
+    definitionHighLevel: 'Intel term for a documented product issue or anomaly submitted into HSD-ES for official engineering board review and resolution tracking.',
+    context: 'דיווח Sighting איכותי חייב להכיל צעדי שחזור ברורים, גרסת BKC מדויקת, קבצי לוג וסקריפטים המדגימים את הכשל.'
   }
 ];
 
@@ -1045,7 +1391,7 @@ export const initialLabErrors: LabError[] = [
       'התחבר למערכת באמצעות כלי דיבאג (JTAG / DCI).',
       'קרא את רגיסטרי ה-Machine Check (MC Bank Registers) כדי לזהות את הבנק שרשם את השגיאה.',
       'בדוק אם התרחשה שגיאת ECC בזיכרון המטמון או פקודת קריאה/כתיבה שלא קיבלה מענה (Timeout).',
-      'בצע הצלבה (Cross-test) עם מעבד אחר כדי לשלול כשל פיזי בשבב הנוכחי.'
+      'בצע הצלבה (Cross-test) WITH מעבד אחר כדי לשלול כשל פיזי בשבב הנוכחי.'
     ]
   },
   {

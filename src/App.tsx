@@ -3,51 +3,26 @@ import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
 import { LessonViewer } from './components/LessonViewer';
 import { Glossary } from './components/Glossary';
-import { AddConcept } from './components/AddConcept';
 import { QuizManager } from './components/QuizManager';
 import { ErrorLab } from './components/ErrorLab';
 import type { Concept, Lesson } from './types/validationData';
 import { initialLessons, initialConcepts } from './data/initialData';
-import { BookOpen, Layers, ShieldAlert, FilePlus, HelpCircle } from 'lucide-react';
+import { BookOpen, Layers, ShieldAlert, HelpCircle } from 'lucide-react';
 import './index.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [difficulty, setDifficulty] = useState<'standard' | 'high'>('standard');
   
-  const [lessons, setLessons] = useState<Lesson[]>(initialLessons);
-  const [concepts, setConcepts] = useState<Concept[]>(initialConcepts);
+  const [lessons] = useState<Lesson[]>(initialLessons);
+  const [concepts] = useState<Concept[]>(initialConcepts);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [activeLessonId, setActiveLessonId] = useState<string>('l1');
   const [markedConceptIds, setMarkedConceptIds] = useState<string[]>([]);
 
-  // Load data and completed status on mount
+  // Load completed lessons and bookmarks on mount
   useEffect(() => {
-    // 1. Load concepts
-    const storedConcepts = localStorage.getItem('validation_all_concepts');
-    if (storedConcepts) {
-      try {
-        setConcepts(JSON.parse(storedConcepts));
-      } catch (e) {
-        console.error('Error loading concepts', e);
-      }
-    } else {
-      localStorage.setItem('validation_all_concepts', JSON.stringify(initialConcepts));
-    }
-
-    // 2. Load lessons
-    const storedLessons = localStorage.getItem('validation_all_lessons');
-    if (storedLessons) {
-      try {
-        setLessons(JSON.parse(storedLessons));
-      } catch (e) {
-        console.error('Error loading lessons', e);
-      }
-    } else {
-      localStorage.setItem('validation_all_lessons', JSON.stringify(initialLessons));
-    }
-
-    // 3. Load completed lessons
+    // Load completed lessons
     const storedCompleted = localStorage.getItem('validation_completed_lessons');
     if (storedCompleted) {
       try {
@@ -57,7 +32,7 @@ function App() {
       }
     }
 
-    // 4. Load marked concepts
+    // Load marked concepts
     const storedMarked = localStorage.getItem('validation_marked_concept_ids');
     if (storedMarked) {
       try {
@@ -78,50 +53,6 @@ function App() {
     }
     setMarkedConceptIds(updated);
     localStorage.setItem('validation_marked_concept_ids', JSON.stringify(updated));
-  };
-
-  // Handle adding custom concepts
-  const handleAddConcept = (newConcept: Concept) => {
-    // 1. Update concepts state and save to local storage
-    const updatedConcepts = [...concepts, newConcept];
-    setConcepts(updatedConcepts);
-    localStorage.setItem('validation_all_concepts', JSON.stringify(updatedConcepts));
-
-    // 2. Generate a custom quiz question for this concept
-    const newQuestion = {
-      id: `q_auto_${Date.now()}`,
-      question: `מהי ההגדרה הנכונה עבור המושג "${newConcept.term}" בהקשר של וולידציה?`,
-      options: [
-        newConcept.definition, // Correct
-        'ממשק קישוריות מאווררי לוח האם',
-        'פרוטוקול תקשורת חיצוני שאינו בשימוש באינטל',
-        'רכיב המכייל את מהירות הדיסק הקשיח'
-      ],
-      correctIndex: 0,
-      explanation: `ההגדרה של ${newConcept.term} היא: ${newConcept.definition}. יישום במעבדה: ${newConcept.context}`
-    };
-
-    // 3. Update lessons state (append concept ID and the new quiz question) and save to local storage
-    const updatedLessons = lessons.map((l) => {
-      if (l.id === newConcept.lessonId) {
-        return {
-          ...l,
-          conceptIds: [...l.conceptIds, newConcept.id],
-          quizQuestions: [...l.quizQuestions, newQuestion]
-        };
-      }
-      return l;
-    });
-
-    setLessons(updatedLessons);
-    localStorage.setItem('validation_all_lessons', JSON.stringify(updatedLessons));
-  };
-
-  // Handle adding custom lessons
-  const handleAddLesson = (newLesson: Lesson) => {
-    const updatedLessons = [...lessons, newLesson];
-    setLessons(updatedLessons);
-    localStorage.setItem('validation_all_lessons', JSON.stringify(updatedLessons));
   };
 
   const handleSelectLessonFromDashboard = (lessonId: string) => {
@@ -181,14 +112,6 @@ function App() {
           />
         )}
 
-        {activeTab === 'add-concept' && (
-          <AddConcept
-            lessons={lessons}
-            onAddConcept={handleAddConcept}
-            onAddLesson={handleAddLesson}
-          />
-        )}
-
         {activeTab === 'quiz' && (
           <QuizManager
             lessons={lessons}
@@ -227,7 +150,6 @@ function App() {
           className={`bottom-nav-item ${activeTab === 'dashboard' || activeTab === 'lesson-viewer' ? 'active' : ''}`}
           onClick={() => {
             setActiveTab('dashboard');
-            // If returning from lesson viewer, clear active lesson to show dashboard list
             if (activeTab === 'lesson-viewer') {
               setActiveLessonId('');
             }
@@ -251,14 +173,6 @@ function App() {
         >
           <ShieldAlert size={20} />
           <span>שגיאות</span>
-        </button>
-
-        <button
-          className={`bottom-nav-item ${activeTab === 'add-concept' ? 'active' : ''}`}
-          onClick={() => setActiveTab('add-concept')}
-        >
-          <FilePlus size={20} />
-          <span>הוספה</span>
         </button>
 
         <button
