@@ -1,0 +1,28 @@
+{
+  "short_name": "אקדמיית ולידציה",
+  "name": "Validation Academy - CPU Validation Education Platform",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0a0505",
+  "theme_color": "#0a0505",
+  "display": "standalone",
+  "orientation": "portrait"
+}
