@@ -2630,18 +2630,18 @@ export const initialLabErrors: LabError[] = [
     highLevelExplanation: 'אות פעיל-נמוך (Active-low signal) המופעל על ידי ה-System Agent כאשר מתרחש כשל לוגי בלתי הפיך, כגון שגיאת פרוטוקול פנימית (IDI protocol violation), כשל ב-Ring Bus או שגיאת זיכרון בלתי ניתנת לתיקון (Uncorrectable ECC Error).',
     symptoms: [
       'המערכת קופאת לחלוטין (Freeze).',
-      'נורת ה-CATERR בלוח ה-StarGate נדלק בצבע אדום.',
-      'חיבור הטרמינל מפסיק להגיב ואין פלט חדש.'
+      'נורת ה-CATERR בלוח ה-StarGate נדלקת בצבע אדום.',
+      'חיבור הטרמינל UART מפסיק להגיב ואין פלט חדש.'
     ],
     debugFlow: [
       'התחבר למערכת באמצעות כלי דיבאג (JTAG / DCI).',
       'קרא את רגיסטרי ה-Machine Check (MC Bank Registers) כדי לזהות את הבנק שרשם את השגיאה.',
       'בדוק אם התרחשה שגיאת ECC בזיכרון המטמון או פקודת קריאה/כתיבה שלא קיבלה מענה (Timeout).',
-      'בצע הצלבה (Cross-test) WITH מעבד אחר כדי לשלול כשל פיזי בשבב הנוכחי.'
+      'בצע הצלבה (Cross-test) עם מעבד אחר כדי לשלול כשל פיזי בשבב הנוכחי.'
     ]
   },
   {
-    name: 'MRC Memory Training Failure (DDR training error)',
+    name: 'MRC Memory Training Failure',
     code: 'POST Code 0x55 / 0xB7',
     description: 'כשל בשלב זיהוי וכיול זיכרון ה-DDR בזמן ה-BIOS.',
     standardExplanation: 'ה-BIOS אינו מצליח לתקשר עם זיכרון ה-RAM בצורה יציבה, והבוט נעצר לפני טעינת מערכת ההפעלה.',
@@ -2659,7 +2659,7 @@ export const initialLabErrors: LabError[] = [
     ]
   },
   {
-    name: 'PCIe Link Training Timeout (Link Drop / Recovery Loop)',
+    name: 'PCIe Link Training Timeout',
     code: '0x000000D3',
     description: 'ערוץ ה-PCI Express אינו מצליח להגיע למהירות הנדרשת או מתנתק באופן אקראי.',
     standardExplanation: 'כרטיס המסך או כונן ה-SSD המחוברים למעבד דרך ממשק ה-PCIe אינם מזוהים או יורדים למהירות איטית מאוד עקב בעיות תקשורת.',
@@ -2693,8 +2693,81 @@ export const initialLabErrors: LabError[] = [
       'עדכן את קובץ ה-P-code לגרסה המכילה אלגוריתמי פיצוי מתח משופרים.',
       'בדוק את קבצי הגדרות ה-Margining החשמליות ב-SUT.'
     ]
+  },
+  {
+    name: 'IERR (Internal Error)',
+    code: 'MC0_STATUS [Bit 61 - IERR]',
+    description: 'התרעת כשל פנימי בליבת המעבד או בצינורות העיבוד.',
+    standardExplanation: 'שגיאה פנימית של ליבת המעבד שמציינת שהחומרה נכנסה למצב לא מוגדר או שהתקיימה תקיעה לוגית שאין דרך להתאושש ממנה.',
+    highLevelExplanation: 'Internal Core Lockup or execution timeout. The core execution unit has stalled (e.g. infinite loop on memory fetch) and does not retire instructions within the Watchdog Timer window.',
+    symptoms: [
+      'המערכת נתקעת לחלוטין.',
+      'אות IERR# מאולץ ל-Active-Low בלוח.',
+      'קריסת OS עם Kernel Panic / Blue Screen.'
+    ],
+    debugFlow: [
+      'עצור שעונים בעזרת כלי ה-JTAG.',
+      'קרא את ה-Thread States של כל הליבות לגלות מי הליבה שנתקעה.',
+      'בדוק את ה-Instruction Pointer (IP) לראות איזה כתובת קוד מורצת בלופ.',
+      'בדוק אם בוצע עדכון מיקרוקוד (uCode Patch) מתאים לפתרון תקלות לופ.'
+    ]
+  },
+  {
+    name: 'Thermal Trip (Catastrophic Shutdown)',
+    code: 'THERMTRIP# Signal',
+    description: 'כיבוי חומרה אוטומטי ומיידי של המעבד עקב מעבר של טמפרטורת הבטיחות המקסימלית.',
+    standardExplanation: 'מנגנון בטיחות חומרתי עצמאי לחלוטין שמכבה את המחשב מיידית אם המעבד מגיע לטמפרטורה מסוכנת (מעל TjMax) כדי למנוע את השמדת השבב.',
+    highLevelExplanation: 'Silicon junction temperature sensor crosses critical threshold (~125C-130C on die), triggering immediate logic shutoff signal to the VRM power controller without OS involvement.',
+    symptoms: [
+      'המערכת נכבית בפתאומיות מוחלטת.',
+      'סירוב להדלקה מחדש למשך מספר שניות (עד להתקררות).',
+      'אין הודעת שגיאה ב-OS או ב-BIOS.'
+    ],
+    debugFlow: [
+      'בדוק את תקינות והרכבת גוף הקירור או המשחה התרמית.',
+      'קרא לוגים של ה-PMC (Power Management Controller) כדי לזהות אם סיבת הכיבוי האחרונה רשומה כ-Thermal Trip.',
+      'בדוק את תפקוד חיישני ה-DTS (Digital Thermal Sensors) במעבד.',
+      'הפחת מתחי ליבה ב-BIOS כדי להוריד את רמת פליטת החום.'
+    ]
+  },
+  {
+    name: '3-Strike Timeout (Core Hang)',
+    code: '0x00000101 (3-Strike)',
+    description: 'תקלה שבה ליבת המעבד מנסה לבצע פעולה 3 פעמים רצופות ונכשלת עקב אי-תגובה מה-Cache או הזיכרון.',
+    standardExplanation: 'קריסה הנגרמת כאשר ליבה מחכה לנתון מזיכרון המטמון ולא מקבלת תשובה לאחר 3 ניסיונות פנימיים, מה שמוביל להשבתת הליבה.',
+    highLevelExplanation: 'Core hangs due to lack of response on transaction queues. The L2 cache or LLC controller fails to complete read/write requests, triggering a 3-strike timeout hardware reset.',
+    symptoms: [
+      'תקיעת מערכת (System Freeze) תחת עומסי קריאה מרובים.',
+      'כניסה למצב CATERR / Machine Check Exception.',
+      'לוג ה-MCE מדווח על 3-Strike Timeout.'
+    ],
+    debugFlow: [
+      'השתמש ב-DCI כדי לקרוא את רגיסטרי ה-Ring Bus.',
+      'בדוק אם יש אי-עקביות בזיכרון המטמון (Cache Coherency issue).',
+      'ודא שאין מתח נמוך מדי על ה-LLC או מסילת ה-Vnn.',
+      'שנה קצבי שעון של ה-Ring Bus ובדוק יציבות.'
+    ]
+  },
+  {
+    name: 'DRAM Command/Address Parity Error',
+    code: 'DDR_CA_PARITY_ERR',
+    description: 'שגיאת זוגיות (Parity) בהעברת פקודות או כתובות על גבי ערוץ ה-DDR.',
+    standardExplanation: 'הפרעה חשמלית או בעיית תזמון גורמת לעיוות של כתובת הזיכרון שנשלחה על ידי המעבד, ובקר הזיכרון מזהה שגיאת זוגיות ועוצר את הגישה.',
+    highLevelExplanation: 'A parity mismatch detected on the Command/Address (C/A) bus of the DDR interface, triggering error recovery or system crash depending on BIOS settings.',
+    symptoms: [
+      'מסך כחול (BSOD) עם קוד Memory Management.',
+      'רישום שגיאת ECC/Parity ביומן האירועים של ה-MCE.',
+      'המערכת מבצעת אתחול עצמאי פתאומי.'
+    ],
+    debugFlow: [
+      'בדוק את מתחי ה-DRAM VDD ו-VREF במעבדה.',
+      'בצע Margining לתזמוני ה-Command/Address ב-BIOS.',
+      'השתמש בכרטיסי RAM יציבים ובדוק אם התקלה חוזרת.',
+      'ודא שאין לכלוך חשמלי בתושבות ה-DIMM בעזרת מיקרוסקופ.'
+    ]
   }
 ];
+
 export const categories = [
   'שלבי הולידציה',
   'סוגי בדיקות',

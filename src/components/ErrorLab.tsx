@@ -13,6 +13,7 @@ export const ErrorLab: React.FC<ErrorLabProps> = ({ difficulty }) => {
   const [consoleLogs, setConsoleLogs] = useState<string[]>([]);
   const [debugStepIndex, setDebugStepIndex] = useState(0);
   const [resolved, setResolved] = useState(false);
+  const [showTerminal, setShowTerminal] = useState(false);
 
   const consoleEndRef = useRef<HTMLDivElement>(null);
 
@@ -67,7 +68,7 @@ export const ErrorLab: React.FC<ErrorLabProps> = ({ difficulty }) => {
         `  - Platform: Intel validation platform ref_v3`
       );
     } else if (command === 'scope') {
-      if (selectedError.name.includes('Voltage')) {
+      if (selectedError.name.includes('Voltage') || selectedError.name.includes('Vdroop')) {
         newLogs.push(
           `[OSCILLOSCOPE TELEMETRY]:`,
           `  - Target Sensing Point: CPU Core Vcc`,
@@ -114,138 +115,206 @@ export const ErrorLab: React.FC<ErrorLabProps> = ({ difficulty }) => {
       
       {/* Title */}
       <div>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold' }}>מעבדת דיבאג וסימולטור שגיאות חומרה</h2>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold' }}>קטלוג שגיאות וולידציה וחומרה</h2>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-          תרגל פתרון תקלות (Troubleshooting) אמיתיות ממעבדות הסיליקון של Intel בעזרת פקודות מסוף.
+          הכרות מעמיקה עם כשלי הסיליקון והפלטפורמה המרכזיים במעבדות אינטל, ללא צורך בכתיבת קוד.
         </p>
       </div>
 
-      {/* Select error */}
-      <div className="form-group">
-        <label className="form-label">בחר מקרה תקלה לאבחון:</label>
-        <select
-          className="form-select"
-          value={selectedError.name}
-          onChange={(e) => {
-            const err = initialLabErrors.find((le) => le.name === e.target.value);
-            if (err) setSelectedError(err);
-          }}
-          style={{ width: '100%', padding: '10px' }}
-        >
-          {initialLabErrors.map((err) => (
-            <option key={err.name} value={err.name}>
-              {err.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Error Info Card */}
-      <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
-          <AlertTriangle size={18} style={{ color: 'var(--error)' }} />
-          <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>תיאור התקלה: {selectedError.name}</strong>
-        </div>
-
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
-          {selectedError.description}
-        </p>
-
-        {/* Low vs High level explanation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-            <strong style={{ color: 'var(--primary)', fontSize: '0.72rem', display: 'block' }}>רמת Low Level:</strong>
-            {selectedError.standardExplanation}
-          </p>
-
-          {difficulty === 'high' && (
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', paddingTop: '6px' }}>
-              <strong style={{ color: 'var(--secondary)', fontSize: '0.72rem', display: 'block' }}>רמת High Level:</strong>
-              {selectedError.highLevelExplanation}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Interactive Terminal */}
-      <div className="glass-card" style={{ background: '#020101', borderColor: 'var(--border-color)', padding: '0', display: 'flex', flexDirection: 'column', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+      {/* Main Grid Layout: Error List + Error Detail Pane */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', alignItems: 'start' }}>
         
-        {/* Terminal Header */}
-        <div style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Terminal size={14} style={{ color: 'var(--primary)' }} />
-            <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
-              LAB_SUT_TERMINAL_UART0.sh
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></span>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#eab308' }}></span>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }}></span>
-          </div>
-        </div>
-
-        {/* Terminal Output Logs */}
-        <div
-          style={{
-            padding: '16px',
-            height: '240px',
-            overflowY: 'auto',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            lineHeight: '1.5',
-            color: 'var(--primary)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px'
-          }}
-        >
-          {consoleLogs.map((log, idx) => (
-            <div key={idx} style={{ whiteSpace: 'pre-wrap', textAlign: 'right', direction: 'ltr' }}>
-              {log}
-            </div>
+        {/* Left Side: Errors List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h3 style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--text-secondary)', marginBottom: '4px' }}>רשימת שגיאות החומרה:</h3>
+          {initialLabErrors.map((err) => (
+            <button
+              key={err.name}
+              onClick={() => setSelectedError(err)}
+              className="btn btn-secondary"
+              style={{
+                justifyContent: 'flex-start',
+                textAlign: 'right',
+                width: '100%',
+                padding: '12px 16px',
+                fontSize: '0.82rem',
+                borderRight: selectedError.name === err.name ? '3px solid var(--primary)' : '1px solid var(--border-color)',
+                background: selectedError.name === err.name ? 'rgba(6, 182, 212, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                color: selectedError.name === err.name ? '#fff' : 'var(--text-secondary)',
+                fontWeight: selectedError.name === err.name ? 'bold' : 'normal'
+              }}
+            >
+              <AlertTriangle size={14} style={{ marginLeft: '8px', color: selectedError.name === err.name ? 'var(--primary)' : 'var(--text-muted)' }} />
+              {err.name}
+            </button>
           ))}
-          <div ref={consoleEndRef} />
         </div>
 
-        {/* Terminal Input Form */}
-        <form onSubmit={handleCommandSubmit} style={{ display: 'flex', borderTop: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.5)' }}>
-          <input
-            type="text"
-            className="form-input"
-            placeholder="הקלד פקודה (למשל: help, status, debug)..."
-            value={cmdInput}
-            onChange={(e) => setCmdInput(e.target.value)}
-            style={{
-              flex: 1,
-              background: 'transparent',
-              border: 'none',
-              borderRadius: '0',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.76rem',
-              color: '#fff',
-              padding: '12px',
-              direction: 'ltr',
-              textAlign: 'left'
-            }}
-          />
-          <button
-            type="submit"
-            className="btn"
-            style={{
-              background: 'rgba(255,255,255,0.03)',
-              borderRadius: '0',
-              borderLeft: '1px solid var(--border-color)',
-              borderRight: 'none',
-              borderTop: 'none',
-              borderBottom: 'none',
-              padding: '0 16px'
-            }}
-          >
-            <Send size={14} style={{ color: 'var(--primary)' }} />
-          </button>
-        </form>
+        {/* Right Side: Selected Error Detail Panel */}
+        <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '18px', padding: '24px' }}>
+          
+          {/* Header Info */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+              <span className="badge badge-danger" style={{ fontSize: '0.62rem' }}>שגיאת חומרה פעילה</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>CODE: {selectedError.code}</span>
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fff' }}>{selectedError.name}</h3>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '6px', borderLeft: '3px solid var(--error)', paddingRight: '8px' }}>
+              {selectedError.description}
+            </p>
+          </div>
 
+          {/* Low level explanation */}
+          <div>
+            <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>הסבר לוגי (Low Level):</span>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: '1.4' }}>
+              {selectedError.standardExplanation}
+            </p>
+          </div>
+
+          {/* High level microarchitecture explanation */}
+          {difficulty === 'high' && (
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--secondary)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>ארכיטקטורת סיליקון (High Level):</span>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: '1.4', fontFamily: 'var(--font-mono)', direction: 'ltr', textAlign: 'left', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '4px' }}>
+                {selectedError.highLevelExplanation}
+              </p>
+            </div>
+          )}
+
+          {/* Symptoms in the lab */}
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--success)', fontWeight: 600, display: 'block', marginBottom: '8px' }}>כיצד זה נראה במעבדה (Observed Symptoms):</span>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              {selectedError.symptoms.map((sym, idx) => (
+                <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--error)' }}></span>
+                  {sym}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Debug and Triage process */}
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+            <span style={{ fontSize: '0.72rem', color: '#eab308', fontWeight: 600, display: 'block', marginBottom: '8px' }}>שלבי אבחון ובידוד (Debug & Triage Flow):</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {selectedError.debugFlow.map((step, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '10px', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', padding: '10px', borderRadius: 'var(--radius-sm)' }}>
+                  <span style={{ width: '18px', height: '18px', background: 'rgba(234,179,8,0.1)', color: '#eab308', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.68rem', fontWeight: 'bold', flexShrink: 0 }}>
+                    {idx + 1}
+                  </span>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--text-primary)', lineHeight: '1.4' }}>{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Terminal Section (Collapsible debug playground) */}
+      <div style={{ marginTop: '20px' }}>
+        <button
+          onClick={() => setShowTerminal(!showTerminal)}
+          className="btn btn-secondary"
+          style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem', padding: '12px' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Terminal size={16} style={{ color: 'var(--primary)' }} />
+            <span>הפעלת מסוף דיאגנוסטיקה מדומה (לחובבים/לתרגול פקודות)</span>
+          </div>
+          <span>{showTerminal ? 'הסתר מסוף [-]' : 'הצג מסוף [+]'}</span>
+        </button>
+
+        {showTerminal && (
+          <div className="glass-card" style={{ background: '#020101', borderColor: 'var(--border-color)', padding: '0', display: 'flex', flexDirection: 'column', borderRadius: 'var(--radius-md)', overflow: 'hidden', marginTop: '10px' }}>
+            
+            {/* Terminal Header */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Terminal size={14} style={{ color: 'var(--primary)' }} />
+                <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+                  LAB_SUT_TERMINAL_UART0.sh
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></span>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#eab308' }}></span>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }}></span>
+              </div>
+            </div>
+
+            {/* Terminal Output Logs */}
+            <div
+              style={{
+                padding: '16px',
+                height: '240px',
+                overflowY: 'auto',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.75rem',
+                lineHeight: '1.5',
+                color: 'var(--primary)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px'
+              }}
+            >
+              {consoleLogs.map((log, idx) => (
+                <div key={idx} style={{ whiteSpace: 'pre-wrap', direction: 'ltr', textAlign: 'left' }}>{log}</div>
+              ))}
+              <div ref={consoleEndRef} />
+            </div>
+
+            {/* Terminal Command Input Form */}
+            <form
+              onSubmit={handleCommandSubmit}
+              style={{
+                display: 'flex',
+                borderTop: '1px solid var(--border-color)',
+                background: 'rgba(0,0,0,0.5)',
+                direction: 'ltr'
+              }}
+            >
+              <span style={{ padding: '12px 0 12px 16px', color: 'var(--text-secondary)', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center' }}>
+                SUT@LAB_CONSOLE:~$
+              </span>
+              <input
+                type="text"
+                value={cmdInput}
+                onChange={(e) => setCmdInput(e.target.value)}
+                placeholder="type 'help' or 'debug'..."
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#fff',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.8rem',
+                  padding: '12px'
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--primary)',
+                  cursor: 'pointer',
+                  padding: '0 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  outline: 'none'
+                }}
+              >
+                <Send size={14} />
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
     </div>
