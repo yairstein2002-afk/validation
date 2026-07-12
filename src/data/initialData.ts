@@ -32,7 +32,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת המבנה הכללי של המעבד, חלוקה לליבות (Cores), יחידות Uncore ורכיבים פנימיים.',
     whyItIsHere: 'לאחר המבוא, יש להבין את הארכיטקטורה הכללית והחלוקה הפנימית של יחידות הסיליקון.',
     prerequisites: ['l1'],
-    videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
+    videoUrl: '',
     conceptIds: ['c_uncore_core', 'c_chip'],
     quizQuestions: [
       {
@@ -56,7 +56,7 @@ export const initialLessons: Lesson[] = [
     description: 'לימוד השלבים במחזור הפקודה: הבאה (Fetch), פענוח (Decode), ביצוע (Execute) וכתיבה (Writeback).',
     whyItIsHere: 'זהו מנגנון הריצה הבסיסי של המעבד שמתבצע מיליארדי פעמים בשנייה.',
     prerequisites: ['l2'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_ucode_path'],
     quizQuestions: [
       {
@@ -80,7 +80,7 @@ export const initialLessons: Lesson[] = [
     description: 'תפקידה של יחידת הבקרה בניתוב האותות ופיקוח על ביצוע הפקודות במעבד.',
     whyItIsHere: 'יחידת הבקרה היא המנהלת של מחזור הפקודה ומכוונת את האותות החשמליים ליחידות הנכונות.',
     prerequisites: ['l3'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_sys_controller'],
     quizQuestions: [
       {
@@ -104,7 +104,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת היחידה האריתמטית-לוגית (Arithmetic Logic Unit) המבצעת את כל החישובים המתמטיים והלוגיים.',
     whyItIsHere: 'ה-ALU היא המנוע המתמטי שבו מתבצעים החישובים בפועל.',
     prerequisites: ['l3'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_func_bug'],
     quizQuestions: [
       {
@@ -128,7 +128,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת תאי הזיכרון המהירים והקטנים ביותר הנמצאים בתוך המעבד עצמו ומשמשים לביצוע מיידי של חישובים.',
     whyItIsHere: 'אוגרים הם הזיכרון המהיר ביותר שאליו פונה ה-ALU במהלך חישובים.',
     prerequisites: ['l3'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_assembly'],
     quizQuestions: [
       {
@@ -152,7 +152,7 @@ export const initialLessons: Lesson[] = [
     description: 'חלוקת עיבוד הפקודות לשלבים במקביל כדי להשיג ביצוע יעיל של מספר פקודות בו-זמנית.',
     whyItIsHere: 'צינור העיבוד מאפשר להגדיל את ה-throughput של המעבד בצורה משמעותית.',
     prerequisites: ['l3'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_pipeline_test'],
     quizQuestions: [
       {
@@ -176,7 +176,7 @@ export const initialLessons: Lesson[] = [
     description: 'מעבדים המסוגלים להתחיל ביצוע של יותר מפקודה אחת בכל מחזור שעון בודד בעזרת צינורות מרובים.',
     whyItIsHere: 'זוהי האבולוציה של ה-pipeline המאפשרת ביצוע של מספר פקודות במקביל באותו מחזור.',
     prerequisites: ['l7'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_ipc'],
     quizQuestions: [
       {
@@ -200,7 +200,7 @@ export const initialLessons: Lesson[] = [
     description: 'מנגנון המאפשר למעבד לשנות את סדר ביצוע הפקודות כדי לנצל יחידות פנויות בזמן המתנה לזיכרון.',
     whyItIsHere: 'מניעת עיכובים בצינור העיבוד על ידי הרצת פקודות מוכנות שאינן תלויות בתוצאות הקודמות.',
     prerequisites: ['l8'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_race_condition'],
     quizQuestions: [
       {
@@ -224,7 +224,7 @@ export const initialLessons: Lesson[] = [
     description: 'כיצד המעבד מנחש את כיוון תנאי ה-If הבא כדי להמשיך להזין פקודות לצינור ללא המתנה להחלטה הסופית.',
     whyItIsHere: 'חיזוי נכון מונע את ריקון צינור העיבוד (Pipeline Flush) שגורם להפסד ביצועים קשה.',
     prerequisites: ['l7'],
-    videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
+    videoUrl: '',
     conceptIds: ['c_cdv'],
     quizQuestions: [
       {
@@ -248,7 +248,7 @@ export const initialLessons: Lesson[] = [
     description: 'מנגנון שבו המעבד מריץ בפועל פקודות על בסיס חיזוי ההסתעפות עוד לפני שהתנאי עצמו חושב רשמית.',
     whyItIsHere: 'המשך ישיר של חיזוי הסתעפויות, המאפשר להתקדם בעיבוד ללא המתנה.',
     prerequisites: ['l10'],
-    videoUrl: 'https://www.youtube.com/embed/gS2D7JvG6m4',
+    videoUrl: '',
     conceptIds: ['c_func_bug'],
     quizQuestions: [
       {
@@ -272,7 +272,7 @@ export const initialLessons: Lesson[] = [
     description: 'טכנולוגיה המאפשרת לליבה פיזית אחת להציג למערכת ההפעלה שתי ליבות לוגיות ולחלוק משאבים.',
     whyItIsHere: 'חלוקת משאבי הליבה בין שני תהליכים מנצלת בצורה טובה יותר את יחידות הביצוע שנשארות פנויות.',
     prerequisites: ['l9'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_intel_vtx'],
     quizQuestions: [
       {
@@ -296,7 +296,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת מבנה זיכרון המחשב - מהאוגרים המהירים והקטנים ביותר ועד לדיסק הקשיח האיטי והגדול.',
     whyItIsHere: 'הבנת מאזן המהירות, הגודל והמחיר של סוגי הזיכרון במערכת.',
     prerequisites: ['l6'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_l1_cache'],
     quizQuestions: [
       {
@@ -320,7 +320,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת תפקיד שלוש רמות המטמון במעבד לקיצור זמני הגישה לנתוני זיכרון ה-RAM.',
     whyItIsHere: 'זיכרון המטמון מונע תקיעות מעבד על ידי שמירת העתקים של נתונים מבוקשים קרוב לליבה.',
     prerequisites: ['l13'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_l2_cache', 'c_l3_cache'],
     quizQuestions: [
       {
@@ -344,7 +344,7 @@ export const initialLessons: Lesson[] = [
     description: 'כיצד מעבדים מרובי ליבות מוודאים שכל הליבות קוראות את הגרסה המעודכנת ביותר של נתון בזיכרון.',
     whyItIsHere: 'מניעת מצבי עבודה על מידע מיושן או השחתת משתנים משותפים במערכות מרובות ליבות.',
     prerequisites: ['l14'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_cache_coherency', 'c_cache_coherency_bug'],
     quizQuestions: [
       {
@@ -368,7 +368,7 @@ export const initialLessons: Lesson[] = [
     description: 'עקרון הפעולה של זיכרון הגישה האקראית הראשי במחשב ותזמוני העבודה שלו.',
     whyItIsHere: 'ה-RAM הוא מאגר העבודה המרכזי של מערכת ההפעלה ותהליכים רצים.',
     prerequisites: ['l13'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_ddr'],
     quizQuestions: [
       {
@@ -392,7 +392,7 @@ export const initialLessons: Lesson[] = [
     description: 'בקר החומרה המנהל את התקשורת הפיזית והפקודות מול כרטיסי זיכרון ה-RAM.',
     whyItIsHere: 'בקר הזיכרון מתרגם בקשות קריאה/כתיבה של המעבד לאותות פיזיים התואמים את תקן ה-DDR.',
     prerequisites: ['l16'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_mem_controller'],
     quizQuestions: [
       {
@@ -416,7 +416,7 @@ export const initialLessons: Lesson[] = [
     description: 'מנגנון לזיהוי ותיקון שגיאות ביט בודד בזיכרון המערכת לשמירה על יציבות שרתים.',
     whyItIsHere: 'הכרחי לשרתים ומערכות עבודה קריטיות כדי למנוע קריסות עקב הפרעות קרינה.',
     prerequisites: ['l16'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_ecc_testing'],
     quizQuestions: [
       {
@@ -440,7 +440,7 @@ export const initialLessons: Lesson[] = [
     description: 'עקרונות הפעולה של זיכרון לא-נדיף המשמש בכונני SSD וכרטיסי זיכרון.',
     whyItIsHere: 'אחסון קבוע שאינו דורש זרם חשמלי לשמירת הנתונים.',
     prerequisites: ['l13'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_m2'],
     quizQuestions: [
       {
@@ -464,7 +464,7 @@ export const initialLessons: Lesson[] = [
     description: 'סוגי זיכרון ROM המשמשים לשמירת קוד האתחול הבסיסי ביותר של המחשב.',
     whyItIsHere: 'הבנת המקום שבו נשמר ה-BIOS עוד לפני שיש גישה לדיסק הקשיח.',
     prerequisites: ['l13'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_fit'],
     quizQuestions: [
       {
@@ -488,7 +488,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת ההבדל בין ממשק ה-BIOS הישן ל-UEFI המודרני ותפקידם באתחול וזיהוי החומרה.',
     whyItIsHere: 'הקוד הראשוני שמדבר ישירות עם המעבד והלוח ומאפשר תקשורת בסיסית.',
     prerequisites: ['l20'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_bios'],
     quizQuestions: [
       {
@@ -512,7 +512,7 @@ export const initialLessons: Lesson[] = [
     description: 'ניתוח שלבי עליית המחשב - מה-Reset Vector ועד מסך הכניסה של מערכת ההפעלה.',
     whyItIsHere: 'הכרת שלבי הבוט מאפשרת לאתר היכן בדיוק נתקעת המערכת בזמן קריסות מעבדה.',
     prerequisites: ['l21'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_boot', 'c_boot_flow'],
     quizQuestions: [
       {
@@ -536,7 +536,7 @@ export const initialLessons: Lesson[] = [
     description: 'מבנה לוח האם, חיבורי ספקי כוח, קווים ומסלולים חשמליים המקשרים את כל הרכיבים.',
     whyItIsHere: 'הבנת לוח האם שהוא התשתית הפיזית עליה יושב ה-SUT.',
     prerequisites: ['l2'],
-    videoUrl: 'https://www.youtube.com/embed/rVplV1uFmX0',
+    videoUrl: '',
     conceptIds: ['c_stargate'],
     quizQuestions: [
       {
@@ -560,7 +560,7 @@ export const initialLessons: Lesson[] = [
     description: 'ערכת השבבים בלוח האם (PCH) ותפקידה בניהול התקשורת האיטית וכרטיסי ההרחבה.',
     whyItIsHere: 'הבנת ההפרדה בין המעבד המהיר לערכת השבבים שמטפלת בחיבורים החיצוניים.',
     prerequisites: ['l23'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_pmc'],
     quizQuestions: [
       {
@@ -584,7 +584,7 @@ export const initialLessons: Lesson[] = [
     description: 'פרוטוקול PCIe, מבנה ערוצים (Lanes), מהירויות דורות שונים ושימושו בוולידציה.',
     whyItIsHere: 'אפיק התקשורת המהיר ביותר לחיבור רכיבי חומרה ישירות למעבד.',
     prerequisites: ['l24'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_pcie'],
     quizQuestions: [
       {
@@ -608,7 +608,7 @@ export const initialLessons: Lesson[] = [
     description: 'מבנה פרוטוקול USB, מהירויות, דורות וצורת הדיבאג של ה-Host Controller.',
     whyItIsHere: 'אפיק החיבור הנפוץ ביותר בעולם לציוד היקפי ומכשירי קצה.',
     prerequisites: ['l24'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_intel_dci'],
     quizQuestions: [
       {
@@ -632,7 +632,7 @@ export const initialLessons: Lesson[] = [
     description: 'פרוטוקול SATA לחיבור כונני אחסון, זמני תגובה והשוואה מול פרוטוקולים מודרניים.',
     whyItIsHere: 'אפיק האחסון המסורתי המשמש לחיבור דיסקים קשיחים וכונני SSD בסיסיים.',
     prerequisites: ['l24'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_io_test'],
     quizQuestions: [
       {
@@ -656,7 +656,7 @@ export const initialLessons: Lesson[] = [
     description: 'עבודה ישירה מול ערוצי ה-PCIe, מהירויות כתיבה וקריאה, והשהייה נמוכה.',
     whyItIsHere: 'NVMe מאפשר לכונני SSD לתקשר ישירות עם המעבד ללא צורך במתווכים איטיים.',
     prerequisites: ['l25', 'l27'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_m2'],
     quizQuestions: [
       {
@@ -680,7 +680,7 @@ export const initialLessons: Lesson[] = [
     description: 'מנגנון פסיקות החומרה, פסיקות לוגיות, APIC, MSI וMSI-X.',
     whyItIsHere: 'המעבד צריך להגיב לאירועים חיצוניים (כמו לחיצת מקש או הגעת חבילת רשת) מיידית.',
     prerequisites: ['l12'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_interrupts'],
     quizQuestions: [
       {
@@ -704,7 +704,7 @@ export const initialLessons: Lesson[] = [
     description: 'הבנת ההבדל בין פסיקה לחריגה (Exception), שגיאות לוגיות, Page Fault וקוד הטיפול בהן.',
     whyItIsHere: 'שגיאות ריצה פנימיות בתוך המעבד המאלצות עצירה וטיפול.',
     prerequisites: ['l29'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_exception'],
     quizQuestions: [
       {
@@ -728,7 +728,7 @@ export const initialLessons: Lesson[] = [
     description: 'טכנולוגיית DMA המאפשרת להתקנים להעביר נתונים ישירות ל-RAM ללא מעורבות של ה-CPU.',
     whyItIsHere: 'פינוי זמן עיבוד יקר של המעבד על ידי ביצוע העברות נתונים גדולות באוטומציה חומרתית.',
     prerequisites: ['l17'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_sys_controller'],
     quizQuestions: [
       {
@@ -752,7 +752,7 @@ export const initialLessons: Lesson[] = [
     description: 'מנגנון ייצור השעון במחשב, תדרים, PLL וכיצד השעון מתאם את פעולת כל שערי הסיליקון.',
     whyItIsHere: 'אות השעון הוא פעימת הלב של המעבד המתאמת את זמני פעולת כל הטרנזיסטורים.',
     prerequisites: ['l2'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_jitter'],
     quizQuestions: [
       {
@@ -776,7 +776,7 @@ export const initialLessons: Lesson[] = [
     description: 'כיבוי יזום של אות השעון לאזורים לוגיים לא פעילים בתוך מחזור השעון הבודד.',
     whyItIsHere: 'השיטה המיידית והנפוצה ביותר לחסכון באנרגיה דינמית במעבד.',
     prerequisites: ['l9', 'l32'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_clock_gating'],
     quizQuestions: [
       {
@@ -800,7 +800,7 @@ export const initialLessons: Lesson[] = [
     description: 'ניתוק פיזי מוחלט של אספקת המתח לאזורים בשבב למניעת זליגה במצב מנוחה.',
     whyItIsHere: 'חיסכון אנרגטי עמוק יותר כאשר רכיב אינו נדרש לאורך זמן רב.',
     prerequisites: ['l33'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_power_gating'],
     quizQuestions: [
       {
@@ -824,7 +824,7 @@ export const initialLessons: Lesson[] = [
     description: 'מצבי שינה של הליבה לעומת מצבי עבודה של תדר ומתח דינמיים.',
     whyItIsHere: 'ניהול נכון של צריכת החשמל והביצועים לפי דרישת מערכת ההפעלה.',
     prerequisites: ['l34'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_cstates', 'c_pstates'],
     quizQuestions: [
       {
@@ -848,7 +848,7 @@ export const initialLessons: Lesson[] = [
     description: 'חיישני טמפרטורה פנימיים, אות PROCHOT ומניעת התחממות קריטית.',
     whyItIsHere: 'מניעת הרס של הסיליקון והתכת השערים עקב חום קיצוני.',
     prerequisites: ['l35'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_thermal_throttling'],
     quizQuestions: [
       {
@@ -872,7 +872,7 @@ export const initialLessons: Lesson[] = [
     description: 'תפקידו של ה-VRM בלוח האם וכיצד המעבד מתקשר איתו לקבלת מתחים עדינים.',
     whyItIsHere: 'המעבד צורך זרמים עצומים במתחים נמוכים ומדויקים מאוד.',
     prerequisites: ['l36'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_pd'],
     quizQuestions: [
       {
@@ -896,7 +896,7 @@ export const initialLessons: Lesson[] = [
     description: 'אפיקי תקשורת מודרניים המקשרים את המעבד לצ\'יפסט, כרטיס המסך והזיכרון.',
     whyItIsHere: 'הכרת הדרכים שבהן המידע זורם בין כל המערכות.',
     prerequisites: ['l2', 'l25'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_ring_bus'],
     quizQuestions: [
       {
@@ -920,7 +920,7 @@ export const initialLessons: Lesson[] = [
     description: 'מהי הולידציה, מדוע היא קריטית לפיתוח שבבים ומהו תפקידו של מהנדס הולידציה.',
     whyItIsHere: 'כניסה לעולם הבדיקות ואישור המוצרים לאחר שהבנו את החלקים השונים של המעבד.',
     prerequisites: ['l1', 'l38'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_post_silicon'],
     quizQuestions: [
       {
@@ -944,7 +944,7 @@ export const initialLessons: Lesson[] = [
     description: 'מתודולוגיות אימות לוגי בשלבי הסימולציה המוקדמים של תכנון השבב.',
     whyItIsHere: 'הבנת העבודה הלוגית שנעשית לפני ייצור הסיליקון.',
     prerequisites: ['l39', 'l3'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_pre_silicon', 'c_verification'],
     quizQuestions: [
       {
@@ -968,7 +968,7 @@ export const initialLessons: Lesson[] = [
     description: 'שימוש בחומרה אמיתית במעבדה, בדיקות SUT, סביבות ריצה ואינטגרציה.',
     whyItIsHere: 'הבנת ההבדלים והאתגרים בבדיקת סיליקון פיזי לעומת סימולציות.',
     prerequisites: ['l39', 'l40'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_post_silicon', 'c_sut'],
     quizQuestions: [
       {
@@ -992,7 +992,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקות לוגיות פונקציונליות של מנגנוני הליבה והעברת פקודות במעבד.',
     whyItIsHere: 'הבנת הבדיקות המרכזיות שמבצעות אימות של הפעולות האריתמטיות והלוגיות של השבב.',
     prerequisites: ['l41'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_func_val'],
     quizQuestions: [
       {
@@ -1016,7 +1016,7 @@ export const initialLessons: Lesson[] = [
     description: 'ולידציה של המעבד כחלק ממערכת שלמה תחת עומסי עבודה של לקוח קצה.',
     whyItIsHere: 'מוודא שאין התנגשויות תדרים, מתחים או תקשורת כאשר כל רכיבי הלוח פעילים יחד.',
     prerequisites: ['l41'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_system_val'],
     quizQuestions: [
       {
@@ -1040,7 +1040,7 @@ export const initialLessons: Lesson[] = [
     description: 'אימות אינטגרציית ה-BIOS, דרייברים, לוח אם וקושחת CSE.',
     whyItIsHere: 'המעבד אינו פועל לבד; עליו לעבוד בתיאום מושלם עם קושחת הפלטפורמה.',
     prerequisites: ['l41'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_platform_val'],
     quizQuestions: [
       {
@@ -1064,7 +1064,7 @@ export const initialLessons: Lesson[] = [
     description: 'כתיבה והרצה של בדיקות מאמץ רב-ערוציות לאיתור באגים נדירים.',
     whyItIsHere: 'באגים רבים מתרחשים רק כאשר המעבד פועל תחת לחץ כבד במקביל.',
     prerequisites: ['l42', 'l43'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_stress_test'],
     quizQuestions: [
       {
@@ -1088,7 +1088,7 @@ export const initialLessons: Lesson[] = [
     description: 'ולידציה תרמית, הגדרות TjMax ובדיקות יציבות בחום וקור.',
     whyItIsHere: 'מבטיח שהמעבד מגן על עצמו מפני שריפה ומתפקד כראוי תחת קירורים שונים.',
     prerequisites: ['l36', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_thermal_test'],
     quizQuestions: [
       {
@@ -1112,7 +1112,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקת צריכת החשמל ומעברי ה-Power States של המעבד.',
     whyItIsHere: 'ולידציה המוודאת שהמעבד צורך אנרגיה בהתאם למגבלות ה-TDP שנקבעו לו.',
     prerequisites: ['l35', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_power_test'],
     quizQuestions: [
       {
@@ -1136,7 +1136,7 @@ export const initialLessons: Lesson[] = [
     description: 'אימות יציבות ממשק הזיכרון, בדיקת מהירויות DDR ותאימות.',
     whyItIsHere: 'ממשק הזיכרון חייב להיות נקי משגיאות ביט כדי למנוע קריסות מערכת.',
     prerequisites: ['l17', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_mem_test', 'c_dram_training'],
     quizQuestions: [
       {
@@ -1160,7 +1160,7 @@ export const initialLessons: Lesson[] = [
     description: 'ולידציה של זיכרונות המטמון הפנימיים ומניעת שגיאות שלמות נתונים.',
     whyItIsHere: 'סריקה מתמדת של זיכרונות המטמון כדי לאתר באגים לוגיים בניהול העותקים.',
     prerequisites: ['l15', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_cache_test'],
     quizQuestions: [
       {
@@ -1184,7 +1184,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקת יציבות ממשקי PCIe, מעברים בין מצבי קישור ומדידת מהירות.',
     whyItIsHere: 'מניעת נפילות של כרטיסי הרחבה ודיסק קשיח תחת עומס.',
     prerequisites: ['l25', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_pcie_analyzer'],
     quizQuestions: [
       {
@@ -1208,7 +1208,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקות יציבות שלבי הבוט, POST וזיהוי מלא של רכיבי הפלטפורמה.',
     whyItIsHere: 'לוודא שהמעבד והלוח עולים תמיד בהצלחה ללא תקיעות אקראיות.',
     prerequisites: ['l22', 'l44'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_boot_test'],
     quizQuestions: [
       {
@@ -1232,7 +1232,7 @@ export const initialLessons: Lesson[] = [
     description: 'ניתוח רעשים בקווי תקשורת, עכבות, החזרים ועיוותי אותות חשמליים.',
     whyItIsHere: 'בממשקים מהירים, הפרעות חשמליות קלות יכולות להשחית את הנתונים.',
     prerequisites: ['l32', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_crosstalk', 'c_reflection', 'c_impedance'],
     quizQuestions: [
       {
@@ -1256,7 +1256,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקת יציבות רשת אספקת החשמל, רעשי מתח (Ripple) ומניעת נפילות מתח.',
     whyItIsHere: 'מבטיח שרכיבי המעבד מקבלים מתח יציב ללא רעשים חשמליים שיגרמו לשגיאות לוגיות.',
     prerequisites: ['l37', 'l52'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_pd'],
     quizQuestions: [
       {
@@ -1280,7 +1280,7 @@ export const initialLessons: Lesson[] = [
     description: 'ולידציה של זמני Setup ו-Hold בשערי הסיליקון ומניעת שגיאות מטא-סטביליות.',
     whyItIsHere: 'אותות חייבים להגיע בזמן המדויק לכל שער לוגי כדי להימנע משגיאות חישוב.',
     prerequisites: ['l32', 'l40'],
-    videoUrl: 'https://www.youtube.com/embed/5a2gTdiGgK4',
+    videoUrl: '',
     conceptIds: ['c_sta'],
     quizQuestions: [
       {
@@ -1304,7 +1304,7 @@ export const initialLessons: Lesson[] = [
     description: 'בדיקות וולידציה של ממשקי שעונים שונים בתוך השבב.',
     whyItIsHere: 'אימות שהסנכרנים בין אזורי השעון מונעים שגיאות אקראיות.',
     prerequisites: ['l32', 'l54'],
-    videoUrl: 'https://www.youtube.com/embed/zH04a434Bbg',
+    videoUrl: '',
     conceptIds: ['c_cdc'],
     quizQuestions: [
       {
@@ -1328,7 +1328,7 @@ export const initialLessons: Lesson[] = [
     description: 'עקרונות הדיבאג הפיזי, שימוש בכבלי דיבאג וכרטיסי בקרה.',
     whyItIsHere: 'דיבאג חומרה הוא הדרך לאתר את מקור התקלה כאשר המערכת קופאת לחלוטין.',
     prerequisites: ['l5', 'l41'],
-    videoUrl: 'https://www.youtube.com/embed/p1o1S74z5U8',
+    videoUrl: '',
     conceptIds: ['c_jtag', 'c_debug_port'],
     quizQuestions: [
       {
@@ -1352,7 +1352,7 @@ export const initialLessons: Lesson[] = [
     description: 'מבנה ערוץ ה-JTAG, פינים ראשיים (TMS, TCK, TDI, TDO, TRST) ושימושו המעשי.',
     whyItIsHere: 'הכלי הבסיסי ביותר לקריאת רגיסטרים פנימיים ועריכת בדיקות Boundary Scan.',
     prerequisites: ['l56'],
-    videoUrl: 'https://www.youtube.com/embed/378X1P5_zJg',
+    videoUrl: '',
     conceptIds: ['c_jtag', 'c_boundary_scan'],
     quizQuestions: [
       {
@@ -1376,7 +1376,7 @@ export const initialLessons: Lesson[] = [
     description: 'חיבור הלוגיק אנלייזר, הגדרת Triggers ופענוח פרוטוקולים דיגיטליים.',
     whyItIsHere: 'ניתוח סימולטני של אותות רבים כדי לגלות בעיות בפרוטוקול התקשורת.',
     prerequisites: ['l56'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_logic_analyzer'],
     quizQuestions: [
       {
@@ -1400,7 +1400,7 @@ export const initialLessons: Lesson[] = [
     description: 'כיצד להשתמש באוסילוסקופ, מדידת תדרים, רעשי מתח וכיול פרובים.',
     whyItIsHere: 'הכלי הפיזיקלי החשוב ביותר למדידות אנלוגיות ושלמות אותות במעבדה.',
     prerequisites: ['l56'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_oscilloscope', 'c_probe_loading'],
     quizQuestions: [
       {
@@ -1424,7 +1424,7 @@ export const initialLessons: Lesson[] = [
     description: 'סקירה מקיפה של שגרת העבודה של מהנדס וולידציה באינטל/AMD: הגעת ה-Silicon למעבדה, בדיקות Bring-up, אינטגרציית BKC, הרצות אוטומטיות ב-NGA, ניתוח קריסות (Triage) ופתיחת Sightings.',
     whyItIsHere: 'שיעור מסכם זה מכין אותך במדויק לשאלות התנהגותיות ומקצועיות בראיונות עבודה. הוא מחבר את כל הידע שרכשת בקורס ומציג את התמונה המלאה של סביבת העבודה שלך.',
     prerequisites: ['l22', 'l39', 'l56'],
-    videoUrl: 'https://www.youtube.com/embed/n4pneM0_Rk8',
+    videoUrl: '',
     conceptIds: ['c_post_silicon', 'c_bkc', 'c_triage', 'c_sighting', 'c_nga', 'c_python'],
     quizQuestions: [
       {
