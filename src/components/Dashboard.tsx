@@ -89,15 +89,28 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </div>
           </div>
 
-          <div style={{ marginTop: '16px', display: 'flex', gap: '16px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '12px' }}>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              רמת למידה פעילה: <strong style={{ color: 'var(--primary)' }}>{difficulty === 'high' ? 'High-Level' : 'Low-Level'}</strong>
+          <div style={{ marginTop: '16px', display: 'flex', gap: '16px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '12px', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                רמת למידה פעילה: <strong style={{ color: 'var(--primary)' }}>{difficulty === 'high' ? 'High-Level' : 'Low-Level'}</strong>
+              </div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                מושגים במאגר: <strong style={{ color: 'var(--primary)' }}>{concepts.length}</strong>
+              </div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                הושלמו: <strong style={{ color: 'var(--success)' }}>{completedLessons.length}/{activeLessonsCount} שיעורים</strong>
+              </div>
             </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              מושגים במאגר: <strong style={{ color: 'var(--primary)' }}>{concepts.length}</strong>
-            </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              הושלמו: <strong style={{ color: 'var(--success)' }}>{completedLessons.length}/{activeLessonsCount} שיעורים</strong>
+            
+            {/* Visual Progress bar */}
+            <div style={{ width: '100%', maxWidth: '240px', marginTop: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', marginBottom: '4px', color: 'var(--text-secondary)' }}>
+                <span>התקדמות כללית:</span>
+                <strong>{activeLessonsCount > 0 ? Math.round((completedLessons.length / activeLessonsCount) * 100) : 0}%</strong>
+              </div>
+              <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                <div style={{ width: `${activeLessonsCount > 0 ? (completedLessons.length / activeLessonsCount) * 100 : 0}%`, height: '100%', background: 'linear-gradient(90deg, var(--primary), var(--secondary))', transition: 'width 0.4s ease-out', borderRadius: '3px' }}></div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Lesson, Concept } from '../types/validationData';
-import { ArrowRight, Edit3, Save, Video, Bookmark } from 'lucide-react';
+import { ArrowRight, Edit3, Save, Bookmark } from 'lucide-react';
 
 interface LessonViewerProps {
   lessons: Lesson[];
@@ -179,23 +179,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         </p>
       </div>
 
-      {/* Video Embed */}
-      {lesson.videoUrl && (
-        <section className="glass-card" style={{ padding: '12px' }}>
-          <div className="video-wrapper">
-            <iframe
-              src={lesson.videoUrl}
-              title={lesson.titleHe}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '10px', color: 'var(--text-muted)', fontSize: '0.72rem' }}>
-            <Video size={14} style={{ color: 'var(--primary)' }} />
-            <span>סרטון הסבר: מונחים והרצאה מעשית על החומר</span>
-          </div>
-        </section>
-      )}
+
 
       {/* Pedagogical Rationale Panel */}
       <section

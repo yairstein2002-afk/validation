@@ -9,7 +9,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'זהו שיעור המבוא הבסיסי ביותר שמניח את היסודות ומסביר מהו מעבד לפני שנכנסים למבנה הפנימי שלו.',
     prerequisites: [],
     videoUrl: 'https://www.youtube.com/embed/gS2D7JvG6m4',
-    conceptIds: ['c_cpu'],
+    conceptIds: ['c_cpu', 'c_gpu', 'c_npu'],
     quizQuestions: [
       {
         id: 'q1_1',
@@ -33,7 +33,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'לאחר המבוא, יש להבין את הארכיטקטורה הכללית והחלוקה הפנימית של יחידות הסיליקון.',
     prerequisites: ['l1'],
     videoUrl: '',
-    conceptIds: ['c_uncore_core', 'c_chip'],
+    conceptIds: ['c_uncore_core', 'c_chip', 'c_hybrid_arch', 'c_thread_director'],
     quizQuestions: [
       {
         id: 'q2_1',
@@ -297,7 +297,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הבנת מאזן המהירות, הגודל והמחיר של סוגי הזיכרון במערכת.',
     prerequisites: ['l6'],
     videoUrl: '',
-    conceptIds: ['c_l1_cache'],
+    conceptIds: ['c_l1_cache', 'c_hbm'],
     quizQuestions: [
       {
         id: 'q13_1',
@@ -369,7 +369,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'ה-RAM הוא מאגר העבודה המרכזי של מערכת ההפעלה ותהליכים רצים.',
     prerequisites: ['l13'],
     videoUrl: '',
-    conceptIds: ['c_ddr'],
+    conceptIds: ['c_ddr', 'c_lpddr'],
     quizQuestions: [
       {
         id: 'q16_1',
@@ -537,7 +537,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הבנת לוח האם שהוא התשתית הפיזית עליה יושב ה-SUT.',
     prerequisites: ['l2'],
     videoUrl: '',
-    conceptIds: ['c_stargate'],
+    conceptIds: ['c_stargate', 'c_rebar'],
     quizQuestions: [
       {
         id: 'q23_1',
@@ -585,7 +585,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'אפיק התקשורת המהיר ביותר לחיבור רכיבי חומרה ישירות למעבד.',
     prerequisites: ['l24'],
     videoUrl: '',
-    conceptIds: ['c_pcie'],
+    conceptIds: ['c_pcie', 'c_cxl'],
     quizQuestions: [
       {
         id: 'q25_1',
@@ -873,7 +873,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'המעבד צורך זרמים עצומים במתחים נמוכים ומדויקים מאוד.',
     prerequisites: ['l36'],
     videoUrl: '',
-    conceptIds: ['c_pd'],
+    conceptIds: ['c_pd', 'c_power_phases', 'c_vdroop'],
     quizQuestions: [
       {
         id: 'q37_1',
@@ -2447,6 +2447,96 @@ export const initialConcepts: Concept[] = [
     definition: 'שפת המכונה הבסיסית ביותר של המעבד, המשמשת לכתיבת קטעי קוד קריטיים בזמן הדלקה ראשונית ובדיקות לוגיות של הליבות.',
     definitionHighLevel: 'x86 assembly language targeting direct machine instructions execution on CPU pipelines bypassing high-level compilers.',
     context: 'כתיבת פטרנים של בדיקות לוגיות ממוקדות ב-x86 Assembly.'
+  },
+  {
+    id: 'c_gpu',
+    term: 'Graphics Processing Unit (GPU)',
+    lessonId: 'l1',
+    category: 'ארכיטקטורה',
+    definition: 'מעבד גרפי ייעודי האחראי על עיבוד מהיר של תמונות, וידאו וחישובי תלת-מימד.',
+    definitionHighLevel: 'Specialized processor designed to accelerate graphics rendering and massively parallel computing workloads.',
+    context: 'אימות התקשורת והעברת הנתונים בין ה-CPU ל-GPU מעל אפיקי PCIe מהירים.'
+  },
+  {
+    id: 'c_npu',
+    term: 'Neural Processing Unit (NPU)',
+    lessonId: 'l1',
+    category: 'ארכיטקטורה',
+    definition: 'רכיב האצה ייעודי במעבד המיועד לעיבוד מודלים של בינה מלאכותית (AI) ביעילות אנרגטית גבוהה.',
+    definitionHighLevel: 'On-die neural accelerator optimized for low-latency matrix math calculations running local inference models.',
+    context: 'ולידציה של פקודות NPU ומדידת פליטת החום בזמן הרצת מודלים מורכבים במקביל.'
+  },
+  {
+    id: 'c_hybrid_arch',
+    term: 'Intel Hybrid Architecture',
+    lessonId: 'l2',
+    category: 'ארכיטקטורה',
+    definition: 'ארכיטקטורה המשלבת שתי ליבות שונות: ליבות ביצוע מהירות (P-Cores) וליבות יעילות חסכוניות (E-Cores).',
+    definitionHighLevel: 'Heterogeneous multi-core architecture pairing high-frequency performance cores with energy-efficient throughput cores.',
+    context: 'ולידציה של חחלוקת תהליכים בין הליבות ומניעת תקיעות במעבר ביניהן.'
+  },
+  {
+    id: 'c_thread_director',
+    term: 'Intel Thread Director',
+    lessonId: 'l2',
+    category: 'ארכיטקטורה',
+    definition: 'מנגנון חומרה מובנה במעבד המייעץ למערכת ההפעלה כיצד לחלק את התהליכים בין הליבות השונות בזמן אמת.',
+    definitionHighLevel: 'Hardware feedback mechanism providing real-time telemetry to OS scheduler for optimal thread placement.',
+    context: 'ניטור מונים של ה-Thread Director לאיתור באגים בחלוקת משימות לוגיות.'
+  },
+  {
+    id: 'c_cxl',
+    term: 'Compute Express Link (CXL)',
+    lessonId: 'l25',
+    category: 'ארכיטקטורה',
+    definition: 'פרוטוקול תקשורת מהיר מעל PCIe המאפשר לשתף זיכרון ומכשירים בין מעבדים ומאיצים חיצוניים במרכזי נתונים.',
+    definitionHighLevel: 'Open industry standard interconnect offering high-speed memory coherency and device sharing over PCIe physical layer.',
+    context: 'ולידציה של עקביות הזיכרון במעבר נתונים ב-CXL.'
+  },
+  {
+    id: 'c_lpddr',
+    term: 'LPDDR (Low Power DDR)',
+    lessonId: 'l16',
+    category: 'זיכרון',
+    definition: 'גרסה חסכונית במיוחד של זיכרון ה-DDR המיועדת למחשבים ניידים וטלפונים סלולריים.',
+    definitionHighLevel: 'Low Power Double Data Rate memory standard designed for mobile platforms reducing active and standby power draw.',
+    context: 'בדיקת אימון זיכרון LPDDR במתחי עבודה נמוכים מאוד.'
+  },
+  {
+    id: 'c_rebar',
+    term: 'Resizable BAR',
+    lessonId: 'l23',
+    category: 'ארכיטקטורה',
+    definition: 'טכנולוגיית PCIe המאפשרת למעבד לגשת לכל זיכרון כרטיס המסך (VRAM) בבת אחת במקום בבלוקים קטנים.',
+    definitionHighLevel: 'PCI Express feature enabling dynamic configuration of base address registers to expose entire GPU frame buffer.',
+    context: 'שיפור ביצועים ודיבאג של בעיות זיהוי זיכרון במעבר ל-ReBAR.'
+  },
+  {
+    id: 'c_power_phases',
+    term: 'VRM Power Phases',
+    lessonId: 'l37',
+    category: 'צריכת חשמל',
+    definition: 'שלבי הכוח של מייצב המתח (VRM) המחלקים את העומס כדי לספק מתח יציב ופחות חום למעבד.',
+    definitionHighLevel: 'Multi-phase buck converter topology interleaving current delivery cycles to reduce output ripple voltage.',
+    context: 'ניטור שלמות אותות המתח (PI) במעברים חדים בין שלבי כוח שונים.'
+  },
+  {
+    id: 'c_vdroop',
+    term: 'Voltage Droop (Vdroop)',
+    lessonId: 'l37',
+    category: 'צריכת חשמל',
+    definition: 'ירידת מתח מכוונת כאשר המעבד נכנס לעומס מלא פתאומי כדי למנוע זרמי מתח גבוהים הפוגעים בחומרה.',
+    definitionHighLevel: 'Designed voltage reduction under load to prevent transient voltage overshoot when load currents drop suddenly.',
+    context: 'אימות יציבות המעבד בנקודת ה-Vdroop המרבית כדי למנוע קריסות לוגיות.'
+  },
+  {
+    id: 'c_hbm',
+    term: 'High Bandwidth Memory (HBM)',
+    lessonId: 'l13',
+    category: 'זיכרון',
+    definition: 'זיכרון מהיר במיוחד הבנוי בערימה תלת-מימדית (3D Stacking) וממוקם ישירות על גבי אריזת המעבד.',
+    definitionHighLevel: 'High-performance 3D-stacked DRAM architecture offering massive bandwidth via silicon interposers (TSVs).',
+    context: 'ולידציה של קווי הנתונים של ה-HBM במעבדי שרתים.'
   }
 ];
 
