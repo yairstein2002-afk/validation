@@ -79,6 +79,9 @@ function App() {
       <Header
         difficulty={difficulty}
         setDifficulty={setDifficulty}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onClearActiveLesson={() => setActiveLessonId('')}
       />
 
       {/* Main learning workspace */}

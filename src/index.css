@@ -77,19 +77,16 @@ body::before {
   background: var(--primary);
 }
 
-/* Mobile-first centered app container */
+/* Responsive App Container */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  max-width: 512px; /* 512px width for a phone frame feeling on desktop */
+  max-width: 1200px; /* Expands to full screen width up to 1200px */
   margin: 0 auto;
-  padding: 0 16px 110px 16px; /* padding-bottom to clear bottom navigation */
+  padding: 0 16px 110px 16px; /* Default mobile padding with bottom nav */
   background-color: var(--bg-base);
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
   position: relative;
 }
 
@@ -98,18 +95,22 @@ body::before {
   padding: 20px 0;
 }
 
-/* Floating Bottom Navigation Bar */
+/* Floating Bottom Navigation Bar (Mobile Only) */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 512px;
+  max-width: 480px; /* Keep bottom nav centered and neat on medium screens */
   background: rgba(10, 5, 5, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
   display: flex;
   justify-content: space-around;
   padding: 10px 4px;
@@ -146,6 +147,38 @@ body::before {
   color: var(--text-primary);
 }
 
+/* Header Navigation Bar (Desktop Only) */
+.desktop-nav {
+  display: none; /* Hidden on mobile */
+  gap: 16px;
+  align-items: center;
+  margin: 0 24px;
+}
+
+.desktop-nav-item {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.desktop-nav-item.active {
+  color: var(--primary);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+.desktop-nav-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -177,6 +210,13 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-1px);
   border-color: var(--primary);
   box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Responsive Grids */
+.lessons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 /* Buttons */
@@ -356,7 +396,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .diagram-nodes {
   display: flex;
-  flex-direction: column; /* Vertical flow feels much better on mobile! */
+  flex-direction: column; /* Vertical flow for mobile */
   align-items: center;
   gap: 16px;
   position: relative;
@@ -430,12 +470,38 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--primary);
 }
 
-/* Mobile responsive resets */
-@media (max-width: 512px) {
+/* RESPONSIVE LAYOUT DESKTOP MEDIA QUERIES */
+@media (min-width: 768px) {
   .app-container {
-    border-left: none;
-    border-right: none;
-    box-shadow: none;
-    padding: 0 12px 100px 12px;
+    padding: 0 24px 30px 24px; /* Less bottom padding because bottom nav is hidden */
+  }
+
+  /* Show top header navigation, hide bottom mobile bar */
+  .desktop-nav {
+    display: flex;
+  }
+  
+  .bottom-nav {
+    display: none;
+  }
+
+  /* Grid layouts for cards and content */
+  .lessons-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for lessons on desktop */
+  }
+
+  .diagram-nodes {
+    flex-direction: row; /* Horizontal flow for diagram nodes on desktop */
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .diagram-node {
+    width: auto;
+    min-width: 180px;
+  }
+
+  .flip-card-container {
+    max-width: 480px; /* Keep the card width elegant on wider screens */
   }
 }

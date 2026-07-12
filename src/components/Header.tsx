@@ -5,9 +5,18 @@ import { Cpu, Zap } from 'lucide-react';
 interface HeaderProps {
   difficulty: 'standard' | 'high';
   setDifficulty: (level: 'standard' | 'high') => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  onClearActiveLesson: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ difficulty, setDifficulty }) => {
+export const Header: React.FC<HeaderProps> = ({
+  difficulty,
+  setDifficulty,
+  activeTab,
+  setActiveTab,
+  onClearActiveLesson
+}) => {
   return (
     <header
       className="glass-card"
@@ -25,6 +34,40 @@ export const Header: React.FC<HeaderProps> = ({ difficulty, setDifficulty }) => 
     >
       {/* Branding Logo */}
       <Logo size={28} />
+
+      {/* Desktop Only Navigation Links */}
+      <nav className="desktop-nav">
+        <button
+          className={`desktop-nav-item ${activeTab === 'dashboard' || activeTab === 'lesson-viewer' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('dashboard');
+            onClearActiveLesson();
+          }}
+        >
+          מסלול
+        </button>
+
+        <button
+          className={`desktop-nav-item ${activeTab === 'glossary' ? 'active' : ''}`}
+          onClick={() => setActiveTab('glossary')}
+        >
+          מושגים
+        </button>
+
+        <button
+          className={`desktop-nav-item ${activeTab === 'errors' ? 'active' : ''}`}
+          onClick={() => setActiveTab('errors')}
+        >
+          שגיאות
+        </button>
+
+        <button
+          className={`desktop-nav-item ${activeTab === 'quiz' ? 'active' : ''}`}
+          onClick={() => setActiveTab('quiz')}
+        >
+          מבחן
+        </button>
+      </nav>
 
       {/* Level Selection Switcher */}
       <div
