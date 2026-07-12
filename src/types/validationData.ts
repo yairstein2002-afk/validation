@@ -1,22 +1,36 @@
-export interface QuizQuestion {
+export interface Concept {
   id: string;
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
+  term: string;
+  definition: string;
+  definitionHighLevel: string;
+  category: string;
+  context: string;
 }
 
-export interface SlideDiagram {
+export interface CheckpointData {
+  type: 'drag-drop' | 'bit-mask';
+  dragDropData?: {
+    items: string[];
+    correctOrder: string[];
+  };
+  bitMaskData?: {
+    instruction: string;
+    initialRegister: number[]; // e.g. [0, 0, 0, 0, 0, 0, 0, 0]
+    targetRegister: number[];  // e.g. [0, 1, 0, 0, 1, 0, 0, 0]
+  };
+}
+
+export interface LogScenarioData {
   title: string;
-  nodes: Array<{
-    id: string;
-    label: string;
-    type: 'input' | 'process' | 'decision' | 'output';
-  }>;
-  edges: Array<{
-    from: string;
-    to: string;
-  }>;
+  logLines: string[];
+  filterKeywords: string[];
+  correctLineIndex: number; // Index in filtered view or absolute? Let's use index in absolute logLines for accuracy.
+  questions: {
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  }[];
 }
 
 export interface Lesson {
@@ -26,30 +40,26 @@ export interface Lesson {
   description: string;
   whyItIsHere: string;
   prerequisites: string[];
-  videoUrl: string;
-  diagram?: SlideDiagram;
   conceptIds: string[];
-  quizQuestions: QuizQuestion[];
-  isPlanned?: boolean;
+  pathway: 'high' | 'low';
+  contentSlides: string[]; // detailed markdown-like HTML descriptions or sections
+  hasDiagram?: boolean; // Unit 1.1 has the Chiplet diagram
+  checkpoints?: CheckpointData; // Inline checkpoint
+  logScenario?: LogScenarioData; // Unit end lab
 }
 
-export interface Concept {
-  id: string;
-  term: string;
-  lessonId: string;
-  definition: string;
-  definitionHighLevel: string;
-  context: string;
-  isCustom?: boolean;
-  category?: string; // Newly added to categorize all 100+ concepts
-}
-
-export interface LabError {
-  name: string;
-  code: string;
+export interface BugMatrixItem {
+  category: string;
   description: string;
-  standardExplanation: string;
-  highLevelExplanation: string;
-  symptoms: string[];
-  debugFlow: string[];
+  debugFlow: string;
+}
+
+export interface ExamScenario {
+  id: string;
+  pathway: 'high' | 'low';
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+  reviewTopicIds: string[]; // References to lessons (e.g. ['l1', 'l2']) to point the user to
 }

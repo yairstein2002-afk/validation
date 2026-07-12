@@ -1,62 +1,70 @@
 import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
-import { Dashboard } from './components/Dashboard';
+import { SkillTree } from './components/SkillTree';
 import { LessonViewer } from './components/LessonViewer';
 import { Glossary } from './components/Glossary';
-import { QuizManager } from './components/QuizManager';
-import { ErrorLab } from './components/ErrorLab';
+import { BugMatrix } from './components/BugMatrix';
 import { ProgressPage } from './components/ProgressPage';
+import { ManagerInsights } from './components/ManagerInsights';
+import { GatewayExam } from './components/GatewayExam';
 import type { Concept, Lesson } from './types/validationData';
 import { initialLessons, initialConcepts } from './data/initialData';
-import { BookOpen, Layers, ShieldAlert, HelpCircle, Trophy } from 'lucide-react';
+import { BookOpen, Layers, Bug, Trophy, Users, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import './index.css';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [activeTab, setActiveTab] = useState<string>('skill-tree');
   const [difficulty, setDifficulty] = useState<'standard' | 'high'>('standard');
   
   const [lessons] = useState<Lesson[]>(initialLessons);
   const [concepts] = useState<Concept[]>(initialConcepts);
+  
+  // Progress states
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-  const [activeLessonId, setActiveLessonId] = useState<string>('l1');
+  const [passedExams, setPassedExams] = useState<string[]>([]);
   const [markedConceptIds, setMarkedConceptIds] = useState<string[]>([]);
+  
+  // Active lesson / exam states
+  const [activeLessonId, setActiveLessonId] = useState<string>('');
+  const [activeExamPathway, setActiveExamPathway] = useState<'high' | 'low' | null>(null);
 
-  // Load completed lessons and bookmarks on mount
+  // Load progress on mount
   useEffect(() => {
-    // Load completed lessons
+    // Completed lessons
     const storedCompleted = localStorage.getItem('validation_completed_lessons');
     if (storedCompleted) {
       try {
         const parsed = JSON.parse(storedCompleted);
-        if (Array.isArray(parsed)) {
-          setCompletedLessons(parsed);
-        } else {
-          setCompletedLessons([]);
-        }
+        if (Array.isArray(parsed)) setCompletedLessons(parsed);
       } catch (e) {
-        console.error('Error loading completed lessons', e);
-        setCompletedLessons([]);
+        console.error(e);
       }
     }
 
-    // Load marked concepts
+    // Passed exams
+    const storedExams = localStorage.getItem('validation_passed_exams');
+    if (storedExams) {
+      try {
+        const parsed = JSON.parse(storedExams);
+        if (Array.isArray(parsed)) setPassedExams(parsed);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Bookmarks
     const storedMarked = localStorage.getItem('validation_marked_concept_ids');
     if (storedMarked) {
       try {
         const parsed = JSON.parse(storedMarked);
-        if (Array.isArray(parsed)) {
-          setMarkedConceptIds(parsed);
-        } else {
-          setMarkedConceptIds([]);
-        }
+        if (Array.isArray(parsed)) setMarkedConceptIds(parsed);
       } catch (e) {
-        console.error('Error loading marked concepts', e);
-        setMarkedConceptIds([]);
+        console.error(e);
       }
     }
   }, []);
 
-  // Toggle marked concept for review
+  // Toggle marked concepts
   const handleToggleMarkConcept = (conceptId: string) => {
     const currentMarked = Array.isArray(markedConceptIds) ? markedConceptIds : [];
     let updated;
@@ -69,14 +77,29 @@ function App() {
     localStorage.setItem('validation_marked_concept_ids', JSON.stringify(updated));
   };
 
-  const handleSelectLessonFromDashboard = (lessonId: string) => {
+  // Pass gateway exam handler
+  const handlePassExam = (pathway: 'high' | 'low') => {
+    const examCode = `${pathway}_gateway`;
+    if (!passedExams.includes(examCode)) {
+      const updated = [...passedExams, examCode];
+      setPassedExams(updated);
+      localStorage.setItem('validation_passed_exams', JSON.stringify(updated));
+    }
+  };
+
+  const handleSelectLesson = (lessonId: string) => {
     setActiveLessonId(lessonId);
     setActiveTab('lesson-viewer');
   };
 
+  const handleStartExam = (pathway: 'high' | 'low') => {
+    setActiveExamPathway(pathway);
+    setActiveTab('exam-viewer');
+  };
+
   return (
     <div className="app-container">
-      {/* Header with logo and difficulty settings */}
+      {/* Header containing level switcher and tabs */}
       <Header
         difficulty={difficulty}
         setDifficulty={setDifficulty}
@@ -85,17 +108,50 @@ function App() {
         onClearActiveLesson={() => setActiveLessonId('')}
       />
 
-      {/* Main learning workspace */}
+      {/* Main content routing panel */}
       <main className="main-content">
-        {activeTab === 'dashboard' && (
-          <Dashboard
+        
+        {/* Brand Promise Welcome card (only shown on dashboard/skill-tree) */}
+        {activeTab === 'skill-tree' && (
+          <section
+            className="glass-card glow-glow"
+            style={{
+              background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(9, 9, 11, 0.7))',
+              borderRadius: 'var(--radius-lg)',
+              borderLeft: '4px solid var(--primary)',
+              padding: '20px',
+              marginBottom: '10px'
+            }}
+          >
+            <div>
+              <span className="badge badge-cyan" style={{ marginBottom: '8px' }}>מנטור הולידציה המעשי</span>
+              <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', color: '#fff' }}>
+                אקדמיית וולידציה למעבדים | CPU Validation Academy
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                ברוך הבא למערכת ההכשרה המעשית למהנדסי פלטפורמה וחומרה. האקדמיה מבוססת על **הבטחה מחמירה:** רק מעבר של מבחני מחסום ומענה נכון של 85%+ במבחני הסמכת השלב יסמיכו אותך לעבודה במעבדות החברה.
+              </p>
+              
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '12px', fontSize: '0.78rem', color: 'var(--text-primary)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--success)' }}>
+                  <ShieldCheck size={14} /> רמת קושי פעילה: {difficulty === 'high' ? 'High-Level (ארכיטקטורה)' : 'Low-Level (חומרה)'}
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)' }}>
+                  <CheckCircle2 size={14} /> סך שיעורים שהושלמו: {completedLessons.length} / {lessons.length}
+                </span>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Tab content rendering */}
+        {activeTab === 'skill-tree' && (
+          <SkillTree
             lessons={lessons}
-            concepts={concepts}
-            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
-            onSelectLesson={handleSelectLessonFromDashboard}
-            difficulty={difficulty}
-            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
-            onToggleMarkConcept={handleToggleMarkConcept}
+            completedLessons={completedLessons}
+            passedExams={passedExams}
+            onSelectLesson={handleSelectLesson}
+            onStartExam={handleStartExam}
           />
         )}
 
@@ -105,11 +161,24 @@ function App() {
             concepts={concepts}
             activeLessonId={activeLessonId}
             setActiveLessonId={setActiveLessonId}
-            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
+            completedLessons={completedLessons}
             setCompletedLessons={setCompletedLessons}
             difficulty={difficulty}
-            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
+            markedConceptIds={markedConceptIds}
             onToggleMarkConcept={handleToggleMarkConcept}
+          />
+        )}
+
+        {activeTab === 'exam-viewer' && activeExamPathway && (
+          <GatewayExam
+            pathway={activeExamPathway}
+            lessons={lessons}
+            onPassExam={handlePassExam}
+            onClose={() => {
+              setActiveExamPathway(null);
+              setActiveTab('skill-tree');
+            }}
+            onSelectLesson={handleSelectLesson}
           />
         )}
 
@@ -118,42 +187,39 @@ function App() {
             concepts={concepts}
             lessons={lessons}
             difficulty={difficulty}
-            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
+            markedConceptIds={markedConceptIds}
             onToggleMarkConcept={handleToggleMarkConcept}
           />
         )}
 
-        {activeTab === 'errors' && (
-          <ErrorLab
-            difficulty={difficulty}
-          />
-        )}
-
-        {activeTab === 'quiz' && (
-          <QuizManager
-            lessons={lessons}
-            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
-          />
+        {activeTab === 'bug-matrix' && (
+          <BugMatrix />
         )}
 
         {activeTab === 'progress' && (
           <ProgressPage
             lessons={lessons}
-            completedLessons={Array.isArray(completedLessons) ? completedLessons : []}
-            markedConceptIds={Array.isArray(markedConceptIds) ? markedConceptIds : []}
+            completedLessons={completedLessons}
+            passedExams={passedExams}
+            markedConceptIds={markedConceptIds}
             onSelectTab={setActiveTab}
-            onSelectLesson={handleSelectLessonFromDashboard}
+            onSelectLesson={handleSelectLesson}
           />
         )}
+
+        {activeTab === 'manager-insights' && (
+          <ManagerInsights />
+        )}
+
       </main>
 
-      {/* Premium Footer */}
+      {/* Footer */}
       <footer
         style={{
           borderTop: '1px solid var(--border-color)',
-          padding: '24px 0',
+          padding: '20px 0',
           textAlign: 'center',
-          fontSize: '0.8rem',
+          fontSize: '0.78rem',
           color: 'var(--text-muted)',
           display: 'flex',
           justifyContent: 'space-between',
@@ -164,26 +230,25 @@ function App() {
         }}
       >
         <span>
-          © {new Date().getFullYear()} Validation Academy. נבנה עבור מהנדסי פלטפורמה וחומרה.
+          © {new Date().getFullYear()} Validation Academy. מותאם למסכי מחשב ונייד (PWA ready).
         </span>
         <span style={{ fontFamily: 'Outfit', color: 'var(--primary)', fontWeight: 600, fontSize: '0.72rem' }}>
-          INTEL SILICON VALIDATION EDUCATION SYSTEM
+          INTEL PLATFORM VALIDATION TRAINING SYSTEM
         </span>
       </footer>
 
-      {/* Floating Bottom Navigation Bar */}
+      {/* Navigation Floating Bottom Bar */}
       <nav className="bottom-nav">
         <button
-          className={`bottom-nav-item ${activeTab === 'dashboard' || activeTab === 'lesson-viewer' ? 'active' : ''}`}
+          className={`bottom-nav-item ${activeTab === 'skill-tree' || activeTab === 'lesson-viewer' || activeTab === 'exam-viewer' ? 'active' : ''}`}
           onClick={() => {
-            setActiveTab('dashboard');
-            if (activeTab === 'lesson-viewer') {
-              setActiveLessonId('');
-            }
+            setActiveTab('skill-tree');
+            setActiveLessonId('');
+            setActiveExamPathway(null);
           }}
         >
           <BookOpen size={20} />
-          <span>מסלול</span>
+          <span>מיומנויות</span>
         </button>
 
         <button
@@ -191,7 +256,7 @@ function App() {
           onClick={() => setActiveTab('glossary')}
         >
           <Layers size={20} />
-          <span>מושגים</span>
+          <span>מונחים</span>
         </button>
 
         <button
@@ -203,19 +268,19 @@ function App() {
         </button>
 
         <button
-          className={`bottom-nav-item ${activeTab === 'errors' ? 'active' : ''}`}
-          onClick={() => setActiveTab('errors')}
+          className={`bottom-nav-item ${activeTab === 'bug-matrix' ? 'active' : ''}`}
+          onClick={() => setActiveTab('bug-matrix')}
         >
-          <ShieldAlert size={20} />
+          <Bug size={20} />
           <span>שגיאות</span>
         </button>
 
         <button
-          className={`bottom-nav-item ${activeTab === 'quiz' ? 'active' : ''}`}
-          onClick={() => setActiveTab('quiz')}
+          className={`bottom-nav-item ${activeTab === 'manager-insights' ? 'active' : ''}`}
+          onClick={() => setActiveTab('manager-insights')}
         >
-          <HelpCircle size={20} />
-          <span>מבחן</span>
+          <Users size={20} />
+          <span>מנהל</span>
         </button>
       </nav>
     </div>

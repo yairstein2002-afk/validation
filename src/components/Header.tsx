@@ -32,26 +32,26 @@ export const Header: React.FC<HeaderProps> = ({
         background: 'rgba(15, 15, 20, 0.5)'
       }}
     >
-      {/* Branding Logo */}
+      {/* Brand logo */}
       <Logo size={28} />
 
-      {/* Desktop Only Navigation Links */}
+      {/* Desktop Top Nav Bar */}
       <nav className="desktop-nav">
         <button
-          className={`desktop-nav-item ${activeTab === 'dashboard' || activeTab === 'lesson-viewer' ? 'active' : ''}`}
+          className={`desktop-nav-item ${activeTab === 'skill-tree' || activeTab === 'lesson-viewer' || activeTab === 'exam-viewer' ? 'active' : ''}`}
           onClick={() => {
-            setActiveTab('dashboard');
+            setActiveTab('skill-tree');
             onClearActiveLesson();
           }}
         >
-          מסלול
+          מיומנויות
         </button>
 
         <button
           className={`desktop-nav-item ${activeTab === 'glossary' ? 'active' : ''}`}
           onClick={() => setActiveTab('glossary')}
         >
-          מושגים
+          מונחים
         </button>
 
         <button
@@ -62,17 +62,17 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <button
-          className={`desktop-nav-item ${activeTab === 'errors' ? 'active' : ''}`}
-          onClick={() => setActiveTab('errors')}
+          className={`desktop-nav-item ${activeTab === 'bug-matrix' ? 'active' : ''}`}
+          onClick={() => setActiveTab('bug-matrix')}
         >
-          שגיאות
+          מטריצת שגיאות
         </button>
 
         <button
-          className={`desktop-nav-item ${activeTab === 'quiz' ? 'active' : ''}`}
-          onClick={() => setActiveTab('quiz')}
+          className={`desktop-nav-item ${activeTab === 'manager-insights' ? 'active' : ''}`}
+          onClick={() => setActiveTab('manager-insights')}
         >
-          מבחן
+          מעקב מנהלים
         </button>
       </nav>
 

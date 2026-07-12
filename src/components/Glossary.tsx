@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import type { Concept, Lesson } from '../types/validationData';
-import { Search, BookOpen, User, Bookmark, Tag } from 'lucide-react';
+import { Search, Bookmark, BookmarkCheck } from 'lucide-react';
 
 interface GlossaryProps {
   concepts: Concept[];
   lessons: Lesson[];
   difficulty: 'standard' | 'high';
   markedConceptIds: string[];
-  onToggleMarkConcept: (conceptId: string) => void;
+  onToggleMarkConcept: (id: string) => void;
 }
 
 export const Glossary: React.FC<GlossaryProps> = ({
@@ -17,211 +17,132 @@ export const Glossary: React.FC<GlossaryProps> = ({
   markedConceptIds,
   onToggleMarkConcept
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLessonId, setSelectedLessonId] = useState<string>('all');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  // Extract unique categories from all concepts
-  const categories = useMemo(() => {
-    const allCats = concepts.map((c) => c.category).filter((cat): cat is string => !!cat);
-    return Array.from(new Set(allCats)).sort();
-  }, [concepts]);
+  const categories = ['All', ...Array.from(new Set(concepts.map((c) => c.category)))];
 
-  const filteredConcepts = useMemo(() => {
-    return concepts.filter((c) => {
-      const matchQuery =
-        c.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.definition.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.definitionHighLevel.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchLesson = selectedLessonId === 'all' ? true : c.lessonId === selectedLessonId;
-      const matchCategory = selectedCategory === 'all' ? true : c.category === selectedCategory;
-
-      return matchQuery && matchLesson && matchCategory;
-    });
-  }, [concepts, searchQuery, selectedLessonId, selectedCategory]);
+  const filteredConcepts = concepts.filter((c) => {
+    const matchesSearch =
+      c.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.definition.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.definitionHighLevel.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = activeCategory === 'All' || c.category === activeCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       
       {/* Title */}
       <div>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold' }}>מילון מונחי הולידציה של Intel</h2>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold' }}>מילון מושגים מעבדתי (Glossary)</h2>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-          חיפוש, סינון וחקירת מונחי המעבדות של Intel.
+          מאגר מונחי המפתח בארכיטקטורת מעבדים, סיליקון, תזמונים ושיטות בדיקה של Intel.
         </p>
       </div>
 
-      {/* Filter and Search controls */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        
-        {/* Search */}
-        <div style={{ position: 'relative' }}>
-          <Search size={16} style={{ position: 'absolute', right: '12px', top: '14px', color: 'var(--text-muted)' }} />
+      {/* Search and Category Filter Row */}
+      <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '8px 12px' }}>
+          <Search size={16} style={{ color: 'var(--text-muted)' }} />
           <input
             type="text"
-            className="form-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="חפש מונח או הגדרה..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ width: '100%', paddingRight: '36px' }}
+            style={{
+              flex: 1,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: '#fff',
+              fontSize: '0.82rem'
+            }}
           />
         </div>
 
-        {/* Filters grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
-          {/* Lesson Filter */}
-          <div>
-            <label className="form-label" style={{ fontSize: '0.72rem', marginBottom: '4px', display: 'block' }}>סינון לפי שיעור:</label>
-            <select
-              className="form-select"
-              value={selectedLessonId}
-              onChange={(e) => setSelectedLessonId(e.target.value)}
-              style={{ width: '100%', padding: '10px', fontSize: '0.8rem' }}
+        {/* Categories Tab Scrollbar */}
+        <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', whiteSpace: 'nowrap' }} className="no-scrollbar">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className="btn btn-secondary"
+              style={{
+                fontSize: '0.72rem',
+                padding: '6px 12px',
+                background: activeCategory === cat ? 'rgba(6, 182, 212, 0.1)' : 'rgba(255,255,255,0.01)',
+                borderColor: activeCategory === cat ? 'var(--primary)' : 'var(--border-color)',
+                color: activeCategory === cat ? '#fff' : 'var(--text-secondary)'
+              }}
             >
-              <option value="all">כל השיעורים</option>
-              {lessons.map((lesson, idx) => (
-                <option key={lesson.id} value={lesson.id}>
-                  שיעור {idx + 1}: {lesson.titleHe}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Category Filter */}
-          <div>
-            <label className="form-label" style={{ fontSize: '0.72rem', marginBottom: '4px', display: 'block' }}>סינון לפי קטגוריית מפתח:</label>
-            <select
-              className="form-select"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              style={{ width: '100%', padding: '10px', fontSize: '0.8rem' }}
-            >
-              <option value="all">כל הקטגוריות</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
+              {cat === 'All' ? 'הכל' : cat}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Grid of concept cards */}
-      {filteredConcepts.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
-          {filteredConcepts.map((concept) => {
-            const lessonName = lessons.find((l) => l.id === concept.lessonId)?.titleHe || 'מושג מותאם אישית';
+      {/* Grid of Concept Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+        {filteredConcepts.map((concept) => {
+          const isMarked = markedConceptIds.includes(concept.id);
+          const lesson = lessons.find((l) => l.conceptIds.includes(concept.id));
 
-            return (
-              <div
-                key={concept.id}
-                className="glass-card"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: '12px',
-                  borderRight: concept.isCustom ? '4px solid var(--success)' : '1px solid var(--border-color)',
-                  boxShadow: concept.isCustom ? '0 0 10px rgba(16, 185, 129, 0.1)' : 'var(--box-shadow)',
-                  padding: '16px'
-                }}
-              >
-                <div>
-                  {/* Badge row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <span
-                      style={{
-                        fontSize: '0.72rem',
-                        color: 'var(--primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}
-                    >
-                      <BookOpen size={12} />
-                      {lessonName}
-                    </span>
-
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      {concept.category && (
-                        <span className="badge badge-blue" style={{ gap: '4px', fontSize: '0.62rem' }}>
-                          <Tag size={10} />
-                          {concept.category}
-                        </span>
-                      )}
-                      
-                      {concept.isCustom && (
-                        <span className="badge badge-success" style={{ gap: '4px', fontSize: '0.62rem' }}>
-                          <User size={10} />
-                          מושג משתמש
-                        </span>
-                      )}
-                      
-                      <button
-                        onClick={() => onToggleMarkConcept(concept.id)}
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          color: markedConceptIds.includes(concept.id) ? 'var(--primary)' : 'var(--text-muted)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          outline: 'none',
-                          padding: '2px'
-                        }}
-                        title={markedConceptIds.includes(concept.id) ? 'הסר מרשימת החזרה' : 'סמן לחזרה'}
-                      >
-                        <Bookmark size={14} fill={markedConceptIds.includes(concept.id) ? 'var(--primary)' : 'none'} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Term title */}
-                  <h3 style={{ fontSize: '1.15rem', marginBottom: '8px', direction: 'ltr', textAlign: 'right' }}>
-                    {concept.term}
-                  </h3>
-
-                  {/* Explanations */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-primary)', lineHeight: '1.4' }}>
-                      <strong style={{ color: 'var(--primary)', fontSize: '0.72rem', display: 'block' }}>הגדרה (Low Level):</strong>
-                      {concept.definition}
-                    </p>
-
-                    {difficulty === 'high' && (
-                      <p style={{ fontSize: '0.78rem', color: 'var(--text-primary)', borderTop: '1px solid var(--border-color)', paddingTop: '8px', lineHeight: '1.4' }}>
-                        <strong style={{ color: 'var(--secondary)', fontSize: '0.72rem', display: 'block' }}>ארכיטקטורה (High Level):</strong>
-                        {concept.definitionHighLevel}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: '8px',
-                    padding: '8px 10px',
-                    background: 'rgba(0, 0, 0, 0.2)',
-                    borderRadius: '4px',
-                    fontSize: '0.74rem',
-                    color: 'var(--text-secondary)',
-                    borderLeft: '2px solid var(--success)'
-                  }}
+          return (
+            <div
+              key={concept.id}
+              className="glass-card"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                borderLeft: isMarked ? '3px solid var(--primary)' : '1px solid var(--border-color)',
+                background: isMarked ? 'rgba(6, 182, 212, 0.02)' : 'rgba(15, 15, 20, 0.4)'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '0.88rem', color: '#fff', direction: 'ltr' }}>{concept.term}</strong>
+                
+                <button
+                  onClick={() => onToggleMarkConcept(concept.id)}
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: isMarked ? 'var(--primary)' : 'var(--text-muted)' }}
+                  title={isMarked ? 'הסר מרשימת החזרה' : 'סמן לחזרה'}
                 >
-                  <strong style={{ color: 'var(--success)' }}>הקשר במעבדה: </strong>
-                  {concept.context}
-                </div>
+                  {isMarked ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+                </button>
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-          לא נמצאו מושגים התואמים את החיפוש.
-        </div>
-      )}
+
+              {/* Tag metadata */}
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span className="badge badge-cyan" style={{ fontSize: '0.58rem', padding: '0 4px' }}>{concept.category}</span>
+                {lesson && (
+                  <span className="badge badge-secondary" style={{ fontSize: '0.58rem', padding: '0 4px' }}>
+                    {lesson.titleHe.split(':')[0]}
+                  </span>
+                )}
+              </div>
+
+              {/* Toggleable explanation */}
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginTop: '4px' }}>
+                {difficulty === 'high' ? concept.definitionHighLevel : concept.definition}
+              </p>
+
+              {/* Micro-lab context usage tip */}
+              <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '6px', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                <span style={{ color: 'var(--primary)' }}>הקשר בדיקה: </span>
+                {concept.context}
+              </div>
+            </div>
+          );
+        })}
+
+        {filteredConcepts.length === 0 && (
+          <div style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            לא נמצאו מונחים המתאימים למילת החיפוש.
+          </div>
+        )}
+      </div>
 
     </div>
   );
