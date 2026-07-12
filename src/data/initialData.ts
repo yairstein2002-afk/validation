@@ -465,7 +465,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הבנת המקום שבו נשמר ה-BIOS עוד לפני שיש גישה לדיסק הקשיח.',
     prerequisites: ['l13'],
     videoUrl: '',
-    conceptIds: ['c_fit'],
+    conceptIds: ['c_fit', 'c_cmos'],
     quizQuestions: [
       {
         id: 'q20_1',
@@ -513,7 +513,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הכרת שלבי הבוט מאפשרת לאתר היכן בדיוק נתקעת המערכת בזמן קריסות מעבדה.',
     prerequisites: ['l21'],
     videoUrl: '',
-    conceptIds: ['c_boot', 'c_boot_flow'],
+    conceptIds: ['c_boot', 'c_boot_flow', 'c_fuses', 'c_post_mrc'],
     quizQuestions: [
       {
         id: 'q22_1',
@@ -537,7 +537,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הבנת לוח האם שהוא התשתית הפיזית עליה יושב ה-SUT.',
     prerequisites: ['l2'],
     videoUrl: '',
-    conceptIds: ['c_stargate', 'c_rebar'],
+    conceptIds: ['c_stargate', 'c_rebar', 'c_straps', 'c_carlyle'],
     quizQuestions: [
       {
         id: 'q23_1',
@@ -753,7 +753,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'אות השעון הוא פעימת הלב של המעבד המתאמת את זמני פעולת כל הטרנזיסטורים.',
     prerequisites: ['l2'],
     videoUrl: '',
-    conceptIds: ['c_jitter'],
+    conceptIds: ['c_jitter', 'c_warm_reset'],
     quizQuestions: [
       {
         id: 'q32_1',
@@ -969,7 +969,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'הבנת ההבדלים והאתגרים בבדיקת סיליקון פיזי לעומת סימולציות.',
     prerequisites: ['l39', 'l40'],
     videoUrl: '',
-    conceptIds: ['c_post_silicon', 'c_sut'],
+    conceptIds: ['c_post_silicon', 'c_sut', 'c_silicon_val'],
     quizQuestions: [
       {
         id: 'q41_1',
@@ -1425,7 +1425,7 @@ export const initialLessons: Lesson[] = [
     whyItIsHere: 'שיעור מסכם זה מכין אותך במדויק לשאלות התנהגותיות ומקצועיות בראיונות עבודה. הוא מחבר את כל הידע שרכשת בקורס ומציג את התמונה המלאה של סביבת העבודה שלך.',
     prerequisites: ['l22', 'l39', 'l56'],
     videoUrl: '',
-    conceptIds: ['c_post_silicon', 'c_bkc', 'c_triage', 'c_sighting', 'c_nga', 'c_python'],
+    conceptIds: ['c_post_silicon', 'c_bkc', 'c_triage', 'c_sighting', 'c_nga', 'c_python', 'c_bkc', 'c_sighting'],
     quizQuestions: [
       {
         id: 'q60_1',
@@ -2537,6 +2537,87 @@ export const initialConcepts: Concept[] = [
     definition: 'זיכרון מהיר במיוחד הבנוי בערימה תלת-מימדית (3D Stacking) וממוקם ישירות על גבי אריזת המעבד.',
     definitionHighLevel: 'High-performance 3D-stacked DRAM architecture offering massive bandwidth via silicon interposers (TSVs).',
     context: 'ולידציה של קווי הנתונים של ה-HBM במעבדי שרתים.'
+  },
+  {
+    id: 'c_cmos',
+    term: 'CMOS RAM',
+    lessonId: 'l20',
+    category: 'זיכרון',
+    definition: 'זיכרון נדיף זעיר על לוח האם המגובה בסוללה, השומר את הגדרות ה-BIOS ותאריך המערכת.',
+    definitionHighLevel: 'Battery-backed volatile memory holding BIOS configuration parameters and Real-Time Clock (RTC) data.',
+    context: 'ניקוי CMOS (Clear CMOS) הוא הצעד הראשון לשחזור לוח תקוע בעקבות הגדרות זיכרון שגויות במעבדה.'
+  },
+  {
+    id: 'c_fuses',
+    term: 'Silicon Fuses (OTP Fuses)',
+    lessonId: 'l22',
+    category: 'ארכיטקטורה',
+    definition: 'רכיבי זיכרון חד-פעמיים בתוך שבב הסיליקון הנשרפים במפעל כדי לקבוע את תתי-הדגמים (SKUs) ומפתחות אבטחה.',
+    definitionHighLevel: 'One-Time Programmable (OTP) hardware fuses blown during manufacturing to configure chip features and security keys.',
+    context: 'אימות מצב פיוזים (Fuse validation) לוודא שליבות מעבד או מנגנוני אבטחה אינם חסומים בטעות.'
+  },
+  {
+    id: 'c_straps',
+    term: 'Hardware Straps',
+    lessonId: 'l23',
+    category: 'ארכיטקטורה',
+    definition: 'נגדים פיזיים על לוח האם שנקראים על ידי המעבד בזמן ההדלקה כדי לקבוע מצבי עבודה ראשוניים.',
+    definitionHighLevel: 'Pull-up or pull-down resistor configuration pins read during power-up to establish initial boot values.',
+    context: 'שינוי Straps על הלוח משמש את המהנדסים לשינוי מכוון של מהירות האפיקים או מתחי ההפעלה בדיבאג.'
+  },
+  {
+    id: 'c_carlyle',
+    term: 'Carlyle / StarGate Board',
+    lessonId: 'l23',
+    category: 'ציוד מעבדה',
+    definition: 'לוחות פיתוח וולידציה מיוחדים של אינטל המכילים חיבורים פיזיים נרחבים לדיבאג וניטור חשמלי.',
+    definitionHighLevel: 'Intel reference validation platform designed with debug connectors and probe headers for post-silicon testing.',
+    context: 'זהו הלוח המרכזי במעבדה שעליו מרכיבים את ה-SUT לביצוע הבדיקות.'
+  },
+  {
+    id: 'c_warm_reset',
+    term: 'Warm Reset (Soft Reset)',
+    lessonId: 'l32',
+    category: 'ארכיטקטורה',
+    definition: 'אתחול מחדש של המערכת ללא ניתוק פיזי של אספקת המתח ללוח.',
+    definitionHighLevel: 'System reboot initiated without dropping power rails, preserving some registry contexts for debug.',
+    context: 'בדיקות Warm Reset בודקות את יציבות קושחת ה-BIOS במעבר מהיר בין שלבים ללא כיבוי חשמלי.'
+  },
+  {
+    id: 'c_post_mrc',
+    term: 'Post-MRC Boot Code',
+    lessonId: 'l22',
+    category: 'ארכיטקטורה',
+    definition: 'נקודת זמן בתהליך הבוט מיד לאחר שאימון זיכרון ה-RAM (MRC) הסתיים בהצלחה.',
+    definitionHighLevel: 'Boot progression phase immediately following the completion of Memory Reference Code execution.',
+    context: 'ניטור קודי ה-POST כדי לוודא מעבר מוצלח של MRC והמשך לטעינת ה-Kernel.'
+  },
+  {
+    id: 'c_bkc',
+    term: 'Best Known Configuration (BKC)',
+    lessonId: 'l60',
+    category: 'מסמכים',
+    definition: 'שילוב גרסאות בדוק ויציב של BIOS, מיקרוקוד, דרייברים וקושחה המשמש כבסיס לכל בדיקות הוולידציה.',
+    definitionHighLevel: 'A validated and aligned stack of microcode, BIOS, drivers, and OS used as the baseline for all tests.',
+    context: 'לפני שמתחילים בדיקות, מהנדס הוולידציה מוודא שה-SUT מעודכן בדיוק לגרסת ה-BKC השבועית.'
+  },
+  {
+    id: 'c_sut',
+    term: 'System Under Test (SUT)',
+    lessonId: 'l41',
+    category: 'ציוד מעבדה',
+    definition: 'מערכת המחשב או הלוח הספציפי שעליהם מריצים את הבדיקות במעבדה.',
+    definitionHighLevel: 'The physical motherboard, CPU, and software stack undergoing active validation testing.',
+    context: 'חיבור כבלי JTAG/UART אל ה-SUT כדי לנהל אותו מרחוק.'
+  },
+  {
+    id: 'c_sighting',
+    term: 'Sighting (HSD-ES Sighting)',
+    lessonId: 'l60',
+    category: 'מסמכים',
+    definition: 'דוח תקלה רשמי במערכת HSD-ES של אינטל המתאר באג לוגי או חשמלי בסיליקון.',
+    definitionHighLevel: 'Official hardware defect report documenting silicon issues, reproduction steps, and debug traces.',
+    context: 'פתיחת Sighting מפורט הוא התוצר הסופי החשוב ביותר של מהנדס וולידציה שמצא באג בסיליקון.'
   }
 ];
 
